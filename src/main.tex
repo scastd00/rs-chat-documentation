@@ -2,16 +2,52 @@
 %! Date = 21/9/22
 
 % Preamble
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper]{memoir}
 
 % Packages
 \usepackage{amsmath}
+\usepackage{blindtext}
+\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{forloop}
+
+% Set the margins to the pages
+\geometry{
+	a4paper,
+	top=3cm,
+	left=3cm,
+	bottom=2.5cm,
+	right=2.5cm
+}
+\title{Trabajo Final de Grado}
+\author{C.D. Samuel}
+\date{June 2023}
 
 % Document
 \begin{document}
 	\nocite{*} % Be able to compile without any citations. Todo: remove this line.
+%	\blindtext[10] % To add some generic text
 
-	Hola Mundo!
+	\input{cover}
+	\clearpage
+	\input{info}
+
+	\frontmatter
+	\tableofcontents
+	\listoffigures
+	\listoftables
+
+	\mainmatter
+
+	\clearpage
+	\pagenumbering{arabic}
+
+	\section{main}{
+		\blindtext[25]
+	}\label{sec:main}
+
+	\backmatter
 
 	\bibliography{main}
 	\bibliographystyle{plain}
