@@ -2,15 +2,21 @@
 %! Date = 21/9/22
 
 % Preamble
-\documentclass[11pt,a4paper]{memoir}
+\documentclass[11pt]{report}
+\renewcommand{\chaptername}{}
 
 % Packages
+% Spanish-specific commands
+\usepackage[spanish]{babel}
+% Set the font (output) encodings
+\usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{blindtext}
 \usepackage{geometry}
-\usepackage[utf8]{inputenc}
 \usepackage{tabularx}
 \usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
 
 % Set the margins to the pages
 \geometry{
@@ -24,31 +30,66 @@
 \author{C.D. Samuel}
 \date{June 2023}
 
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Página \thepage\ de~\pageref{LastPage}} % Ignore warning
+\fancyfoot[C]{}
+
+\usepackage{color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\usepackage[explicit,compact]{titlesec}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries #1}
+
 % Document
 \begin{document}
 	\nocite{*} % Be able to compile without any citations. Todo: remove this line.
-%	\blindtext[10] % To add some generic text
 
 	\input{cover}
 	\clearpage
 	\input{info}
+	\clearpage
 
-	\frontmatter
+	\pagenumbering{roman}
 	\tableofcontents
-	\listoffigures
-	\listoftables
 
-	\mainmatter
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{\listfigurename}
+	\listoffigures
+
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{\listtablename}
+	\listoftables
 
 	\clearpage
 	\pagenumbering{arabic}
 
-	\section{main}{
-		\blindtext[25]
-	}\label{sec:main}
 
-	\backmatter
+	\chapter{Introducción}\label{ch:introduction}
+	\blindtext[20]
 
+
+	\section{Hola}\label{sec:hola1}
+	\textbf{\blindtext[10]}
+
+
+	\chapter{Desarrollo}\label{ch:development}
+	\blindtext[20]
+
+
+	\section{Hola}\label{sec:hola2}
+	\textbf{\blindtext[10]}
+
+
+	\chapter{Conclusiones}\label{ch:conclusions}
+	\blindtext[20]
+
+
+	\section{Hola}\label{sec:hola3}
+	\textbf{\blindtext[10]}
+
+	\cleardoublepage
+	\addcontentsline{toc}{chapter}{Bibliografía}
 	\bibliography{main}
 	\bibliographystyle{plain}
 \end{document}
