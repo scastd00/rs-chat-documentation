@@ -32,29 +32,26 @@ realizar una petición a una ruta específica.
 	\caption{Relación entre ruta y clase HTTP}
 \end{table}
 
-%\begin{lstlisting}[label={lst:lstlisting}]
-%public class Routes {
-%	private Routes() {
-%	}
-%	...
-%	public static class GetRoute {
-%	    public static final GetRoute INSTANCE = new GetRoute();
-%		private GetRoute() {
-%		}
-%		public static final String USERS_URL = V_1 + "/users";
-%		...
-%	}
-%	...
-%}
-%\end{lstlisting}
-
-Código
-\begin{minted}{c}
-int main() {
-	printf("hello, world");
-	return 0;
+\begin{minted}[
+	baselinestretch=1.1,
+	fontsize=\footnotesize,
+]{java}
+public class Routes {
+	private Routes() {
+	}
+	...
+	public static class GetRoute {
+	    public static final GetRoute INSTANCE = new GetRoute();
+		private GetRoute() {
+		}
+		public static final String USERS_URL = V_1 + "/users";
+		...
+	}
+	...
 }
 \end{minted}
 
 \subsect{Strategy}{strategy}
+\lipsum
+\lipsum
 
