@@ -1,0 +1,43 @@
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Página \thepage\ de~\pageref{LastPage}} % Ignore warning
+\fancyfoot[C]{}
+\fancyfoot[R]{C.D. Samuel}
+\fancyfoot[L]{C.F. Eva María}
+
+\usepackage{color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\usepackage[explicit,compact]{titlesec}
+
+\newcommand{\chapterFont}[1]{{
+	\bfseries{\uppercase{
+		\fontsize{28pt}{0pt}\selectfont{#1}
+	}}
+}}
+
+\newcommand{\sectionFont}[1]{{
+	\bfseries{\uppercase{
+		\fontsize{14pt}{0pt}\selectfont{#1}
+	}}
+}}
+
+% See docs: http://tug.ctan.org/tex-archive/macros/latex/contrib/titlesec/titlesec.pdf
+\titleformat{\chapter}[hang]{\bfseries}{\chapterFont{\thechapter.}}{0pt}{\chapterFont{#1}}
+\titleformat{\section}[hang]{\bfseries}{\sectionFont{\thesection.}}{0pt}{\sectionFont{#1}}
+\titleformat{\subsection}[hang]{\bfseries}{\sectionFont{\thesubsection.}}{0pt}{\sectionFont{#1}}
+
+\newcommand{\chaptr}[2]{{
+	\chapter{#1}
+	\label{ch:#2}
+}}
+
+\newcommand{\sect}[2]{{
+	\section{#1}
+	\label{sec:#2}
+}}
+
+\newcommand{\subsect}[2]{{
+	\subsection{#1}
+	\label{subsec:#2}
+}}

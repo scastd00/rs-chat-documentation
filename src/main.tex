@@ -2,8 +2,8 @@
 %! Date = 21/9/22
 
 % Preamble
-\documentclass[11pt]{report}
-\renewcommand{\chaptername}{}
+\documentclass[12pt]{report}
+%\linespread{1.5}
 
 % Packages
 % Spanish-specific commands
@@ -11,12 +11,13 @@
 % Set the font (output) encodings
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
-\usepackage{blindtext}
+\usepackage{lipsum}
 \usepackage{geometry}
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{setspace}
 
 % Set the margins to the pages
 \geometry{
@@ -30,16 +31,7 @@
 \author{C.D. Samuel}
 \date{June 2023}
 
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[R]{Página \thepage\ de~\pageref{LastPage}} % Ignore warning
-\fancyfoot[C]{}
-
-\usepackage{color}
-\definecolor{gray75}{gray}{0.75}
-\newcommand{\hsp}{\hspace{20pt}}
-\usepackage[explicit,compact]{titlesec}
-\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries #1}
+\input{globalConfig}
 
 % Document
 \begin{document}
@@ -50,43 +42,39 @@
 	\input{info}
 	\clearpage
 
+	\renewcommand{\contentsname}{Índice de contenidos}
 	\pagenumbering{roman}
 	\tableofcontents
 
 	\cleardoublepage
-	\addcontentsline{toc}{chapter}{\listfigurename}
 	\listoffigures
+	\addcontentsline{toc}{chapter}{\listfigurename}
 
 	\cleardoublepage
-	\addcontentsline{toc}{chapter}{\listtablename}
+	\renewcommand{\listtablename}{Índice de cuadros y tablas}
 	\listoftables
+	\addcontentsline{toc}{chapter}{\listtablename}
 
 	\clearpage
 	\pagenumbering{arabic}
 
-
-	\chapter{Introducción}\label{ch:introduction}
-	\blindtext[20]
-
-
-	\section{Hola}\label{sec:hola1}
-	\textbf{\blindtext[10]}
+	\begin{spacing}{1.5}
+		\chaptr{Introducción}{introducción}
 
 
-	\chapter{Desarrollo}\label{ch:development}
-	\blindtext[20]
+		\sect{Título de Sección}{titulo-sección}
+		\lipsum[2] \\
+		\subsect{Subsección 1}{subsección-1}
+		\lipsum[2] \\
+		\subsect{Subsección 2}{subsección-2}
+		\lipsum[2] \\
+		\sect{Título de Sección}{titulo-sección2}
+		\lipsum[2] \\
 
 
-	\section{Hola}\label{sec:hola2}
-	\textbf{\blindtext[10]}
-
-
-	\chapter{Conclusiones}\label{ch:conclusions}
-	\blindtext[20]
-
-
-	\section{Hola}\label{sec:hola3}
-	\textbf{\blindtext[10]}
+		\chaptr{Introducción 2}{introducción2}
+		\lipsum \\
+	\end{spacing}
 
 	\cleardoublepage
 	\addcontentsline{toc}{chapter}{Bibliografía}
