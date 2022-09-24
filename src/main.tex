@@ -18,6 +18,8 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{setspace}
+\usepackage{listings}
+\usepackage[cache=false]{minted}
 
 % Set the margins to the pages
 \geometry{
@@ -35,8 +37,6 @@
 
 % Document
 \begin{document}
-	\nocite{*} % Be able to compile without any citations. Todo: remove this line.
-
 	\input{cover}
 	\clearpage
 	\input{info}
@@ -59,25 +59,15 @@
 	\pagenumbering{arabic}
 
 	\begin{spacing}{1.5}
-		\chaptr{Introducción}{introducción}
-
-
-		\sect{Título de Sección}{titulo-sección}
-		\lipsum[2] \\
-		\subsect{Subsección 1}{subsección-1}
-		\lipsum[2] \\
-		\subsect{Subsección 2}{subsección-2}
-		\lipsum[2] \\
-		\sect{Título de Sección}{titulo-sección2}
-		\lipsum[2] \\
-
-
-		\chaptr{Introducción 2}{introducción2}
-		\lipsum \\
+		\input{chapters/1introduccion.tex}
+		\input{chapters/2estadoDelArte.tex}
+		\input{chapters/3main.tex}
+		\input{chapters/4resultados.tex}
+		\input{chapters/5conclusiones.tex}
 	\end{spacing}
 
 	\cleardoublepage
 	\addcontentsline{toc}{chapter}{Bibliografía}
-	\bibliography{main}
-	\bibliographystyle{plain}
+	\bibliography{bibliography}
+	\bibliographystyle{ieeetr}
 \end{document}

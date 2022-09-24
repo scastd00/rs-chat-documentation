@@ -1,0 +1,60 @@
+\sect{Patrones de diseño utilizados}{design-patterns}
+
+Definición: \textit{Se trata de una solución que se puede aplicar a diferentes contextos y que se
+puede reutilizar en diferentes proyectos.} \\
+
+En este proyecto se han utilizado varios patrones de diseño, para permitir una mejor escalabilidad, mantenibilidad y
+reutilización del código.\ A continuación se detallan los patrones utilizados y su justificación.
+
+\subsect{Builder}{builder}
+
+
+\subsect{Singleton}{singleton}
+Este patrón se utiliza para garantizar que una clase tenga una única instancia y proporciona un punto de acceso
+global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación, se utiliza en ciertas
+clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo \mono{/login} con el método POST).
+Estas últimas son clases internas de \mono{Routes.java} y los nombres dependen del método HTTP que se debe utilizar para
+realizar una petición a una ruta específica.
+
+\begin{table}[ht]
+	\centering
+	\label{tab:routes}
+	\begin{tabular}{|c|c|}
+		\hline
+		Método HTTP & Clase de la ruta   \\
+		\hline
+		GET           & \mono{GetRoute}    \\
+		POST          & \mono{PostRoute}   \\
+		PUT           & \mono{PutRoute}    \\
+		DELETE        & \mono{DeleteRoute} \\
+		\hline
+	\end{tabular}
+	\caption{Relación entre ruta y clase HTTP}
+\end{table}
+
+%\begin{lstlisting}[label={lst:lstlisting}]
+%public class Routes {
+%	private Routes() {
+%	}
+%	...
+%	public static class GetRoute {
+%	    public static final GetRoute INSTANCE = new GetRoute();
+%		private GetRoute() {
+%		}
+%		public static final String USERS_URL = V_1 + "/users";
+%		...
+%	}
+%	...
+%}
+%\end{lstlisting}
+
+Código
+\begin{minted}{c}
+int main() {
+	printf("hello, world");
+	return 0;
+}
+\end{minted}
+
+\subsect{Strategy}{strategy}
+

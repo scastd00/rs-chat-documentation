@@ -7,37 +7,42 @@
 
 \usepackage{color}
 \definecolor{gray75}{gray}{0.75}
-\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\hsp}{\hspace{15pt}}
 \usepackage[explicit,compact]{titlesec}
 
-\newcommand{\chapterFont}[1]{{
-	\bfseries{\uppercase{
-		\fontsize{28pt}{0pt}\selectfont{#1}
-	}}
-}}
-
-\newcommand{\sectionFont}[1]{{
-	\bfseries{\uppercase{
-		\fontsize{14pt}{0pt}\selectfont{#1}
-	}}
-}}
+\newcommand{\chapterFont}[1]{\bfseries{\fontsize{28pt}{0pt}\selectfont{#1}}}
+\newcommand{\sectionFont}[1]{\bfseries{\uppercase{\fontsize{14pt}{0pt}\selectfont{#1}}}}
 
 % See docs: http://tug.ctan.org/tex-archive/macros/latex/contrib/titlesec/titlesec.pdf
-\titleformat{\chapter}[hang]{\bfseries}{\chapterFont{\thechapter.}}{0pt}{\chapterFont{#1}}
-\titleformat{\section}[hang]{\bfseries}{\sectionFont{\thesection.}}{0pt}{\sectionFont{#1}}
-\titleformat{\subsection}[hang]{\bfseries}{\sectionFont{\thesubsection.}}{0pt}{\sectionFont{#1}}
+\titleformat{\chapter}[hang]{\bfseries}{\chapterFont{\thechapter.}\hsp}{0pt}{\chapterFont{#1}}
+\titleformat{\section}[hang]{\bfseries}{\sectionFont{\thesection.}\hsp}{0pt}{\sectionFont{#1}}
+\titleformat{\subsection}[hang]{\bfseries}{\sectionFont{\thesubsection.}\hsp}{0pt}{\sectionFont{#1}}
 
-\newcommand{\chaptr}[2]{{
-	\chapter{#1}
-	\label{ch:#2}
-}}
+\newcommand{\chaptr}[2]{\chapter{#1}\label{ch:#2}}
+\newcommand{\sect}[2]{\section{#1}\label{sec:#2}}
+\newcommand{\subsect}[2]{\subsection{#1}\label{subsec:#2}}
 
-\newcommand{\sect}[2]{{
-	\section{#1}
-	\label{sec:#2}
-}}
+\newcommand{\mono}[1]{\texttt{#1}}
+\newcommand{\bold}[1]{\textbf{#1}}
+\newcommand{\boldmono}[1]{\textbf{\texttt{#1}}}
 
-\newcommand{\subsect}[2]{{
-	\subsection{#1}
-	\label{subsec:#2}
-}}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=ht,
+	language=Java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4
+}
