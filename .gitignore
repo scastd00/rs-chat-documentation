@@ -2,6 +2,7 @@
 rs-chat-documentation.iml
 
 ## Core latex/pdflatex auxiliary files:
+*.cod
 *.aux
 *.lof
 *.log

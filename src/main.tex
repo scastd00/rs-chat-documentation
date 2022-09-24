@@ -3,7 +3,6 @@
 
 % Preamble
 \documentclass[12pt]{report}
-%\linespread{1.5}
 
 % Packages
 % Spanish-specific commands
@@ -18,6 +17,8 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{setspace}
+\usepackage{color}
+\usepackage[explicit,compact]{titlesec}
 \usepackage[cache=false]{minted}
 \usemintedstyle{manni}
 
@@ -54,6 +55,9 @@
 	\renewcommand{\listtablename}{Índice de cuadros y tablas}
 	\listoftables
 	\addcontentsline{toc}{chapter}{\listtablename}
+
+	\cleardoublepage
+	\listofcodeBlocks
 
 	\clearpage
 	\pagenumbering{arabic}

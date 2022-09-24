@@ -2,7 +2,6 @@
 
 Definición: \textit{Se trata de una solución que se puede aplicar a diferentes contextos y que se
 puede reutilizar en diferentes proyectos.} \\
-
 En este proyecto se han utilizado varios patrones de diseño, para permitir una mejor escalabilidad, mantenibilidad y
 reutilización del código.\ A continuación se detallan los patrones utilizados y su justificación.
 
@@ -29,28 +28,44 @@ realizar una petición a una ruta específica.
 		DELETE        & \mono{DeleteRoute} \\
 		\hline
 	\end{tabular}
-	\caption{Relación entre ruta y clase HTTP}
+	\caption{Relación entre método HTTP y ruta.}
 \end{table}
 
-\newpage
-\begin{minted}[
-	baselinestretch=1.1,
-	fontsize=\footnotesize,
-]{java}
+Se han utilizado diferentes formas de acceso a la instancia de las clases.\ En el caso de las clases que asocian rutas a
+métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método estático para
+obtener la instancia de la clase, como se muestra en el siguiente ejemplo:
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=4,
+	]{java}
 public class Routes {
-	private Routes() {
-	}
+	private Routes() {}
 	...
 	public static class GetRoute {
-	    public static final GetRoute INSTANCE = new GetRoute();
-		private GetRoute() {
-		}
+		public static final GetRoute INSTANCE = new GetRoute();
+
+		private GetRoute() {}
+
 		public static final String USERS_URL = V_1 + "/users";
-		...
+
+		/* Creates an array containing the routes allowed by the low tier user */
+		public String[] lowTierRoutes() {...}
+
+		/* Creates an array containing the routes allowed by the medium tier user */
+		public String[] mediumTierRoutes() {...}
+
+		/* Creates an array containing the routes allowed by the top tier user */
+		public String[] topTierRoutes() {...}
 	}
 	...
 }
-\end{minted}
+	\end{minted}
+
+	\caption{hola}
+\end{codeBlock}
 
 \subsect{Strategy}{strategy}
 \lipsum
