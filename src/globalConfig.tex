@@ -5,15 +5,13 @@
 \fancyfoot[R]{C.D. Samuel}
 \fancyfoot[L]{C.F. Eva María}
 
-\newcommand{\hsp}{\hspace{15pt}}
-
-\newcommand{\chapterFont}[1]{\bfseries{\fontsize{28pt}{0pt}\selectfont{#1}}}
-\newcommand{\sectionFont}[1]{\bfseries{\uppercase{\fontsize{14pt}{0pt}\selectfont{#1}}}}
+\newcommand{\chapterFont}[1]{{\bfseries{\fontsize{28pt}{0pt}\selectfont{#1}}}}
+\newcommand{\sectionFont}[1]{{\bfseries{\uppercase{\fontsize{14pt}{0pt}\selectfont{#1}}}}}
 
 % See docs: http://tug.ctan.org/tex-archive/macros/latex/contrib/titlesec/titlesec.pdf
-\titleformat{\chapter}[hang]{\bfseries}{\chapterFont{\thechapter.}\hsp}{0pt}{\chapterFont{#1}}
-\titleformat{\section}[hang]{\bfseries}{\sectionFont{\thesection.}\hsp}{0pt}{\sectionFont{#1}}
-\titleformat{\subsection}[hang]{\bfseries}{\sectionFont{\thesubsection.}\hsp}{0pt}{\sectionFont{#1}}
+\titleformat{\chapter}[hang]{\bfseries}{\chapterFont{\thechapter.}}{15pt}{\chapterFont{#1}}
+\titleformat{\section}[hang]{\bfseries}{\sectionFont{\thesection.}}{15pt}{\sectionFont{#1}}
+\titleformat{\subsection}[hang]{\bfseries}{\sectionFont{\thesubsection.}}{15pt}{\sectionFont{#1}}
 
 \newcommand{\chaptr}[2]{\chapter{#1}\label{ch:#2}}
 \newcommand{\sect}[2]{\section{#1}\label{sec:#2}}
@@ -24,3 +22,13 @@
 \newcommand{\boldmono}[1]{\textbf{\texttt{#1}}}
 
 \input{utils/codeCaption.tex}
+
+\setcounter{chapter}{0}
+
+\newcommand{\myChapter}[1]{
+	\newpage
+	\addtocounter{chapter}{1}
+	\addcontentsline{toc}{chapter}{\thechapter.\hspace{7pt}#1}
+	\flushleft\chapterFont{\thechapter.\hspace{15pt}#1}
+	\\[12pt]
+}

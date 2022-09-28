@@ -11,6 +11,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{lipsum}
+\usepackage{caption}
 \usepackage{geometry}
 \usepackage{tabularx}
 \usepackage{graphicx}
@@ -35,6 +36,7 @@
 \date{June 2023}
 
 \input{globalConfig.tex}
+\captionsetup{width=0.8\textwidth}
 
 % Document
 \begin{document}
@@ -58,6 +60,7 @@
 
 	\cleardoublepage
 	\listofcodeBlocks
+	\addcontentsline{toc}{chapter}{\listcodeBlockname}
 
 	\clearpage
 	\pagenumbering{arabic}
