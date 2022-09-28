@@ -1,9 +1,22 @@
 \pagestyle{fancy}
-\fancyhf{}
+\renewcommand{\sectionmark}[1]{\markright{\textsl{\thesection.\ #1}}}
+\fancyhead{} % Clear all header fields
 \fancyhead[R]{Página \thepage\ de~\pageref{LastPage}} % Ignore warning
-\fancyfoot[C]{}
-\fancyfoot[R]{C.D. Samuel}
-\fancyfoot[L]{C.F. Eva María}
+\fancyhead[L]{\rightmark}
+\fancyfoot{} % Clear all footer fields
+\fancyfoot[R]{Samuel}
+\fancyfoot[L]{Eva María}
+
+% Horizontal line at top and bottom of page
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\fancypagestyle{plain}{
+	\fancyhf{} % Clear header and footer
+	\fancyhead[R]{\thepage}
+	% Remove horizontal lines
+	\renewcommand{\headrule}{}
+	\renewcommand{\footrule}{}
+} % Index pages
 
 \newcommand{\chapterFont}[1]{{\bfseries{\fontsize{28pt}{0pt}\selectfont{#1}}}}
 \newcommand{\sectionFont}[1]{{\bfseries{\uppercase{\fontsize{14pt}{0pt}\selectfont{#1}}}}}
@@ -13,6 +26,8 @@
 \titleformat{\section}[hang]{\bfseries}{\sectionFont{\thesection.}}{15pt}{\sectionFont{#1}}
 \titleformat{\subsection}[hang]{\bfseries}{\sectionFont{\thesubsection.}}{15pt}{\sectionFont{#1}}
 
+\titlespacing*{\chapter}{0pt}{-5pt}{12pt} % Remove space before chapter title
+
 \newcommand{\chaptr}[2]{\chapter{#1}\label{ch:#2}}
 \newcommand{\sect}[2]{\section{#1}\label{sec:#2}}
 \newcommand{\subsect}[2]{\subsection{#1}\label{subsec:#2}}
@@ -21,14 +36,5 @@
 \newcommand{\bold}[1]{\textbf{#1}}
 \newcommand{\boldmono}[1]{\textbf{\texttt{#1}}}
 
+\captionsetup{width=0.8\textwidth}
 \input{utils/codeCaption.tex}
-
-\setcounter{chapter}{0}
-
-\newcommand{\myChapter}[1]{
-	\newpage
-	\addtocounter{chapter}{1}
-	\addcontentsline{toc}{chapter}{\thechapter.\hspace{7pt}#1}
-	\flushleft\chapterFont{\thechapter.\hspace{15pt}#1}
-	\\[12pt]
-}
