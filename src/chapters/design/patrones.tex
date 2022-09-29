@@ -1,11 +1,55 @@
-\sect{Patrones de diseño utilizados}{design-patterns}
+\sect{Patrones de diseño}{design-patterns}
 
-Definición: \textit{Se trata de una solución que se puede aplicar a diferentes contextos y que se
+\textit{Un patrón de diseño es una solución que se puede aplicar a diferentes contextos y que se
 puede reutilizar en diferentes proyectos.} \\
+Hay varias categorías de patrones de diseño, cada una con una finalidad diferente:
+\begin{itemize}
+	\item \textbf{Patrones de creación}: se utilizan para crear objetos.
+	\item \textbf{Patrones estructurales}: se utilizan para estructurar objetos.
+	\item \textbf{Patrones de comportamiento}: se utilizan para definir la interacción entre objetos.
+\end{itemize}
+\label{itm:categorías-patrones}
+
 En este proyecto se han utilizado varios patrones de diseño, para permitir una mejor escalabilidad, mantenibilidad y
-reutilización del código.\ A continuación se detallan los patrones utilizados y su justificación.
+reutilización del código.\ A continuación se detalla cierta información de los patrones utilizados:
+\begin{itemize}
+	\item Definición / categoría.
+	\item Explicación de cómo se ha implementado en el proyecto.
+	\item Diagrama UML\@.
+	\item Justificación de su uso en la aplicación.
+\end{itemize}
+\label{itm:uso-patrones}
 
 \subsect{Builder}{builder}
+Es un patrón de \bold{creación} que permite instanciar objetos complejos de una forma sencilla.\ Se ha creado una
+interfaz \mono{Builder} genérica para su reutilización en caso de ser necesaria.\ Esta interfaz define el
+método \mono{build()} que devolverá la instancia de un objeto con los datos establecidos previamente.
+
+\begin{center}
+	\begin{tikzpicture}
+		\umlinterface[x=8]{Builder}{}{
+			+ build(): Object
+		}{}
+		\umlclass[y=-5]{JsonMessageWrapper}{
+			-- rawPayload: String \\
+			-- parsedPayload: JsonObject
+		}{
+			...
+		}{}
+		\umlclass[y=-5,x=8]{BuilderImpl}{
+			-- headers: JsonObject \\
+			-- body: JsonObject
+		}{
+			+ build(): Object
+		}{}
+
+		\umlnest{JsonMessageWrapper}{BuilderImpl}
+		\umlimpl{BuilderImpl}{Builder}
+	\end{tikzpicture}
+\end{center}
+
+En este proyecto se ha usado para simplificar la creación de objetos de tipo \mono{JsonMessageWrapper}, por el
+momento.\ Esta clase es la encargada de encapsular los mensajes que se envían a través de la red en formato JSON\@.
 
 
 \subsect{Singleton}{singleton}
@@ -36,11 +80,7 @@ métodos HTTP, el modificador de acceso a la instancia es público.\ En otros ca
 obtener la instancia de la clase, como se muestra en el siguiente ejemplo:
 
 \begin{codeBlock}
-	\begin{minted}[
-		baselinestretch=1.1,
-		fontsize=\footnotesize,
-		tabsize=4,
-	]{java}
+	\begin{minted}[fontsize=\footnotesize,baselinestretch=1.1,tabsize=4]{java}
 public class Routes {
 	private Routes() {}
 	...
@@ -51,20 +91,20 @@ public class Routes {
 
 		public static final String USERS_URL = V_1 + "/users";
 
-		/* Creates an array containing the routes allowed by the low tier user */
+		/* Array containing the routes allowed by the low tier user */
 		public String[] lowTierRoutes() {...}
 
-		/* Creates an array containing the routes allowed by the medium tier user */
+		/* Array containing the routes allowed by the medium tier user */
 		public String[] mediumTierRoutes() {...}
 
-		/* Creates an array containing the routes allowed by the top tier user */
+		/* Array containing the routes allowed by the top tier user */
 		public String[] topTierRoutes() {...}
 	}
 	...
 }
 	\end{minted}
 
-	\caption{hola}
+	\caption{Rutas utilizadas para simplificar el proceso de autorización de los usuarios.}
 \end{codeBlock}
 
 \subsect{Strategy}{strategy}

@@ -10,13 +10,13 @@
 % Horizontal line at top and bottom of page
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0.2pt}
-\fancypagestyle{plain}{
+
+\fancypagestyle{plain}{ % Index and chapter pages
 	\fancyhf{} % Clear header and footer
 	\fancyhead[R]{\thepage}
-	% Remove horizontal lines
-	\renewcommand{\headrule}{}
-	\renewcommand{\footrule}{}
-} % Index pages
+	\fancyfoot[R]{Samuel}
+	\fancyfoot[L]{Eva María}
+}
 
 \newcommand{\chapterFont}[1]{{\bfseries{\fontsize{28pt}{0pt}\selectfont{#1}}}}
 \newcommand{\sectionFont}[1]{{\bfseries{\uppercase{\fontsize{14pt}{0pt}\selectfont{#1}}}}}

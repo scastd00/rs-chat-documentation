@@ -9,8 +9,10 @@
 \usepackage[spanish]{babel}
 % Set the font (output) encodings
 \usepackage[T1]{fontenc}
+% Set the input encoding
+\usepackage[utf8]{inputenc}
 \usepackage{extramarks} % Todo: check if this can be removed or not
-\usepackage[hidelinks]{hyperref} % Automatic links in TOC and hides red border
+%\usepackage[hidelinks]{hyperref} % Automatic links in TOC and hides red border
 \usepackage{amsmath}
 \usepackage{lipsum}
 \usepackage{caption}
@@ -21,8 +23,10 @@
 \usepackage{lastpage}
 \usepackage{setspace}
 \usepackage{color}
+\usepackage{lib/tikz-uml}
 \usepackage[explicit,compact]{titlesec}
 \usepackage[cache=false]{minted}
+
 \usemintedstyle{manni}
 
 % Set the margins to the pages
@@ -37,7 +41,7 @@
 \author{C.D. Samuel}
 \date{June 2023}
 
-\input{globalConfig.tex}
+\input{config.tex}
 \captionsetup{width=0.8\textwidth}
 
 % Document
@@ -65,12 +69,12 @@
 	\addcontentsline{toc}{chapter}{\listcodeBlockname}
 
 	\clearpage
-	\pagenumbering{arabic}
+	\pagenumbering{arabic} % Reset to normal numbers from here
 
 	\begin{spacing}{1.5}
 		\input{chapters/1introduccion.tex}
 		\input{chapters/2estadoDelArte.tex}
-		\input{chapters/3main.tex}
+		\input{chapters/3contenido.tex}
 		\input{chapters/4resultados.tex}
 		\input{chapters/5conclusiones.tex}
 	\end{spacing}

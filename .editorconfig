@@ -16,7 +16,7 @@ ij_visual_guides = 90
 ij_wrap_on_typing = false
 
 [{*.glstex,*.tex}]
-ij_visual_guides = none
+ij_visual_guides = 85,110
 ij_latex_keep_first_column_comment = true
 ij_latex_keep_indents_on_empty_lines = false
 ij_latex_line_comment_add_space = false
