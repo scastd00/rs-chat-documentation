@@ -12,8 +12,10 @@
 % Set the input encoding
 \usepackage[utf8]{inputenc}
 \usepackage{extramarks} % Todo: check if this can be removed or not
-%\usepackage[hidelinks]{hyperref} % Automatic links in TOC and hides red border
+\usepackage[hidelinks]{hyperref} % Automatic links in TOC and hides red border
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{csquotes}
 \usepackage{lipsum}
 \usepackage{caption}
 \usepackage{geometry}
@@ -42,7 +44,11 @@
 \date{June 2023}
 
 \input{config.tex}
-\captionsetup{width=0.8\textwidth}
+
+\captionsetup{width=0.8\textwidth, justification=centerlast}
+
+% Change font and line spacing of UML diagrams
+\tikzumlset{font=\fontsize{10pt}{8pt}\selectfont\ttfamily}
 
 % Document
 \begin{document}
@@ -67,6 +73,10 @@
 	\cleardoublepage
 	\listofcodeBlocks
 	\addcontentsline{toc}{chapter}{\listcodeBlockname}
+
+	\cleardoublepage
+	\listofumlDiagrams
+	\addcontentsline{toc}{chapter}{\listumlDiagramname}
 
 	\clearpage
 	\pagenumbering{arabic} % Reset to normal numbers from here

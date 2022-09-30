@@ -12,4 +12,4 @@ bibtex main
 pdflatex -shell-escape main.tex
 pdflatex -shell-escape main.tex
 
-mv main.{log,aux,bbl,blg,lof,lot,toc,cod,pdf} ../out
+mv main.{log,aux,bbl,blg,lof,lot,toc,cod,out,dia,pdf} ../out

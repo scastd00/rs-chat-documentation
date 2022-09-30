@@ -32,9 +32,11 @@
 \newcommand{\sect}[2]{\section{#1}\label{sec:#2}}
 \newcommand{\subsect}[2]{\subsection{#1}\label{subsec:#2}}
 
-\newcommand{\mono}[1]{\texttt{#1}}
-\newcommand{\bold}[1]{\textbf{#1}}
-\newcommand{\boldmono}[1]{\textbf{\texttt{#1}}}
+\newcommand{\monoFont}[1]{\texttt{#1}}
+\newcommand{\boldFont}[1]{\textbf{#1}}
+\newcommand{\boldmonoFont}[1]{\textbf{\texttt{#1}}}
 
 \captionsetup{width=0.8\textwidth}
-\input{utils/codeCaption.tex}
+\input{utils/customCaptions.tex}
+
+\newcommand{\str}[1]{\textquoteleft{#1}\textquoteright}

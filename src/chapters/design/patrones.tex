@@ -21,59 +21,96 @@ reutilización del código.\ A continuación se detalla cierta información de l
 \label{itm:uso-patrones}
 
 \subsect{Builder}{builder}
-Es un patrón de \bold{creación} que permite instanciar objetos complejos de una forma sencilla.\ Se ha creado una
-interfaz \mono{Builder} genérica para su reutilización en caso de ser necesaria.\ Esta interfaz define el
-método \mono{build()} que devolverá la instancia de un objeto con los datos establecidos previamente.
+Es un patrón de \boldFont{creación} que permite instanciar objetos complejos de una forma sencilla.\ Se ha creado una
+interfaz (\monoFont{Builder}) genérica para su reutilización en caso de ser necesaria para cualquier otra clase.
+Esta interfaz define el método \monoFont{build()} que devolverá la instancia de un objeto con los datos establecidos
+previamente.\ El diagrama UML del patrón implementado es el siguiente:
 
-\begin{center}
+\begin{umlDiagram}
+	\centering
 	\begin{tikzpicture}
-		\umlinterface[x=8]{Builder}{}{
+		\umlinterface[x=-8,y=2]{Builder}{}{
 			+ build(): Object
 		}{}
-		\umlclass[y=-5]{JsonMessageWrapper}{
+		\umlclass[y=-1]{JsonMessageWrapper}{
 			-- rawPayload: String \\
 			-- parsedPayload: JsonObject
 		}{
-			...
+			+ getRawPayload(): String \\
+			+ getParsedPayload(): JsonObject \\
+			+ headers(): JsonObject \\
+			+ body(): JsonObject \\
+			+ username(): String \\
+			+ chatId(): String \\
+			+ sessionId(): long \\
+			+ type(): String \\
+			+ date(): long \\
+			+ token(): String \\
+			+ content(): String \\
+			+ builder(): BuilderImpl
 		}{}
-		\umlclass[y=-5,x=8]{BuilderImpl}{
+		\umlclass[x=-8,y=-3]{BuilderImpl}{
 			-- headers: JsonObject \\
 			-- body: JsonObject
 		}{
-			+ build(): Object
+			+ username(String): BuilderImpl \\
+			+ chatId(String): BuilderImpl \\
+			+ sessionId(long): BuilderImpl \\
+			+ type(String): BuilderImpl \\
+			+ date(long): BuilderImpl \\
+			+ token(String): BuilderImpl \\
+			+ content(String): BuilderImpl
 		}{}
 
 		\umlnest{JsonMessageWrapper}{BuilderImpl}
 		\umlimpl{BuilderImpl}{Builder}
 	\end{tikzpicture}
-\end{center}
 
-En este proyecto se ha usado para simplificar la creación de objetos de tipo \mono{JsonMessageWrapper}, por el
+	\caption{Diagrama UML del patrón Builder empleado en la aplicación.}
+\end{umlDiagram}
+
+El patrón builder se ha usado en la aplicación para simplificar la creación de objetos de tipo
+\monoFont{JsonMessageWrapper}, por el
 momento.\ Esta clase es la encargada de encapsular los mensajes que se envían a través de la red en formato JSON\@.
 
 
 \subsect{Singleton}{singleton}
-Este patrón se utiliza para garantizar que una clase tenga una única instancia y proporciona un punto de acceso
-global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación, se utiliza en ciertas
-clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo \mono{/login} con el método POST).
-Estas últimas son clases internas de \mono{Routes.java} y los nombres dependen del método HTTP que se debe utilizar para
-realizar una petición a una ruta específica.
+También es un patrón de creación y se emplea para garantizar que una clase concreta tenga una única instancia y
+proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación, se utiliza en
+ciertas clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo \monoFont{/login} con el
+método POST).\ Estas últimas son clases internas de \monoFont{Routes.java} y los nombres dependen del método HTTP que
+se debe utilizar para realizar una petición a una ruta específica.
 
-\begin{table}[ht]
+\begin{table}[H]
 	\centering
 	\caption{Relación entre método HTTP y ruta.}
 	\label{tab:routes}
 	\begin{tabular}{|c|c|}
 		\hline
-		Método HTTP & Clase de la ruta   \\
+		Método HTTP & Clase de la ruta       \\
 		\hline
-		GET           & \mono{GetRoute}    \\
-		POST          & \mono{PostRoute}   \\
-		PUT           & \mono{PutRoute}    \\
-		DELETE        & \mono{DeleteRoute} \\
+		GET           & \monoFont{GetRoute}    \\
+		POST          & \monoFont{PostRoute}   \\
+		PUT           & \monoFont{PutRoute}    \\
+		DELETE        & \monoFont{DeleteRoute} \\
 		\hline
 	\end{tabular}
 \end{table}
+
+\begin{umlDiagram}
+	\centering
+	\begin{tikzpicture}
+		\umlclass{Routes}{
+			-- V\_1: String = \str{/api/v1} \\
+			+ ROOT\_URL: String = \str{/} \\
+			+ ALL\_ROUTES: String = \str{/**} \\
+			+ REFRESH\_TOKEN\_URL: String = \str{/api/v1/token/refresh} \\
+			+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}
+		}{}{}
+	\end{tikzpicture}
+
+	\caption{Diagrama UML del patrón Singleton empleado en la aplicación.}
+\end{umlDiagram}
 
 Se han utilizado diferentes formas de acceso a la instancia de las clases.\ En el caso de las clases que asocian rutas a
 métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método estático para
