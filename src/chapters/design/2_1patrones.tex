@@ -2,10 +2,11 @@
 
 \textit{Un patrón de diseño es una solución que se puede aplicar a diferentes contextos y que se
 puede reutilizar en diferentes proyectos.} \\
-Hay varias categorías de patrones de diseño, cada una con una finalidad diferente:
+Hay varias categorías de patrones de diseño, cada una con una finalidad diferente\cite{designPatternClassification}:
 \begin{itemize}
-	\item \textbf{Patrones de creación}: se utilizan para crear objetos.
-	\item \textbf{Patrones estructurales}: se utilizan para estructurar objetos.
+	\item \textbf{Patrones de creación}: se utilizan para crear objetos de una forma flexible y reutilizando código
+	existente.
+	\item \textbf{Patrones estructurales}: se utilizan para convertir clases y objetos en estructuras más complejas.
 	\item \textbf{Patrones de comportamiento}: se utilizan para definir la interacción entre objetos.
 \end{itemize}
 \label{itm:categorías-patrones}
@@ -66,7 +67,7 @@ previamente.\ El diagrama UML del patrón implementado es el siguiente:
 		\umlimpl{BuilderImpl}{Builder}
 	\end{tikzpicture}
 
-	\caption{Diagrama UML del patrón Builder empleado en la aplicación.}
+	\caption{Patrón Builder empleado en la aplicación.}
 \end{umlDiagram}
 
 El patrón builder se ha usado en la aplicación para simplificar la creación de objetos de tipo
@@ -75,7 +76,8 @@ momento.\ Esta clase es la encargada de encapsular los mensajes que se envían a
 
 
 \subsect{Singleton}{singleton}
-También es un patrón de creación y se emplea para garantizar que una clase concreta tenga una única instancia y
+También es un patrón de \boldFont{creación} y se emplea para garantizar que una clase concreta tenga una única
+instancia y
 proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación, se utiliza en
 ciertas clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo \monoFont{/login} con el
 método POST).\ Estas últimas son clases internas de \monoFont{Routes.java} y los nombres dependen del método HTTP que
@@ -99,17 +101,53 @@ se debe utilizar para realizar una petición a una ruta específica.
 
 \begin{umlDiagram}
 	\centering
-	\begin{tikzpicture}
-		\umlclass{Routes}{
-			-- V\_1: String = \str{/api/v1} \\
-			+ ROOT\_URL: String = \str{/} \\
-			+ ALL\_ROUTES: String = \str{/**} \\
-			+ REFRESH\_TOKEN\_URL: String = \str{/api/v1/token/refresh} \\
-			+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}
-		}{}{}
-	\end{tikzpicture}
+	\scalebox{0.8} {
+		\begin{tikzpicture}
+			\umlclass{Routes}{
+				\umlstatic{-- V\_1: String = \str{/api/v1}} \\
+				\umlstatic{+ ROOT\_URL: String = \str{/}} \\
+				\umlstatic{+ ALL\_ROUTES: String = \str{/**}} \\
+				\umlstatic{+ REFRESH\_TOKEN\_URL: String = \str{/api/v1/token/refresh}} \\
+				\umlstatic{+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}}
+			}{}{}
 
-	\caption{Diagrama UML del patrón Singleton empleado en la aplicación.}
+			\umlclass[x=-4,y=5]{GetRoute}{
+				\umlstatic{+ INSTANCE: GetRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+			\umlclass[x=4,y=5]{PostRoute}{
+				\umlstatic{+ INSTANCE: PostRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+			\umlclass[x=-4,y=-5]{PutRoute}{
+				\umlstatic{+ INSTANCE: PutRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+			\umlclass[x=4,y=-5]{DeleteRoute}{
+				\umlstatic{+ INSTANCE: DeleteRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+
+			\umlnest{Routes}{GetRoute}
+			\umlnest{Routes}{PostRoute}
+			\umlnest{Routes}{PutRoute}
+			\umlnest{Routes}{DeleteRoute}
+		\end{tikzpicture}
+	}
+
+	\caption{Patrón Singleton empleado en la aplicación.}
 \end{umlDiagram}
 
 Se han utilizado diferentes formas de acceso a la instancia de las clases.\ En el caso de las clases que asocian rutas a
@@ -144,5 +182,58 @@ public class Routes {
 	\caption{Rutas utilizadas para simplificar el proceso de autorización de los usuarios.}
 \end{codeBlock}
 
+{\Huge Todo: Quitar el código y dejar solo el diagrama}
+
 \subsect{Strategy}{strategy}
-\lipsum
+Este patrón de \boldFont{comportamiento} se utiliza para encapsular un algoritmo dentro de una clase, de forma que
+pueda ser intercambiado por otro algoritmo en tiempo de ejecución.\ En la aplicación, se emplea para encapsular el
+proceso de manejo de los mensajes que se envían entre los usuarios.\ Existen varias clases que se encargan de
+realizarlo, por lo que todas ellas implementan la interfaz \monoFont{MessageStrategy}, que define el método
+\monoFont{handle(...)}, encargado de realizar el procesamiento del mensaje y recibe 3 parámetros:
+
+\begin{itemize}
+	\item El mensaje que se debe manejar.
+	\item La lista con todos los chats para determinar al que se debe enviar el mensaje.
+	\item Otros datos que pueden ser necesarios para el manejo del mensaje.\ Dependiendo de la clase, este parámetro
+	puede contener más o menos datos.
+\end{itemize}
+\label{itm:parametershandlestrategy}
+
+Las clases que implementan esta interfaz son las siguientes:
+
+\begin{itemize}
+	\item \monoFont{ActiveUsersStrategy}
+	\item \monoFont{ErrorMessageStrategy}
+	\item \monoFont{GenericMessageStrategy} - De la cual heredan:
+	\begin{itemize}
+		\item \monoFont{AudioMessageStrategy}
+		\item \monoFont{ImageMessageStrategy}
+		\item \monoFont{TextMessageStrategy}
+		\item \monoFont{VideoMessageStrategy}
+	\end{itemize}
+	\item \monoFont{GetHistoryStrategy}
+	\item \monoFont{PingStrategy}
+	\item \monoFont{UserJoinedStrategy}
+	\item \monoFont{UserLeftStrategy}
+\end{itemize}
+\label{itm:strategies}
+
+A continuación se muestra el diagrama UML de la interfaz \monoFont{MessageStrategy}
+
+\begin{umlDiagram}
+	\centering
+	\begin{tikzpicture}
+		\umlinterface[x=0,y=0]{MessageStrategy}{
+			+ handle(JsonMessageWrapper, WebSocketChatMap, Map<String, Object>): void
+		}{}
+	\end{tikzpicture}
+
+	\caption{Interfaz MessageStrategy.}
+\end{umlDiagram}
+
+Este patrón se ha utilizado para simplificar el manejo de los mensajes recibidos en el servidor y para que sea más
+fácil de extender.\ En el caso de que se desee agregar un nuevo tipo de mensaje, se debe crear una nueva clase que
+implemente la interfaz \monoFont{MessageStrategy} y agregarla a la lista de estrategias que se encuentran en la
+clase \monoFont{WebSocketHandler}.\ Esta clase es la encargada de determinar qué estrategia se debe utilizar para
+manejar el mensaje.\ Para esto, se utiliza el método \monoFont{decideStrategy(receivedMessageType: WSMessage)} que
+recibe como parámetro el tipo mensaje y devuelve la estrategia que se debe utilizar para manejar el mensaje.
