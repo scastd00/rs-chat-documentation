@@ -199,31 +199,64 @@ realizarlo, por lo que todas ellas implementan la interfaz \monoFont{MessageStra
 \end{itemize}
 \label{itm:parametershandlestrategy}
 
-Las clases que implementan esta interfaz son las siguientes:
+La relación entre el tipo de mensaje y las clases encargadas de procesarlo, que implementan esta interfaz, son las
+siguientes:
 
-\begin{itemize}
-	\item \monoFont{ActiveUsersStrategy}
-	\item \monoFont{ErrorMessageStrategy}
-	\item \monoFont{GenericMessageStrategy} - De la cual heredan:
-	\begin{itemize}
-		\item \monoFont{AudioMessageStrategy}
-		\item \monoFont{ImageMessageStrategy}
-		\item \monoFont{TextMessageStrategy}
-		\item \monoFont{VideoMessageStrategy}
-	\end{itemize}
-	\item \monoFont{GetHistoryStrategy}
-	\item \monoFont{PingStrategy}
-	\item \monoFont{UserJoinedStrategy}
-	\item \monoFont{UserLeftStrategy}
-\end{itemize}
-\label{itm:strategies}
+%\begin{itemize}
+%	\item \monoFont{ActiveUsersStrategy}
+%	\item \monoFont{ErrorMessageStrategy}
+%	\item \monoFont{GenericMessageStrategy} - De la cual heredan:
+%	\begin{itemize}
+%		\item \monoFont{AudioMessageStrategy}
+%		\item \monoFont{ImageMessageStrategy}
+%		\item \monoFont{TextMessageStrategy}
+%		\item \monoFont{VideoMessageStrategy}
+%	\end{itemize}
+%	\item \monoFont{GetHistoryStrategy}
+%	\item \monoFont{PingStrategy}
+%	\item \monoFont{UserJoinedStrategy}
+%	\item \monoFont{UserLeftStrategy}
+%\end{itemize}
+%\label{itm:strategies}
 
-A continuación se muestra el diagrama UML de la interfaz \monoFont{MessageStrategy}
+\begin{table}[H]
+	\centering
+	\caption{Relación Mensaje - Estrategia}
+	\label{tab:messageStrategyRelationship}
+
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Mensaje}              & \textbf{Clase de la estrategia} \\
+		\hline
+		\texttt{USER\_JOINED}           & \monoFont{UserJoinedStrategy}   \\
+		\hline
+		\texttt{USER\_LEFT}             & \monoFont{UserLeftStrategy}     \\
+		\hline
+		\texttt{TEXT\_MESSAGE}          & \monoFont{TextMessageStrategy}  \\
+		\hline
+		\texttt{IMAGE\_MESSAGE}         & \monoFont{ImageMessageStrategy} \\
+		\hline
+		\texttt{AUDIO\_MESSAGE}         & \monoFont{AudioMessageStrategy} \\
+		\hline
+		\texttt{VIDEO\_MESSAGE}         & \monoFont{VideoMessageStrategy} \\
+		\hline
+		\texttt{ACTIVE\_USERS\_MESSAGE} & \monoFont{ActiveUsersStrategy}  \\
+		\hline
+		\texttt{GET\_HISTORY\_MESSAGE}  & \monoFont{GetHistoryStrategy}   \\
+		\hline
+		\texttt{ERROR\_MESSAGE}         & \monoFont{ErrorMessageStrategy} \\
+		\hline
+		\texttt{PING\_MESSAGE}          & \monoFont{PingStrategy}         \\
+		\hline
+	\end{tabular}
+\end{table}
+
+A continuación se muestra el diagrama UML de la interfaz \monoFont{MessageStrategy}:
 
 \begin{umlDiagram}
 	\centering
 	\begin{tikzpicture}
-		\umlinterface[x=0,y=0]{MessageStrategy}{
+		\umlinterface[x=0,y=0]{MessageStrategy}{}{
 			+ handle(JsonMessageWrapper, WebSocketChatMap, Map<String, Object>): void
 		}{}
 	\end{tikzpicture}

@@ -5,7 +5,9 @@
 \fancyhead[L]{\rightmark}
 \fancyfoot{} % Clear all footer fields
 \fancyfoot[R]{Samuel}
-\fancyfoot[L]{Eva María}
+\fancyfoot[L]{
+	\raisebox{-0.4\height}{\includegraphics[scale=0.4]{imageULE}}
+}
 
 % Horizontal line at top and bottom of page
 \renewcommand{\headrulewidth}{0.5pt}
@@ -14,8 +16,7 @@
 \fancypagestyle{plain}{ % Index and chapter pages
 	\fancyhf{} % Clear header and footer
 	\fancyhead[R]{\thepage}
-	\fancyfoot[R]{Samuel}
-	\fancyfoot[L]{Eva María}
+	\renewcommand{\footrulewidth}{0pt}
 }
 
 \newcommand{\chapterFont}[1]{{\bfseries{\fontsize{28pt}{0pt}\selectfont{#1}}}}
@@ -40,3 +41,8 @@
 \input{utils/customCaptions.tex}
 
 \newcommand{\str}[1]{``{#1}''}
+\newcommand{\quoted}[1]{\textquoteleft#1\textquoteright}
+
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}
+\renewcommand{\labelenumiv}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}.}
