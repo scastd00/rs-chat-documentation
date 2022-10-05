@@ -31,6 +31,9 @@
 
 \usemintedstyle{manni}
 
+\usepackage[backend=biber]{biblatex}
+\addbibresource{bibliography.bib}
+
 % Todo: Delete when making the final document
 %\pagecolor{white!55!black}
 
@@ -94,6 +97,6 @@
 
 	\cleardoublepage
 	\addcontentsline{toc}{chapter}{Bibliografía}
-	\bibliography{bibliography}
-	\bibliographystyle{ieeetr}
+
+	\printbibliography
 \end{document}

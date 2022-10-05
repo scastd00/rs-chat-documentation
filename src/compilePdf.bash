@@ -4,7 +4,7 @@
 pdflatex -shell-escape main.tex
 
 # Compile the bibliography
-bibtex main
+biber main
 
 # Compile the document again to include the bibliography references correctly
 # If the document is not compiled twice '?' characters are shown in the cites instead of the number of the reference
@@ -12,4 +12,4 @@ bibtex main
 pdflatex -shell-escape main.tex
 pdflatex -shell-escape main.tex
 
-mv main.{log,aux,bbl,blg,lof,lot,toc,cod,out,dia,pdf} ../out
+mv main.{log,aux,bbl,blg,lof,lot,toc,cod,out,dia,pdf,bcf,run.xml} ../out
