@@ -16,6 +16,7 @@ rs-chat-documentation.iml
 *.cb2
 .*.lb
 *.dia
+*.ist
 
 ## Intermediate documents:
 *.dvi

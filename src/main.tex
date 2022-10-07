@@ -50,6 +50,13 @@
 \date{June 2023}
 
 \input{config.tex}
+%\input{glosario.tex}
+
+\usepackage[automake]{glossaries}
+
+\makeglossaries
+\loadglsentries{glosario.tex}
+\glsaddall
 
 \captionsetup{width=0.8\textwidth, justification=centerlast}
 
@@ -83,6 +90,10 @@
 	\cleardoublepage
 	\listofumlDiagrams
 	\addcontentsline{toc}{chapter}{\listumlDiagramname}
+
+	\clearpage
+	\printglossary[nonumberlist]
+	\addcontentsline{toc}{chapter}{Glosario}
 
 	\clearpage
 	\pagenumbering{arabic} % Reset to normal numbers from here
