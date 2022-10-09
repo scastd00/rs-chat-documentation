@@ -4,20 +4,20 @@ Cuando un usuario accede a un chat de la aplicación, se inicia una conexión en
 del protocolo de comunicación bidireccional \boldFont{WebSocket}~\cite{RFCWebSocket}.\ Esta conexión se mantiene
 abierta mientras el
 usuario esté en el chat, y se cierra cuando el usuario abandona el chat.\ La secuencia de eventos que ocurren durante
-la conexión de un usuario al chat es la siguiente
+la conexión de un usuario al chat es la siguiente, comenzando en el frontend y terminando en el backend:
 
 \subsect{Frontend}{frontend}
 
 \begin{enumerate}
 	\item Se realiza una solicitud de conexión WebSocket al servidor.
 	\item Se realiza una petición HTTP para comprobar que el usuario puede acceder al chat.\ Esto se realiza para
-	que, en caso de que el usuario introduzca la URL de un chat al que no tiene acceso, se le redirija a la página
-	de inicio de la aplicación.
+	que, en caso de que el usuario introduzca la URL de un chat al que no tiene acceso de forma manual, se le redirija
+	a la página de inicio de la aplicación.
 	\item Si se confirma que el usuario \boldFont{puede acceder} al chat:
 	\begin{enumerate}
 		\item Se establece la conexión WebSocket.
 		\item Se envía un mensaje de tipo \monoFont{USER\_JOINED} al servidor.
-		\item Se consultan los últimos 65 mensajes del historial de mensajes del chat con el mensaje de tipo
+		\item Se consultan los últimos mensajes del historial de mensajes del chat con el mensaje de tipo
 		\monoFont{GET\_HISTORY\_MESSAGE}.
 		\item Se realiza una petición de la lista de usuarios activos con un mensaje de tipo
 		\monoFont{ACTIVE\_USERS\_MESSAGE}.
@@ -26,7 +26,7 @@ la conexión de un usuario al chat es la siguiente
 	\end{enumerate}
 	\item Si el usuario \boldFont{no puede acceder} al chat:
 	\begin{enumerate}
-		\item Se cierra la conexión WebSocket.
+		\item Se cierra la conexión WebSocket, en caso de llegarse a abrir.
 		\item Se redirige al usuario a la página principal.
 	\end{enumerate}
 \end{enumerate}

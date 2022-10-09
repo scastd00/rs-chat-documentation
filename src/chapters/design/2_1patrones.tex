@@ -12,7 +12,7 @@ Hay varias categorías de patrones de diseño, cada una con una finalidad difere
 \label{itm:categorías-patrones}
 
 En este proyecto se han utilizado varios patrones de diseño, para permitir una mejor escalabilidad, mantenibilidad y
-reutilización del código.\ A continuación se detalla cierta información de los patrones utilizados:
+reutilización del código.\ A continuación se detalla la siguiente información de los patrones utilizados:
 \begin{itemize}
 	\item Definición / categoría.
 	\item Explicación de cómo se ha implementado en el proyecto.
@@ -152,37 +152,7 @@ se debe utilizar para realizar una petición a una ruta específica.
 
 Se han utilizado diferentes formas de acceso a la instancia de las clases.\ En el caso de las clases que asocian rutas a
 métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método estático para
-obtener la instancia de la clase, como se muestra en el siguiente ejemplo:
-
-\begin{codeBlock}
-	\begin{minted}[fontsize=\footnotesize,baselinestretch=1.1,tabsize=4]{java}
-public class Routes {
-	private Routes() {}
-	...
-	public static class GetRoute {
-		public static final GetRoute INSTANCE = new GetRoute();
-
-		private GetRoute() {}
-
-		public static final String USERS_URL = V_1 + "/users";
-
-		/* Array containing the routes allowed by the low tier user */
-		public String[] lowTierRoutes() {...}
-
-		/* Array containing the routes allowed by the medium tier user */
-		public String[] mediumTierRoutes() {...}
-
-		/* Array containing the routes allowed by the top tier user */
-		public String[] topTierRoutes() {...}
-	}
-	...
-}
-	\end{minted}
-
-	\caption{Rutas utilizadas para simplificar el proceso de autorización de los usuarios.}
-\end{codeBlock}
-
-{\Huge Todo: Quitar el código y dejar solo el diagrama}
+obtener la instancia de la clase.
 
 \subsect{Strategy}{strategy}
 Este patrón de \boldFont{comportamiento} se utiliza para encapsular un algoritmo dentro de una clase, de forma que
@@ -201,23 +171,6 @@ realizarlo, por lo que todas ellas implementan la interfaz \monoFont{MessageStra
 
 La relación entre el tipo de mensaje y las clases encargadas de procesarlo, que implementan esta interfaz, son las
 siguientes:
-
-%\begin{itemize}
-%	\item \monoFont{ActiveUsersStrategy}
-%	\item \monoFont{ErrorMessageStrategy}
-%	\item \monoFont{GenericMessageStrategy} - De la cual heredan:
-%	\begin{itemize}
-%		\item \monoFont{AudioMessageStrategy}
-%		\item \monoFont{ImageMessageStrategy}
-%		\item \monoFont{TextMessageStrategy}
-%		\item \monoFont{VideoMessageStrategy}
-%	\end{itemize}
-%	\item \monoFont{GetHistoryStrategy}
-%	\item \monoFont{PingStrategy}
-%	\item \monoFont{UserJoinedStrategy}
-%	\item \monoFont{UserLeftStrategy}
-%\end{itemize}
-%\label{itm:strategies}
 
 \begin{table}[H]
 	\centering
