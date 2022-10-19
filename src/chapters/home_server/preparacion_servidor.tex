@@ -1,0 +1,48 @@
+\sect{Preparación del servidor}{server_preparation}
+Cuando se ha recibido el ordenador, se han seguido una serie de pasos para configurarlo de la manera más segura posible,
+ya que se va a utilizar para alojar el backend una aplicación web.\ Estos pasos se describen a continuación.
+
+\subsect{Instalación del sistema operativo}{os_installation}
+El sistema operativo que se ha instalado en el ordenador es \boldFont{Ubuntu Server 20.04 LTS}.\ Se ha escogido esta
+distribución de Linux debido a que es una de las más populares y que tiene una gran comunidad de usuarios, lo que
+hace que sea fácil encontrar información sobre cómo configurar el sistema.\ Además, se ha elegido la versión LTS para
+tener soporte durante un periodo de tiempo más largo.\ Se han instalado todos los paquetes necesarios para
+establecer conexiones con este ordenador de forma remota, para administrarlo de una manera más cómoda.\ Estos paquetes
+son los siguientes:
+\begin{itemize}
+	% Todo: lo genera Copilot, poner bibliografía de algo y corregir
+	\item \boldFont{OpenSSH}: \boldFont{ssh} es un protocolo que permite establecer conexiones seguras entre dos
+	ordenadores.\ Se ha
+	configurado esta herramienta para que se pueda acceder a él mediante un par de claves (pública/privada), de forma
+	que no sea
+	necesario introducir una contraseña cada vez que se quiera acceder al ordenador.
+%	\item \boldFont{ufw}: es un cortafuegos que permite configurar las reglas de entrada y salida de paquetes.
+	\item \boldFont{fail2ban}: es un servicio que permite bloquear las conexiones a un ordenador cuando se detecta un
+	ataque de fuerza bruta a la IP de este servidor.
+%	\item \boldFont{unattended-upgrades}: es un servicio que permite actualizar automáticamente el sistema operativo
+%	cuando se detectan actualizaciones de seguridad.
+	\item \boldFont{certbot}: es un servicio que permite obtener certificados SSL y configurarlos automáticamente en el
+	servidor web.
+\end{itemize}
+\label{itm:os_packages}
+
+\subsect{Configuración de la red}{network_configuration}
+El ordenador se ha conectado a la red mediante un cable Ethernet.\ En la configuración del router, se ha asignado
+una dirección IP estática (dentro de la red local) al
+ordenador para que siempre tenga la misma dirección IP.\ Se ha contactado con el proveedor de Internet para consultar
+si se puede obtener una dirección IP estática para el ordenador, pero no se ha podido conseguir.\ Esto no es un
+problema ya que existe un servicio llamado \boldFont{DuckDNS} que permite asociar
+una dirección IP de un ordenador a un dominio.\ Para configurar este servicio, se ha seguido la guía de
+instalación que se encuentra en la página web de \boldFont{DuckDNS}. % Todo: insertar enlace a la guía
+Este servicio requiere de una tarea CRON para que se actualice la dirección IP cada 5 minutos.\ Esto se ha realizado con
+un pequeño script en Bash, que envía al servidor de \boldFont{DuckDNS} la dirección IP pública del ordenador.
+
+\subsect{Configuración del firewall}{firewall_configuration}
+
+\subsect{Instalación de la aplicación}{app_installation}
+
+\subsect{Configuración de la aplicación}{app_configuration}
+
+\subsect{Configuración de la base de datos}{db_configuration}
+
+\subsect{Configuración de la aplicación web}{webapp_configuration}
