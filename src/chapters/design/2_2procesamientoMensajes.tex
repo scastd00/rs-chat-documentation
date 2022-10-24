@@ -1,3 +1,20 @@
 \sect{Procesamiento de los mensajes}{procesamiento-mensajes}
 
-Como hemos visto en la sección anterior, los mensajes que se reciben en el servidor pueden ser de diferentes tipos.
+Como hemos visto en la sección anterior, los mensajes que se reciben en el servidor pueden ser de diferentes tipos,
+cambiando la forma en que se procesan.\ A continuación se muestra una lista con las acciones que se realizan para
+cada tipo de mensaje que se trata:
+
+\begin{itemize}
+	\item \boldFont{Text, Image, Video y Audio}: se envían al resto de usuarios del chat en el mismo formato en que llegaron al
+	servidor.\ Estos cuatro tipos de mensaje contienen texto exclusivamente, siendo un mensaje o el enlace a un
+	archivo almacenado en el bucket de S3.
+	\item \boldFont{ActiveUsers}: se envía solo al cliente que lo ha solicitado, y contiene una lista con los usuarios que están
+	conectados en ese momento al chat, ordenados alfabéticamente.
+	\item \boldFont{GetHistory}: se envía al usuario que lo solicita, y contiene una lista con los últimos 65 mensajes que se han
+	enviado al chat.\ Se realiza una lectura del fichero de texto que contiene el historial de mensajes (almacenado
+	en disco) y un filtrado de los mensajes de actividad (los 2 siguientes) del solicitante, ya que no son relevantes.
+	\item \boldFont{UserJoined y UserLeft}: se notifica a las personas conectadas el nombre del usuario que se ha unido o ha
+	salido del chat, % todo (implementar): y se envía a todos los usuarios la lista de usuarios conectados actualizada.
+	\item \boldFont{Ping}: se envía un mensaje con un breve texto.\ Se utiliza exclusivamente para mantener la conexión WebSocket
+	abierta.
+\end{itemize}

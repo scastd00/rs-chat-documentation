@@ -4,18 +4,21 @@ ya que se va a utilizar para alojar el backend una aplicación web.\ Estos pasos
 
 \subsect{Instalación del sistema operativo}{os_installation}
 El sistema operativo que se ha instalado en el ordenador es \boldFont{Ubuntu Server 20.04 LTS}.\ Se ha escogido esta
-distribución de Linux debido a que es una de las más populares y que tiene una gran comunidad de usuarios, lo que
+distribución de Linux debido a que es una de las más populares y con una gran comunidad de usuarios, lo que
 hace que sea fácil encontrar información sobre cómo configurar el sistema.\ Además, se ha elegido la versión LTS para
-tener soporte durante un periodo de tiempo más largo.\ Se han instalado todos los paquetes necesarios para
-establecer conexiones con este ordenador de forma remota, para administrarlo de una manera más cómoda.\ Estos paquetes
-son los siguientes:
+tener soporte durante un periodo de tiempo más largo (en el caso de esta versión, hasta 2025 y con actualizaciones de
+seguridad hasta 2030).\ Se han instalado todos los paquetes necesarios para administrarlo de una manera más cómoda
+y para garantizar la seguridad e integridad del sistema.\ Algunos de estos paquetes son los siguientes:
 \begin{itemize}
 	% Todo: lo genera Copilot, poner bibliografía de algo y corregir
-	\item \boldFont{OpenSSH}: \boldFont{ssh} es un protocolo que permite establecer conexiones seguras entre dos
-	ordenadores.\ Se ha
-	configurado esta herramienta para que se pueda acceder a él mediante un par de claves (pública/privada), de forma
-	que no sea
-	necesario introducir una contraseña cada vez que se quiera acceder al ordenador.
+	\item \boldFont{OpenSSH}: el protocolo \boldFont{ssh} permite establecer conexiones seguras entre dos
+	ordenadores.\ Se ha configurado esta herramienta para que se pueda acceder a él mediante un par de claves
+	(pública/privada), eliminando la posibilidad de acceder mediante una contraseña.\ Esto último se realiza para
+	evitar que se pueda establecer una conexión con él de forma no autorizada.\ De esta manera, los únicos usuarios
+	que pueden acceder al servidor son aquellos que tienen la clave privada asociada a la clave pública registrada en
+	el servidor.\ Para generar estas claves, se ha utilizado el comando \boldFont{ssh-keygen} (en el cliente) y se ha
+	guardado la clave pública en el archivo \boldFont{authorized\_keys} del servidor.
+
 %	\item \boldFont{ufw}: es un cortafuegos que permite configurar las reglas de entrada y salida de paquetes.
 %	\item \boldFont{unattended-upgrades}: es un servicio que permite actualizar automáticamente el sistema operativo
 %	cuando se detectan actualizaciones de seguridad.
@@ -78,7 +81,8 @@ permisos de lectura y escritura sobre la base de datos, por lo que no es necesar
 aplicación.
 
 \subsect{Seguridad del servidor}{server_security}
-Con el objetivo de prevenir ataques a los dispositivos de la red local, se han configurado diferentes medidas de seguridad en el
+Con el objetivo de prevenir ataques a los dispositivos de la red local, se han configurado diferentes medidas de
+seguridad en el
 ordenador y el router.\ Estas medidas son las siguientes:
 \begin{itemize}
 	\item \boldFont{fail2ban}: es un servicio que permite bloquear las conexiones a un ordenador cuando se detecta un
@@ -88,3 +92,5 @@ ordenador y el router.\ Estas medidas son las siguientes:
 	\item En el router, solo se ha habilitado la redirección de puertos a los que se necesitan para ejecutar la
 	aplicación.
 \end{itemize}
+
+% Todo: configurar Nagios, Zabbix, Snort en el servidor
