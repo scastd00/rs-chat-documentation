@@ -1,0 +1,17 @@
+https://stackify.com/logging-logback/
+https://linuxhint.com/change-ban-time-fail2ban/
+https://articles.wesionary.team/why-useeffect-is-a-bad-place-to-make-api-calls-98a606735c1c
+https://levelup.gitconnected.com/displaying-pdf-in-react-app-6e9d1fffa1a9
+https://serverspace.io/es/support/help/install-configure-fail2ban-ubuntu-20-04/
+https://www.tutorialspoint.com/spring_boot/spring_boot_enabling_https.htm
+https://www.baeldung.com/java-trustanchors-parameter-must-be-non-empty
+https://www.thomasvitale.com/https-spring-boot-ssl-certificate/
+https://www.baeldung.com/spring-boot-https-self-signed-certificate
+https://superuser.com/questions/141044/sharing-the-same-ssh-agent-among-multiple-login-sessions?newreg=f97b4f582bb24078a3f26ab4d435f98f
+https://www.tecmint.com/create-ssh-tunneling-port-forwarding-in-linux/
+https://stackoverflow.com/questions/47686345/playing-sound-in-react-js
+https://grafana.com/blog/2022/04/26/set-up-and-observe-a-spring-boot-application-with-grafana-cloud-prometheus-and-opentelemetry/
+https://legacy.docs.greatexpectations.io/en/latest/guides/how_to_guides/configuring_data_contexts/how_to_use_a_yaml_file_or_environment_variables_to_populate_credentials.html
+https://vsupalov.com/docker-arg-env-variable-guide/
+
+Preguntas guardadas en stackoverflow y mendeley
