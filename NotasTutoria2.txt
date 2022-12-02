@@ -1,0 +1,27 @@
+- En planificación de tareas, incluir lo de Scrum. Definición (del marco de trabajo, como introducción)
+- Historias de usuario.
+- Iteraciones.
+(dejar para 4º)
+
+Alternativas a Heroku (o en Estado del arte o en Tecnologías usadas, en implementación)
+
+Ir añadiendo apartado pruebas
+- Front y Back. (en implementación)
+
+Estructura del trabajo/documento en Introducción
+	- Contar lo que hago en cada apartado/capítulo
+
+2.1 min 18:00 approx.
+2.2 min 20:00 approx.
+
+Hacer diagrama de Gantt
+
+Páginas de estimación de riesgos
+
+Mapa de navegación
+
+Perfiles (alumno, profesor, administrador) lo que puede hacer cada uno.
+
+Identificados los requisitos no funcionales. (Si quiero los funcionales, bien) y casos de uso.
+
+Apartado de Seguridad
