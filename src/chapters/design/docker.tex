@@ -1,0 +1,27 @@
+% Loki docker plugin causes all the containers to be unable to restart or kill. The alternative is to use the
+% json-file driver with custom options. The json-file driver is the default driver for Docker.
+% https://stackoverflow.com/questions/38567355/docker-compose-global-level-logging
+% https://howchoo.com/devops/how-to-add-a-health-check-to-your-docker-container
+
+\sect{Docker}{docker}
+Se ha utilizado Docker para la creación de contenedores que ejecutan los servicios de la aplicación.\ Para ello, se ha
+utilizado la herramienta \monoFont{docker-compose}, que permite definir y ejecutar aplicaciones Docker de forma
+sencilla.\ Para la configuración de los contenedores, se ha utilizado el fichero \monoFont{docker-compose.yml} que se
+encuentra en la raíz del proyecto.\ Este fichero define los servicios que se ejecutarán en los contenedores, así como
+las dependencias entre ellos.
+
+Para la persistencia de los datos y configuraciones, se han empleado \boldFont{volúmenes}.\ Los volúmenes son
+directorios que se crean en el sistema de archivos del host, y que se montan en los contenedores.\ De esta forma, los
+datos no se pierden al parar ni eliminar el contenedor.\ Los volúmenes se definen en el fichero
+\monoFont{docker-compose.yml} mediante la opción \monoFont{volumes} y son los siguientes:
+
+\begin{itemize}
+	\item \monoFont{rschat-db}: Directorio que contiene los datos de la base de datos.
+	\item \monoFont{rschat-logs}: Directorio que contiene los ficheros de log de la aplicación.
+	\item \monoFont{grafana-storage}: Directorio que contiene la configuración de Grafana.
+\end{itemize}
+
+Además, se ha definido un volumen para la base de datos, que se encuentra en el
+directorio \monoFont{db}.\ Este volumen se usa para almacenar los datos de la base de datos, de manera que se
+puedan recuperar en caso de que se elimine el contenedor.
+

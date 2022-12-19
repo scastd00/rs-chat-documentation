@@ -50,12 +50,12 @@
 \author{C.D. Samuel}
 \date{June 2023}
 
-\input{config.tex}
+\input{config}
 
 \usepackage[automake]{glossaries}
 
 \makeglossaries
-\loadglsentries{glosario.tex}
+\loadglsentries{glosario}
 \glsaddall
 
 \captionsetup{width=0.8\textwidth, justification=centerlast}
@@ -65,9 +65,9 @@
 
 % Document
 \begin{document}
-	\input{cover.tex}
+	\input{cover}
 	\clearpage
-	\input{info.tex}
+	\input{info}
 	\clearpage
 
 	\renewcommand{\contentsname}{Índice de contenidos}
@@ -99,12 +99,12 @@
 	\pagenumbering{arabic} % Reset to normal numbers from here
 
 	\begin{spacing}{1.5}
-		\input{chapters/introduccion.tex}
-		\input{chapters/estadoDelArte.tex}
-		\input{chapters/contenido.tex}
-		\input{chapters/resultados.tex}
-		\input{chapters/conclusiones.tex}
-		\input{chapters/anexos.tex}
+		\input{chapters/introduccion}
+		\input{chapters/estadoDelArte}
+		\input{chapters/contenido}
+		\input{chapters/resultados}
+		\input{chapters/conclusiones}
+		\input{chapters/anexos}
 	\end{spacing}
 
 	\cleardoublepage

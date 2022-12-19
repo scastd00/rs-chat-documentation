@@ -1,0 +1,30 @@
+\sect{Seguridad}{seguridad}
+
+Para la prevención de ciberataques al servidor por parte de usuarios malintencionados, se han
+establecido las medidas de seguridad que se detallan a continuación:
+
+\begin{itemize}
+	\item \textbf{Cifrado de la comunicación entre el servidor y los clientes}: Para evitar que los datos de los
+	usuarios puedan ser interceptados por terceros, se ha establecido un cifrado de las comunicaciones.\ Para ello, se
+	ha empleado el protocolo TLS, que permite cifrar la comunicación utilizando el certificado SSL que proporciona
+	Let's Encrypt.\ Este certificado se ha generado automáticamente mediante su servicio gratuito de certificados y,
+	utilizando la aplicación \texttt{Certbot}, se renueva automáticamente cada 90 días.\ El certificado se
+	almacena en el servidor en el directorio \texttt{/etc/letsencrypt/live/}.
+
+	\item \textbf{Configuración del servidor ssh}: Para evitar que los usuarios puedan acceder al servidor mediante
+	ssh, se ha configurado para que únicamente se pueda acceder mediante claves ssh (no permitiendo usuario y
+	contraseña).\ Estas claves se obtienen mediante el comando \texttt{ssh-keygen}, que genera un par de claves
+	(pública y privada), y se ha copiado la clave pública del cliente en el fichero
+	\texttt{/home/user/.ssh/authorized\_keys} del servidor.\ De esta forma, únicamente se puede acceder al servidor
+	mediante la
+	clave privada del cliente.
+
+	\item \textbf{Configuración del servidor web}: Se ha limitado la redirección de puertos desde el router hasta el
+	servidor web, de forma que únicamente se puede acceder al servidor desde el puerto 22 (ssh), 4040 (aplicación
+	en entorno de producción).\ Además, se ha configurado el servidor web
+	para que únicamente se pueda acceder mediante el protocolo https, y no mediante el protocolo http, haciendo que
+	los usuarios sean redirigidos automáticamente a https.
+
+	\item \textbf{Configuración de la base de datos}: La base de datos solo es accesible desde el propio servidor web,
+	por lo que el acceso está restringido a la red interna.
+\end{itemize}
