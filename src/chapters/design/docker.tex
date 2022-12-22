@@ -22,7 +22,7 @@ añadiendo o modificando configuraciones~\cite{docker-docs}.
 En el desarrollo de la aplicación se ha utilizado Docker para la creación de una imagen que contenga todo el código de
 la aplicación así como las variables de entorno necesarias para su correcto funcionamiento.\ Se ha
 utilizado la herramienta \monoFont{docker-compose}, que permite definir y ejecutar contenedores Docker de manera
-sencilla.\ Para la configuración de los contenedores, se dispone del fichero \monoFont{docker-compose.yml} que se
+sencilla.\ Para la configuración de los contenedores, se dispone del fichero \monoFont{docker-compose.yaml} que se
 encuentra en la raíz del proyecto y define los servicios que se ejecutarán en los contenedores, así como
 las dependencias entre ellos.
 
@@ -31,7 +31,7 @@ aplicación para incluir cambios del código) se pierden los datos, la persisten
 configuraciones es necesaria.\ Para lograr esto, se usan \boldFont{volúmenes}, que son directorios creados y
 gestionados por Docker que se almacenan en el sistema de archivos del host, y que se montan en los contenedores cuando
 se inicializan~\cite{docker-volumes}.\ De esta forma, los datos no se pierden al eliminar el contenedor.\ Los
-volúmenes se definen en el mismo fichero \monoFont{docker-compose.yml} mediante la opción \monoFont{volumes} y son
+volúmenes se definen en el mismo fichero \monoFont{docker-compose.yaml} mediante la opción \monoFont{volumes} y son
 los siguientes:
 
 \begin{itemize}
@@ -107,7 +107,7 @@ aplicación.\ La lista con las métricas más usadas es la siguiente:
 \label{itm:most-used-metrics}
 
 \subsect{Grafana (Panel de observabilidad)}{grafana}
-Grafana es una solución de código abierto para mostrar las analíticas que se recogen de las aplicaciones de una
+Grafana es una solución de código abierto para mostrar las métricas que se recogen de las aplicaciones de una
 manera amigable en paneles personalizables~\cite{what-is-grafana}.\ Permite estudiar, analizar y monitorizar
 aplicaciones a lo largo del tiempo gracias a las marcas de tiempo proporcionadas junto con los datos que se
 recolectan.\ Se puede conectar con muchas fuentes de datos, como Graphite, Prometheus, ElasticSearch, MySQL, etc.\
@@ -116,8 +116,8 @@ el mismo servidor donde se ejecuta la aplicación.\ De esta manera, se garantiza
 datos, ya que no se exponen a Internet de manera directa.
 
 Para la configuración de Grafana en el entorno de producción, se necesita un contenedor Docker que utilice la imagen
-\monoFont{grafana/grafana-oss} y exponga un puerto para permitir conexiones desde hosts externos a la red interna.\ A
-continuación, se presenta la configuración básica para ejecutar una instancia de Grafana:
+\monoFont{grafana/grafana-oss} y exponga un puerto para permitir conexiones (el 4046 en este caso).\ A continuación,
+se presenta una configuración básica para ejecutar una instancia de Grafana:
 
 \begin{codeBlock}
 	\begin{minted}[
@@ -130,18 +130,146 @@ services:
   grafana:
     image: grafana/grafana-oss:9.3.1
     ports:
-      - "4046:3000"
-    expose: [ 4046 ]
+      - "4046:3000"  # Mapeo de puertos (HOST:CONTENEDOR)
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - grafana-storage:/var/lib/grafana  # Se define el volumen 'grafana-storage'
     env_file:
-      - ./env/.env.grafana
+      - GF_SECURITY_ADMIN_USER=<usuario>
+      - GF_SECURITY_ADMIN_PASSWORD=<contraseña>
     networks:
-      - rschat-net
+      - rschat-net  # Se asigna la red interna para comunicarse con otros servicios
 	\end{minted}
 	\caption{Configuración mínima para ejecutar un contenedor con Grafana}
 \end{codeBlock}
+\label{cod:grafana-docker-compose}
 
-\subsect{Loki (Servidor de logs)}{loki}
+En este proyecto se ha utilizado un panel importado desde las plantillas de la comunidad de Grafana para su utilización
+con Spring Boot y Prometheus~\cite{spring-dashboard} al que se le han añadido más paneles (para los logs y otras
+métricas).\ Algunos de los tipos de paneles que se pueden añadir son de tipo numérico o texto, gráficas, histogramas,
+mapas de calor, tablas, entre otros~\cite{visualizaciones-grafana}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{res/images/GrafanaDashboard_1}
+	\caption{Visualización de métricas relacionadas con los recursos del sistema utilizados y tiempo de actividad}
+	\label{fig:grafana-dashboard_1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{res/images/GrafanaDashboard_2}
+	\caption{Visualización de métricas relacionadas con los logs y peticiones HTTP}
+	\label{fig:grafana-dashboard_2}
+\end{figure}
+
+Para que Grafana muestre toda esta información, se deben configurar 2 fuentes de datos de las cuales extraer las
+métricas.\ Para establecer estos ajustes, accedemos a \monoFont{Configuration >~ Data Sources} y añadimos un
+\quoted{data source} para Prometheus y otro para Loki, con la URL que provee las métricas (el nombre del contenedor con
+el puerto interno, ya que se usa la misma red para todos los servicios):
+
+\begin{itemize}
+	\item Prometheus: \monoFont{http://prometheus:9090}
+	\item Loki: \monoFont{http://loki:3100}
+\end{itemize}
+\label{itm:grafana-data-sources}
+
+\subsect{Loki (Agregación de logs)}{loki}
+Loki es una herramienta de agregación de logs, que permite almacenar, indexar y consultar logs de manera eficiente, ya
+que se basa en el uso de etiquetas (para el agrupamiento y filtrado de logs) dejando el mensaje original sin modificar.
+Para el funcionamiento de Loki es necesario disponer de un agente que se encargue de enviar los logs a la instancia de
+Loki, y en este proyecto se ha utilizado Promtail, explicado en la siguiente sección.
+La configuración necesaria para que Grafana pueda recoger los logs de Loki es sencilla, ya que se añade un fichero
+\monoFont{yaml} con la configuración de la fuente de datos de Loki~\cite{loki-config-file} y el servicio en el
+fichero \monoFont{docker-compose.yaml}:
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{yaml}
+  loki:
+    image: grafana/loki:2.7.0
+    container_name: loki
+    ports:
+      - "4045:3100"
+    volumes:
+      # Habilitar la lectura del fichero de configuración desde el contenedor
+      - ./config/loki.yaml:/etc/loki/loki-config.yaml
+    command: -config.file=/etc/loki/loki-config.yaml
+    depends_on:
+      - promtail
+    networks:
+      - rschat-net
+	\end{minted}
+	\caption{Servicio de Loki para el registro de logs (fichero \monoFont{docker-compose.yaml})}
+\end{codeBlock}
+\label{cod:loki-docker-compose}
 
 \subsect{Promtail (Agente de logs)}{promtail}
+Promtail es un agente (o cliente) de logs, que los recoge y los convierte en flujos que puede enviar a Loki (ver
+imagen~\ref{fig:promtail}) a través de una API HTTP~\cite{loki-docs}.\ La configuración de docker para Promtail es
+similar a la de
+Loki, ya que se añade un fichero \monoFont{yaml} con la configuración de la fuente de datos de Promtail y el servicio
+en el fichero \monoFont{docker-compose.yaml}:
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{yaml}
+  promtail:
+    image: grafana/promtail:2.7.0
+    container_name: promtail
+    restart: unless-stopped
+    ports:
+      - "4044:9080"
+    volumes:
+      - /var/log:/var/log
+      # Habilitar la lectura del fichero de configuración desde el contenedor
+      - ./config/promtail.yaml:/etc/promtail/promtail.yaml
+      # Habilitar acceso a los logs de los contenedores
+      - /var/lib/docker/containers:/var/lib/docker/containers
+    command: -config.file=/etc/promtail/promtail.yaml
+    depends_on:
+      - rschat
+    networks:
+      - rschat-net
+	\end{minted}
+	\caption{Servicio de Promtail para la recolección de logs (fichero \monoFont{docker-compose.yaml})}
+\end{codeBlock}
+\label{cod:promtail-docker-compose}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{res/images/loki-promtail-architecture}
+	\caption{Flujo de logs entre Promtail y Loki}
+	\label{fig:promtail}
+\end{figure}
+
+El formato de las trazas que exporta Promtail se ha ajustado para que se permita la visualización tanto por fichero,
+como por el nombre del contenedor que genera el log.\ Para ello, el fichero \monoFont{promtail.yaml}
+contiene una sección \monoFont{pipeline\_stages} con la configuración de los \quoted{stages} que se aplican a las
+trazas antes de enviarlas a Loki.\ La más importante es la que se encarga de añadir las etiquetas
+\monoFont{container\_name} con una expresión regular que extrae el nombre del contenedor a partir de una etiqueta
+asociada a cada traza:
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{yaml}
+    pipeline_stages:
+      # ...
+      - regex:  # Nombre del contenedor en el valor de "tag"
+          expression: (?P<container_name>(?:[^|]*[^|]))
+          source: tag
+      # ...
+	\end{minted}
+	\caption{Stage para obtener el nombre del contenedor con una expresión regular a partir de la etiqueta
+	\monoFont{tag} (fichero \monoFont{promtail.yaml})}
+\end{codeBlock}
+\label{cod:promtail-regexp-container-name}
+
