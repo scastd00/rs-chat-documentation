@@ -106,8 +106,41 @@ aplicación.\ La lista con las métricas más usadas es la siguiente:
 \end{itemize}
 \label{itm:most-used-metrics}
 
-
 \subsect{Grafana (Panel de observabilidad)}{grafana}
+Grafana es una solución de código abierto para mostrar las analíticas que se recogen de las aplicaciones de una
+manera amigable en paneles personalizables~\cite{what-is-grafana}.\ Permite estudiar, analizar y monitorizar
+aplicaciones a lo largo del tiempo gracias a las marcas de tiempo proporcionadas junto con los datos que se
+recolectan.\ Se puede conectar con muchas fuentes de datos, como Graphite, Prometheus, ElasticSearch, MySQL, etc.\
+Una ventaja de Grafana es que ofrece una solución \quoted{on-premise}, que permite desplegar una instancia propia en
+el mismo servidor donde se ejecuta la aplicación.\ De esta manera, se garantiza la seguridad y protección de los
+datos, ya que no se exponen a Internet de manera directa.
+
+Para la configuración de Grafana en el entorno de producción, se necesita un contenedor Docker que utilice la imagen
+\monoFont{grafana/grafana-oss} y exponga un puerto para permitir conexiones desde hosts externos a la red interna.\ A
+continuación, se presenta la configuración básica para ejecutar una instancia de Grafana:
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{yaml}
+version: '3.7'
+services:
+  grafana:
+    image: grafana/grafana-oss:9.3.1
+    ports:
+      - "4046:3000"
+    expose: [ 4046 ]
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    env_file:
+      - ./env/.env.grafana
+    networks:
+      - rschat-net
+	\end{minted}
+	\caption{Configuración mínima para ejecutar un contenedor con Grafana}
+\end{codeBlock}
 
 \subsect{Loki (Servidor de logs)}{loki}
 

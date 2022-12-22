@@ -20,10 +20,20 @@ function make_bibliography() {
 }
 
 #######################################
+# Removes all temporary files
+# Arguments:
+#  None
+#######################################
+function remove_unwanted_files_after_error() {
+  rm -f main.{log,aux,bbl,blg,lof,lot,toc,cod,out,dia,pdf,bcf,run.xml,glo,glg,gls,ist}
+}
+
+#######################################
 # Arguments:
 #  None
 #######################################
 function main() {
+  remove_unwanted_files_after_error
   compile
   make_bibliography
 
