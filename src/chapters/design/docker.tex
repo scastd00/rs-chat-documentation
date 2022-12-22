@@ -4,86 +4,111 @@
 % https://howchoo.com/devops/how-to-add-a-health-check-to-your-docker-container
 
 \sect{Docker}{docker}
-Se ha utilizado Docker para la creación de contenedores que ejecutan los servicios de la aplicación.\ Para ello, se ha
-utilizado la herramienta \monoFont{docker-compose}, que permite definir y ejecutar aplicaciones Docker de forma
-sencilla.\ Para la configuración de los contenedores, se ha utilizado el fichero \monoFont{docker-compose.yml} que se
-encuentra en la raíz del proyecto.\ Este fichero define los servicios que se ejecutarán en los contenedores, así como
+Docker es una plataforma software que permite el desarrollo, prueba y ejecución de aplicaciones de forma rápida y
+cómoda, separando la aplicación de la infraestructura permitiendo ejecutar múltiples aplicaciones en un mismo servidor
+(ver imagen~\ref{fig:docker-container-infrastructure}).\ Esto se realiza empaquetando la
+aplicación, sus dependencias y otras herramientas necesarias para su ejecución en lo que se denominan
+\boldFont{contenedores}, que son instancias ejecutables de una imagen de Docker.\ Las imágenes son ficheros de solo
+lectura que contienen las instrucciones necesarias para crear un contenedor y normalmente se basan en otras imágenes
+añadiendo o modificando configuraciones~\cite{docker-docs}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{res/images/container-what-is-container}
+	\caption{Infrastructura docker. Fuente: \url{https://www.docker.com/resources/what-container}}
+	\label{fig:docker-container-infrastructure}
+\end{figure}
+
+En el desarrollo de la aplicación se ha utilizado Docker para la creación de una imagen que contenga todo el código de
+la aplicación así como las variables de entorno necesarias para su correcto funcionamiento.\ Se ha
+utilizado la herramienta \monoFont{docker-compose}, que permite definir y ejecutar contenedores Docker de manera
+sencilla.\ Para la configuración de los contenedores, se dispone del fichero \monoFont{docker-compose.yml} que se
+encuentra en la raíz del proyecto y define los servicios que se ejecutarán en los contenedores, así como
 las dependencias entre ellos.
 
-Debido a que cada vez que se elimina un contenedor (al reiniciar el servidor o por necesidad de crear de nuevo los
-contenedores) se pierden los datos, se necesita persistencia de los mismos
-y de sus configuraciones.\ Para lograr esto, se han empleado \boldFont{volúmenes}, que son
-directorios que se crean en el sistema de archivos del host, y que se montan en los contenedores.\ De esta forma, los
-datos no se pierden al parar ni eliminar el contenedor.\ Los volúmenes se definen en el mismo fichero
-\monoFont{docker-compose.yml} mediante la opción \monoFont{volumes} y son los siguientes:
+Debido a que cada vez que se elimina un contenedor (al reiniciar el sistema o al generar de nuevo la imagen de la
+aplicación para incluir cambios del código) se pierden los datos, la persistencia de los mismos y de sus
+configuraciones es necesaria.\ Para lograr esto, se usan \boldFont{volúmenes}, que son directorios creados y
+gestionados por Docker que se almacenan en el sistema de archivos del host, y que se montan en los contenedores cuando
+se inicializan~\cite{docker-volumes}.\ De esta forma, los datos no se pierden al eliminar el contenedor.\ Los
+volúmenes se definen en el mismo fichero \monoFont{docker-compose.yml} mediante la opción \monoFont{volumes} y son
+los siguientes:
 
 \begin{itemize}
-	\item \monoFont{rschat-db}: Directorio que contiene los datos y script inicial de la base de datos.
-	\item \monoFont{rschat-logs}: Directorio que contiene los ficheros de log de la aplicación.
-	\item \monoFont{grafana-storage}: Directorio que contiene la configuración de Grafana.
+	\item \monoFont{rschat-db}: contiene los datos y script inicial de la base de datos.
+	\item \monoFont{rschat-logs}: contiene los ficheros de registro de la aplicación.
+	\item \monoFont{grafana-storage}: contiene la configuración de Grafana.
 \end{itemize}
 
-Además, se ha definido un volumen para la base de datos, que se encuentra en el
-directorio \monoFont{db}.\ Este volumen se usa para almacenar los datos de la base de datos, de manera que se
-puedan recuperar en caso de que se elimine el contenedor.
+A continuación, se mencionan todos los contenedores utilizados para la aplicación junto con una breve descripción de
+cada uno de ellos:
 
-Todos los contenedores utilizados para la aplicación se mencionan a continuación, junto con una breve descripción de
-cada uno de ellos (los marcados con el símbolo \textsuperscript{\textasteriskcentered} son los que se describirán en
-detalle más adelante, debido a que tienen una configuración y funcionalidad más compleja a la de los dos primeros):
+	{\scriptsize Nota: los marcados con el símbolo \textsuperscript{\textasteriskcentered} se describirán en detalle
+más adelante.}
 
 \begin{itemize}
 	\item \monoFont{rschat}: Contenedor que ejecuta el backend de la aplicación.
 	\item \monoFont{rschat-db}: Contenedor que ejecuta la base de datos MySQL\@.
 	\item \monoFont{prometheus\textsuperscript{\textasteriskcentered}}: Contenedor que ejecuta el servidor de métricas
-	Prometheus.
+	de Prometheus.
 	\item \monoFont{grafana\textsuperscript{\textasteriskcentered}}: Contenedor que ejecuta el panel de observabilidad
-	Grafana.
+	de Grafana.
 	\item \monoFont{loki\textsuperscript{\textasteriskcentered}}: Contenedor que ejecuta el servidor de logs Loki.
 	\item \monoFont{promtail\textsuperscript{\textasteriskcentered}}: Contenedor que ejecuta el agente de logs
 	Promtail.
 \end{itemize}
+\label{itm:docker-compose-services}
 
-% Todo: revisar estas subsecciones para añadir más detalles e imágenes.
-\subsect{Prometheus - Agente de métricas}{prometheus}
-Prometheus es un servidor de métricas que permite almacenar y consultar métricas de los servicios de la aplicación.\ Se
-ha utilizado para almacenar las métricas de la aplicación, así como las métricas de los contenedores de Docker.\ Para
-la configuración de Prometheus, se ha utilizado el fichero \monoFont{prometheus.yml} que se encuentra en la raíz del
-proyecto.\ Este fichero define los \textit{targets} que se van a monitorizar, así como la configuración de los
-\textit{scrapers}.\ Los \textit{targets} que se monitorizan son los siguientes:
-
-\begin{itemize}
-	\item \monoFont{rschat}: Se monitoriza el servicio de la aplicación.
-	\item \monoFont{rschat-db}: Se monitoriza la base de datos.
-	\item \monoFont{node-exporter}: Se monitoriza el servidor.
-\end{itemize}
-
-\subsect{Grafana - Panel de observabilidad}{grafana}
-Grafana es un panel de observabilidad que permite visualizar las métricas de los servicios de la aplicación.\ Se ha
-utilizado para visualizar las métricas de la aplicación, así como las métricas de los contenedores de Docker.\ Se
-ha integrado junto con Loki para mostrar los logs de la aplicación.
-
-\subsect{Loki - Servidor de logs}{loki}
-Loki es un servidor de logs que permite almacenar y consultar los logs de los servicios de la aplicación.\ Se ha
-utilizado para almacenar los logs de la aplicación.\ Para la configuración de Loki, se ha utilizado el fichero
-\monoFont{loki.yml} que se encuentra en la raíz del proyecto.\ Este fichero define los \textit{targets} que se van a
-monitorizar, así como la configuración de los \textit{scrapers}.\ Los \textit{targets} que se monitorizan son los
-siguientes:
+\subsect{Prometheus (Métricas)}{prometheus}
+Prometheus es un conjunto de herramientas de código abierto para la \boldFont{monitorización} de sistemas y
+\boldFont{alertas} que recoge y
+almacena las métricas con la marca de tiempo cuando se producen, incluyendo etiquetas (clave-valor) de manera
+opcional~\cite{prometheus-overview}.
+Estas métricas se utilizan para determinar el funcionamiento y estado de la aplicación en tiempo real, permitiendo
+diagnosticar problemas de rendimiento o recursos de una manera rápida y sencilla.\ Para habilitar la exportación de
+las métricas (de manera automática) por parte de la aplicación hay que realizar ciertas configuraciones,
+que se detallan a continuación:
 
 \begin{itemize}
-	\item \monoFont{rschat}: Se monitorizan los logs de la aplicación.
-	\item \monoFont{rschat-db}: Se monitorizan los logs de la base de datos.
-	\item \monoFont{node-exporter}: Se monitorizan los logs del servidor.
-\end{itemize}
+	\item Añadir 2 librerías en el fichero \monoFont{pom.xml}~\cite{prometheus-metrics-pom}:
+	\begin{itemize}
+		\item spring-boot-starter-actuator
+		\item micrometer-registry-prometheus
+	\end{itemize}
 
-\subsect{Promtail - Agente de logs}{promtail}
-Promtail es un agente de logs que permite enviar los logs de los servicios de la aplicación a Loki.\ Se ha utilizado
-para enviar los logs de la aplicación.\ Para la configuración de Promtail, se ha utilizado el fichero
-\monoFont{promtail.yml} que se encuentra en la raíz del proyecto.\ Este fichero define los \textit{targets} que se van
-a monitorizar, así como la configuración de los \textit{scrapers}.\ Los \textit{targets} que se monitorizan son los
-siguientes:
+	\item Para exponer el \quoted{endpoint} que permite ver las métricas, hay que añadir una propiedad en el fichero
+	\monoFont{application.properties}:
+	\begin{itemize}
+		\item \monoFont{management.endpoints.web.exposure.include=prometheus}
+	\end{itemize}
+
+	\item Permitir las peticiones de tipo GET a \monoFont{/actuator/prometheus}: esto se configura
+	de manera programática estableciendo la ruta como pública (permitiendo peticiones GET sin necesidad de estar
+	autenticado).
+\end{itemize}
+\label{itm:metrics-export-config}
+
+Las métricas que más se utilizarán son las relacionadas con el rendimiento de la aplicación y el uso de recursos del
+sistema, aunque se han añadido algunas personalizadas para determinar el uso que se hace de determinadas partes de la
+aplicación.\ La lista con las métricas más usadas es la siguiente:
 
 \begin{itemize}
-	\item \monoFont{rschat}: Se monitorizan los logs de la aplicación.
-	\item \monoFont{rschat-db}: Se monitorizan los logs de la base de datos.
-	\item \monoFont{node-exporter}: Se monitorizan los logs del servidor.
+	\item jvm\_memory\_used\_bytes: bytes usados por la JVM\@.
+	\item jvm\_memory\_committed\_bytes: bytes que se están guardando en el \quoted{heap} de la JVM\@.
+	\item system\_cpu\_usage: uso de CPU del sistema.
+	\item process\_cpu\_usage: uso de CPU por parte de la aplicación.
+	\item system\_cpu\_count: número de procesadores físicos utilizados en todo el sistema.
+	\item logback\_events\_total: número de eventos de log de un determinado nivel (info, debug, warn, error).
+	\item http\_server\_requests\_seconds\_count: número de peticiones HTTP realizadas a la aplicación.
+	\item jvm\_threads\_live\_threads: número de hilos en ejecución.
+	\item jvm\_threads\_daemon\_threads: número de hilos en ejecución (en segundo plano).
+	\item jvm\_threads\_peak\_threads: número máximo de hilos.
 \end{itemize}
+\label{itm:most-used-metrics}
+
+
+\subsect{Grafana (Panel de observabilidad)}{grafana}
+
+\subsect{Loki (Servidor de logs)}{loki}
+
+\subsect{Promtail (Agente de logs)}{promtail}
