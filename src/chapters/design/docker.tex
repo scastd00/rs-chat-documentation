@@ -94,15 +94,15 @@ aplicación.\ La lista con las métricas más usadas es la siguiente:
 
 \begin{itemize}
 	\item jvm\_memory\_used\_bytes: bytes usados por la JVM\@.
-	\item jvm\_memory\_committed\_bytes: bytes que se están guardando en el \quoted{heap} de la JVM\@.
-	\item system\_cpu\_usage: uso de CPU del sistema.
-	\item process\_cpu\_usage: uso de CPU por parte de la aplicación.
-	\item system\_cpu\_count: número de procesadores físicos utilizados en todo el sistema.
+	\item jvm\_memory\_committed\_bytes: bytes que se han reservado para su uso por la JVM\@.
+	\item system\_cpu\_usage: uso de CPU del sistema donde se ejecuta la aplicación.
+	\item process\_cpu\_usage: uso de CPU del proceso de la JVM\@.
+	\item system\_cpu\_count: número de procesadores disponibles para la JVM\@.
 	\item logback\_events\_total: número de eventos de log de un determinado nivel (info, debug, warn, error).
 	\item http\_server\_requests\_seconds\_count: número de peticiones HTTP realizadas a la aplicación.
-	\item jvm\_threads\_live\_threads: número de hilos en ejecución.
+	\item jvm\_threads\_live\_threads: número total de hilos en ejecución.
 	\item jvm\_threads\_daemon\_threads: número de hilos en ejecución (en segundo plano).
-	\item jvm\_threads\_peak\_threads: número máximo de hilos.
+	\item jvm\_threads\_peak\_threads: número máximo de hilos activos desde que se inició la JVM\@.
 \end{itemize}
 \label{itm:most-used-metrics}
 
