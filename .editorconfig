@@ -22,3 +22,4 @@ ij_latex_keep_indents_on_empty_lines = false
 ij_latex_line_comment_add_space = false
 ij_latex_line_comment_at_first_column = true
 ij_latex_wrap_long_lines = true
+max_line_length = off
