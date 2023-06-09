@@ -1,11 +1,17 @@
 \sect{Problemas}{problems}
 
 Durante el desarrollo de la aplicación han surgido varios problemas, sobre todo en la parte del despliegue a producción
-de la aplicación.\ En un comienzo, la aplicación se ha desplegado en dos clusters con el plan gratuito de Heroku (uno
-para el frontend y otro para el backend), pero se ha tenido que desplegar de una manera alternativa debido a que este
-servicio no es gratuito desde del 28 de noviembre de 2022.
-Actualmente, el frontend está desplegado en Vercel y en cuanto al backend, se ha tenido una reunión con un encargado
-de los servicios en la nube de la empresa Platform.sh, pero no se ha llegado a ningún acuerdo para conseguir un plan
-gratuito para desplegar la aplicación.\ Debido a esto, se ha optado por desplegar el backend en un pequeño ordenador
-personal propio, estando siempre encendido y con una dirección IP estática.\ Esto no es una solución óptima, pero es
-la mejor que se ha encontrado hasta el momento.
+de la aplicación.\ En un comienzo, se desplegó en dos clusters con el plan gratuito de Heroku (uno
+para el frontend y otro para el backend), pero se ha tenido que retirar la aplicación de esta plataforma
+debido a que este servicio no es gratuito desde del 28 de noviembre de 2022.
+Actualmente, el frontend está desplegado en Vercel y en cuanto al backend, se han considerado varias opciones:
+
+\begin{itemize}
+	\item Despliegue en \textit{Platform.sh}: plataforma de despliegue de aplicaciones en la nube.
+	\item Despliegue en un servidor propio.
+\end{itemize}
+
+La primera opción no ha sido posible, ya que, tras una reunión con el encargado de \textit{Cloud Services} de la
+plataforma, no se ha podido conseguir una cuenta gratuita para el despliegue de la aplicación durante su desarrollo.
+Por lo tanto, se ha optado por la segunda opción, comprando un pequeño ordenador personal y desplegando el backend en
+él.\ De esta manera, también se abarca el campo de la administración de sistemas.

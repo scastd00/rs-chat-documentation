@@ -3,27 +3,29 @@
 \subsect{Definición del proyecto}{definicion_proyecto}
 
 El proyecto consiste en el desarrollo de una aplicación web para la comunicación mediante mensajes e intercambio de
-archivos entre los usuarios.\ Gracias a los diferentes roles de los usuarios dentro de la aplicación, se puede
+archivos entre los usuarios.\ Gracias a los diferentes roles en los que se distinguen los usuarios dentro de la
+aplicación, se puede
 realizar una comunicación más fluida entre los mismos, ya que los profesores pueden crear grupos (además del ya
 existente para cada asignatura) para, por ejemplo, dividir a los alumnos en grupos de trabajo y así no interferir con
 el resto del alumnado.\ También cabe la posibilidad de que cada usuario pueda abrir un chat privado con cualquier
-otro que esté disponible en los chats a los que pertenece, abriendo una nueva conversación.\ Los administradores son
+otro que esté presente en los chats a los que pertenece, abriendo una nueva conversación.\ Los administradores son
 los encargados de crear las asignaturas y los profesores, así como de gestionar los usuarios de la aplicación.
 
 Con respecto al diseño, se ha optado por una interfaz sencilla y fácil de usar, minimalista y funcional.\ Se dispone
-de adaptabilidad a diferentes dispositivos, por lo que la aplicación es accesible desde cualquier dispositivo con
-conexión a Internet.\ Además, se ha optado por un diseño \textit{responsive}, por lo que la aplicación se adapta a la
-pantalla del dispositivo en el que se esté usando, ya sea un ordenador de sobremesa, un portátil, una tablet o un
+de adaptabilidad a diferentes dispositivos, por lo que la aplicación es accesible desde cualquier sistema con
+conexión a Internet.\ Además, se ha optado por un diseño \textit{responsive}, lo que permite que la aplicación se
+adapte a la
+pantalla del dispositivo en el que se esté visualizando, ya sea un ordenador de sobremesa, un portátil, una tablet o un
 teléfono móvil.
 
 La implementación del proyecto se divide en frontend y backend.\ El frontend es el encargado de mostrar las vistas
-y de gestionar las interacciones con el usuario, mientras que el backend es el encargado de gestionar la lógica de
+y de gestionar las interacciones con el usuario, mientras que el backend es el encargado de controlar la lógica de
 la aplicación, la base de datos y la comunicación con el frontend.
 
 Debido a que la aplicación necesita que los usuarios se registren para poder utilizarla, se implementa una política de
-privacidad para que los usuarios conozcan cómo se van a tratar sus datos.\ Estos datos no se compartirán con
-ninguna otra entidad, salvo que el usuario lo autorice.\ Además, se implementa un sistema de
-recuperación de contraseña para que los usuarios puedan recuperar su contraseña en caso de que la hayan olvidado.
+privacidad para que los usuarios conozcan cómo se van a tratar sus datos.\ Éstos no se compartirán con
+ninguna otra entidad, salvo que el usuario lo autorice.\ Además, se ha introducido un sistema de
+recuperación de contraseña para que los usuarios puedan restablecer su contraseña en caso de que la hayan olvidado.
 
 \subsect{Objetivos}{objetivos}
 
@@ -31,14 +33,19 @@ Los objetivos del proyecto son los siguientes:
 
 \begin{itemize}
 	\item Desarrollar una aplicación web para la comunicación entre los usuarios.
-	\item Establecer un sistema de roles para los usuarios, para que puedan interactuar entre ellos de manera
-	efectiva y fluida.\ Esto ayuda a los alumnos a determinar los usuarios a los que comunicar incidencias u otra
+	\item Establecer un sistema de roles, para permitir la interacción entre usuarios de manera
+	efectiva y fluida.\ Esto ayuda a les ayuda a determinar a qué personas comunicar incidencias u otra
 	información.
 	\item Se debe ofrecer un sistema de grupos y chats individuales para los usuarios.
+	\item Los usuarios deben poder intercambiar archivos entre ellos.
+	\item Prevenir la compartición de imágenes inapropiadas.
 	\item Los administradores deben tener un panel de control para gestionar todo lo relacionado con la aplicación
 	y el uso de recursos por parte del servidor, para evitar sobrecargas o caídas.
 	\item Garantizar el debido cumplimiento de la política de privacidad de los usuarios.
+	\item Ofrecer un sistema de recompensa a los usuarios que más utilicen la aplicación, otorgando insignias
+	que se mostrarán en su perfil.
 	% Todo: poner todas las características de la aplicación
+	% Debe ser a grandes rasgos, no sé si incluir más cosas
 \end{itemize}
 \label{itm:alcance_objetivos}
 
@@ -50,17 +57,19 @@ Para garantizar el correcto funcionamiento de la aplicación, se establecen las 
 	\item Se garantiza una buena visualización de la aplicación en dispositivos de cualquier resolución, tanto
 	dispositivos móviles como de escritorio, siempre que dispongan de conexión a Internet y un navegador web
 	actualizado.
-	\item El funcionamiento del sistema se ha probado para los navegadores basados en el motor de
-	Chromium, como Google Chrome y Brave.\ No se garantiza el correcto funcionamiento en otros navegadores.
+	\item El funcionamiento del sistema se ha probado para el navegador Firefox y los basados en \textbf{Chromium},
+	como Google Chrome y Brave.\ No se garantiza el correcto funcionamiento en otros navegadores web.
 	\item No se requiere instalación de ningún programa externo.\ De esta manera, se
-	simplifica el acceso a la aplicación.
+	simplifica el acceso a la aplicación y se evitan problemas de compatibilidad con el sistema operativo.
 	\item Para el almacenamiento de archivos, se utilizará un sistema de almacenamiento en la nube, siguiendo
 	una estructura de directorios dependiendo del tipo de archivo que los usuarios suban.
+	\item Durante el desarrollo del proyecto, no se utilizarán recursos que incumplan la ley de protección de
+	datos ni la ley de propiedad intelectual.
 \end{itemize}
 \label{itm:alcance_limitaciones}
 
 \subsect{Entregables}{entregables}
-% Todo
+% Todo: añadir más cosas
 
 \subsect{Criterios de aceptación}{criterios_aceptacion}
 
@@ -71,10 +80,10 @@ Para que el proyecto se considere aceptado, se deben cumplir una serie de requis
 	\item Con el fin de garantizar la ausencia de errores, se debe realizar una serie de pruebas por parte del equipo
 	de desarrollo y también por parte de los usuarios.\ En caso de existir algún error, se debe corregir antes de
 	que el proyecto sea aceptado.
-	\item Los casos de uso deben estar implementados y funcionando correctamente.
+	\item Los casos de uso deben estar implementados y funcionando correctamente. % Todo: esto es necesario?
 	\item Los test unitarios, de aceptación e integración deben pasar sin errores.
 \end{itemize}
-\label{itm:alcance_criterios_aceptación}
+\label{itm:alcance_criterios_aceptacion}
 
 \subsect{Restricciones}{restricciones}
 % Todo

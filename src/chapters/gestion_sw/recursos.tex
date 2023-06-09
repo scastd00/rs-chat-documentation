@@ -1,46 +1,49 @@
 \sect{Gestión de recursos}{recursos}
 
-En este capítulo se describen los recursos humanos y materiales que se van a necesitar para el desarrollo del proyecto.
+En este capítulo se describen los recursos humanos y materiales que se han necesitado para el desarrollo del proyecto.
 
 \subsect{Especificación de recursos}{especificacion_recursos}
 
-Cuando se habla de recursos humanos, se hace referencia a las personas que van a participar en el proyecto, y a los
-recursos materiales, que son los equipos y herramientas que se van a utilizar para llevar a cabo el proyecto.
-En el caso de este, que ha sido implementado enteramente por una persona, se simplifican los cálculos de los
-recursos.\ A continuación, se presenta una tabla con la especificación de los recursos para cada rol que se ha
-desempeñado en el desarrollo del proyecto:
+Cuando se habla de recursos humanos, en términos de un proyecto, se hace referencia a las personas que van a
+participar en el mismo.\ Los recursos materiales son los equipos y herramientas que se van a utilizar para llevar a
+cabo el proyecto.
+En el caso de este, que ha sido implementado enteramente por una persona, se simplifican los cálculos, ya que se
+conocen de manera más precisa.\ A continuación, se presenta una tabla con la especificación de los recursos para cada
+rol que se ha desempeñado en el desarrollo del proyecto:
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{lcccc}
 		\toprule
-		\textbf{Recursos}    & \textbf{Anual} & \textbf{Mensual} & \textbf{Diario} & \textbf{hora} \\
+		\textbf{Recursos} & \textbf{Sal. Anual} & \textbf{Sal. Mensual} & \textbf{Sal. Diario} & \textbf{Sal.
+		Hora} \\
 		\midrule
-		Desarrollador backend  & \EUR{30,554}   & \EUR{2,182.42}   & \EUR{109.12}    & \EUR{13.64}   \\
-		Desarrollador frontend & \EUR{34,486}   & \EUR{2,463.28}   & \EUR{123.16}    & \EUR{15.39}   \\
-		Diseñador              & \EUR{22,150}   & \EUR{1,582.14}   & \EUR{79.10}     & \EUR{9.88}    \\
-		Tester                 & \EUR{29,406}   & \EUR{2,100.42}   & \EUR{105.02}    & \EUR{13.13}   \\
-		Técnico de sistemas    & \EUR{23,729}   & \EUR{1,694.92}   & \EUR{84.74}     & \EUR{10.59}   \\
+		Desarrollador backend  & \EUR{31,412} & \EUR{2,243.71} & \EUR{112.18} & \EUR{14.02} \\
+		Desarrollador frontend & \EUR{37,123} & \EUR{2,651.64} & \EUR{132.58} & \EUR{16.57} \\
+		Diseñador              & \EUR{22,417} & \EUR{1,601.21} & \EUR{80.06}  & \EUR{10.00} \\
+		Tester                 & \EUR{28,036} & \EUR{2,002.57} & \EUR{100.12} & \EUR{12.51} \\
+		Técnico de sistemas    & \EUR{24,422} & \EUR{1,744.42} & \EUR{87.22}  & \EUR{10.90} \\
 		\bottomrule
 	\end{tabular}
-	\caption{Especificación de recursos}
+	\caption{Especificación de recursos y sueldos}
 	\label{tab:especificacion_recursos}
 \end{table}
 
-% todo: cambiar fórmulas para ajustarse a la tabla
-
 Se ha considerado que la jornada laboral es de 8 horas diarias, 5 días a la semana, y 14 pagas al año.\ Los datos de
-la columna \textit{Salario anual} se han obtenido del buscador de sueldos de \textit{Indeed}~\cite{SueldosI69:online}
-a fecha 5 de febrero de 2023\@.\ Esta web se encarga de calcular el sueldo promedio de los trabajos ofrecidos en España para un puesto en
-concreto.\ El resto de datos se han calculado con las siguientes fórmulas:
-
+la columna \textit{Sal. anual} se han obtenido del buscador de sueldos de \textit{Indeed}~\cite{SueldosI69:online}
+a fecha 8 de junio de 2023\@.\ Esta web se encarga de calcular el sueldo promedio de los trabajos ofrecidos en España
+para un puesto en concreto.\ El resto de datos se han calculado con las siguientes fórmulas:
 \begin{center}
-	$\text{Salario mensual} = \frac{\text{Salario anual}}{14}$\\
-	$\text{Salario diario} = \frac{\text{Salario mensual}}{20}$
+	$\text{Sal. Mensual} = \frac{\text{Sal. Anual}}{14}$\\
+	$\text{Sal. Diario} = \frac{\text{Sal. Mensual}}{20}$\\
+	$\text{Sal. Hora} = \frac{\text{Sal. Diario}}{8}$
 \end{center}
 
+\subsect{Asignación de recursos}{asignacion_recursos}
+
 Una estimación del trabajo que se ha realizado con el coste asociado se puede ver en la tabla~\ref{tab:coste_recursos}.
-La jornada laboral se ha considerado de 8 horas diarias, 5 días a la semana, y 14 pagas al año.
+Se ha calculado el tiempo que se ha dedicado a cada rol y el coste asociado a cada uno de ellos utilizando los datos de
+la pila del producto (ver anexo~\ref{anx:product-backlog-notion}).
 
 \begin{table}[H]
 	\centering
@@ -48,14 +51,63 @@ La jornada laboral se ha considerado de 8 horas diarias, 5 días a la semana, y 
 		\toprule
 		\textbf{Recursos}    & \textbf{Trabajo (horas)} & \textbf{Coste (\euro)} \\
 		\midrule
-		Desarrollador backend  & 320                      & \EUR{4,364.8}            \\
-		Desarrollador frontend & 120                      & \EUR{1,846.8}            \\
-		Diseñador              & 10                       & \EUR{98.8}              \\
-		Tester                 & 30                       & \EUR{393.9}              \\
-		Técnico de sistemas    & 20                       & \EUR{211.8}              \\
+		Desarrollador backend  & 2000                     & \EUR{28,046.42}        \\
+		Desarrollador frontend & 1500                     & \EUR{24,859.15}        \\
+		Diseñador              & 300                      & \EUR{3,002.27}         \\
+		Tester                 & 500                      & \EUR{6,258.03}         \\
+		Técnico de sistemas    & 700                      & \EUR{7,631.87}         \\
 		\bottomrule
-		Totales                & 500                      & \EUR{6,916.1}            \\
+		Totales                & 5000                     & \EUR{69,797.74}        \\
 	\end{tabular}
 	\caption{Coste de los recursos}
 	\label{tab:coste_recursos}
 \end{table}
+
+La razón por la que el coste total del proyecto y horas dedicadas
+están más inflados de lo que debería, es porque se ha desarrollado por una sola persona y se ha dispuesto de
+\boldFont{tiempo extra} para dedicarle al mismo.
+
+Los costes del material necesario para la realización del proyecto se han dividido en 2 categorías: hardware y
+software.\ En las siguientes dos tablas se puede observar el desglose de cada uno de ellos.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lccc}
+		\toprule
+		\textbf{Hardware} & \textbf{Coste (\euro)} & \textbf{Unidades} & \textbf{Total (\euro)} \\
+		\midrule
+		Ordenador           & \EUR{1,442}            & 1                 & \EUR{1,442}            \\
+		Ratón               & \EUR{23.88}            & 1                 & \EUR{23.88}            \\
+		Monitor Secundario  & \EUR{40}               & 1                 & \EUR{40}               \\
+		Monitor Terciario   & \EUR{130}              & 1                 & \EUR{130}              \\
+		Silla ergonómica    & \EUR{325}              & 1                 & \EUR{325}              \\
+		Servidor local      & \EUR{200}              & 1                 & \EUR{200}              \\
+		\bottomrule
+		Total hardware      & -                      & -                 & \EUR{2,160.88}         \\
+	\end{tabular}
+	\caption{Coste del hardware}
+	\label{tab:coste_hardware}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lccc}
+		\toprule
+		\textbf{Software} & \textbf{Coste (\euro)} & \textbf{Unidades} & \textbf{Total (\euro)} \\
+		\midrule
+		IDEs JetBrains      & \EUR{289}              & 1                 & \EUR{0}*               \\
+		Plugin JPA Buddy    & \EUR{25.99}            & 1                 & \EUR{0}*               \\
+		Plugin BashSupport  & \EUR{14}               & 1                 & \EUR{0}*               \\
+		Plugin CodeMR       & \EUR{124.24}           & 1                 & \EUR{0}*               \\
+		Office 365          & \EUR{100}              & 1                 & \EUR{0}*               \\
+		\bottomrule
+		Total software      & -                      & -                 & \EUR{0}                \\
+	\end{tabular}
+	\caption{Coste del software}
+	\label{tab:coste_software}
+\end{table}
+
+\begin{footnotesize}
+	* El coste de estos programas se ha reducido a 0 porque se ha utilizado la licencia de estudiante de la
+	Universidad de León para obtenerlos.
+\end{footnotesize}

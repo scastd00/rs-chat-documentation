@@ -2,8 +2,10 @@
 \sect{Aplicaciones similares}{aplicaciones-similares}
 
 Se ha realizado una búsqueda de diferentes sitios web y aplicaciones que permitan la comunicación entre usuarios a
-través de un chat en tiempo real.\ Las diferentes páginas web y aplicaciones que se han encontrado se presentan a
-continuación, analizando sus características principales:
+través de un chat en tiempo real, para determinar las funcionalidades generales que ofrecen y poder tomar una decisión
+sobre las nuevas funcionalidades que se implementarán en la aplicación.\ La búsqueda se ha realizado en diferentes
+idiomas (español e inglés) y se han encontrado diferentes páginas web y aplicaciones que ofrecen este tipo de
+servicio, que son las siguientes:
 
 \begin{itemize}
 	\item \textbf{Chateagratis.net}: Esta página web permite a los usuarios elegir un apodo (que se escoge antes de
@@ -19,7 +21,7 @@ continuación, analizando sus características principales:
 	\begin{figure}[H]
 		\centering
 		\includegraphics[scale=0.45]{ListaUsuariosChateagratis}
-		\caption{Lista de usuarios conectados en una sala de chat de chateagratis.net.}
+		\caption{Lista de usuarios conectados en una sala de chateagratis.net.}
 		\label{fig:ListaUsuariosChateagratis}
 	\end{figure}
 
@@ -84,14 +86,14 @@ botones para realizar las acciones previamente mencionadas.
 \sect{Opinión sobre el estado del arte}{opinion-sobre-el-estado-del-arte}
 
 Haciendo una comparación entre las diferentes páginas web presentadas en la sección anterior, se
-observa que ninguna de ellas dispone de las siguientes funcionalidades: un sistema de notificación (auditiva)
+observa que ninguna de ellas dispone de las siguientes funcionalidades: un sistema de notificación auditiva
 de mensajes recibidos, creación de grupos de chat personalizados y la posibilidad de enviar archivos
 multimedia en los chats públicos.
 
 \begin{itemize}
 	\item \textbf{Notificación de mensajes}: En estas páginas web, cuando un usuario recibe un mensaje, no se le
-	notifica de forma inmediata, sino que debe estar pendiente del chat para ver si aparece un mensaje nuevo.
-	Esto puede ser molesto para los usuarios que no pueden estar pendientes de la aplicación durante todo el
+	notifica de forma inmediata, sino que debe estar atento al chat para ver si aparece un mensaje nuevo.
+	Esto puede ser molesto para los usuarios que no pueden prestar atención a la aplicación durante todo el
 	tiempo que están conectados.\ Por ello, se ha decidido implementar un sistema de notificación de mensajes,
 	que alerte al usuario cuando recibe un mensaje, de forma que pueda continuar con sus tareas sin tener que
 	estar pendiente de la pantalla.
@@ -104,7 +106,14 @@ multimedia en los chats públicos.
 
 	\item \textbf{Envío de archivos multimedia en los chats públicos}: En estas páginas web
 	de chat, los usuarios pueden enviar distintos tipos de archivos multimedia en los chats privados, pero no en
-	los públicos.\ Esto puede no agradar a todos los usuarios, ya que limita la comunicación entre los usuarios en los
-	chats públicos.\ Por ello, se ha decidido implementar en todos los chats (ya sean públicos o privados) un sistema
-	de envío de archivos multimedia.
+	los públicos.\ Esto puede no satisfacer a todos los usuarios, ya que limita la comunicación entre los usuarios en
+	los chats públicos.\ Por ello, se ha decidido implementar en todos los chats (ya sean públicos o privados) un
+	sistema de envío de archivos multimedia.
+
+	\item \textbf{Filtrado de imágenes inapropiadas}: En estas páginas web, los usuarios pueden enviar imágenes
+	de cualquier tipo, incluyendo pornografía y otros contenidos inapropiados.\ Esto puede ser una molestia para
+	la mayoría de los usuarios, que no quieren ver este tipo de imágenes.\ Por ello, se ha decidido implementar
+	un sistema de filtrado de este tipo de contenido y que impida su envío en los chats.
+	Además, cuando un usuario envíe un cierto número de imágenes pornográficas, se le bloqueará el acceso a la
+	aplicación durante un tiempo determinado.
 \end{itemize}
