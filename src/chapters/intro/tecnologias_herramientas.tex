@@ -3,20 +3,47 @@ A continuación, se presenta una breve descripción de las tecnologías y herram
 se han utilizado para la elaboración de este trabajo:
 
 \begin{itemize}
+	% Backend
 	\item \boldFont{Java}: es el lenguaje de programación utilizado para la implementación de la parte backend de la
 	aplicación.
-	\item \boldFont{Spring Boot}: es un framework de Java que permite la creación de aplicaciones web.
+	\item \boldFont{Spring Boot}: es un framework de Java que permite la creación de aplicaciones web.\ Además del
+	paquete básico, se han utilizado los paquetes \monoFont{Security}, \monoFont{Data JPA},
+	\monoFont{Web}, \monoFont{Websocket}, \monoFont{Mail}, y \monoFont{Test}.
+	\item \boldFont{MySQL}: es un sistema de gestión de bases de datos relacional que ha sido utilizado para el
+	almacenamiento de los datos de la aplicación.
+	\item \boldFont{JUnit}: es un framework de Java que permite la realización de pruebas unitarias.
+	\item \boldFont{Mockito}: es otro framework de Java que permite la realización de pruebas unitarias mediante el uso
+	de mocks, que son objetos simulados que facilitan la realización de pruebas independientes.
+	\item \boldFont{Lombok}: es una biblioteca de Java que ayuda a reducir la cantidad de código repetitivo,
+	generando automáticamente los métodos \monoFont{getters} y \monoFont{setters} de las clases, así como los
+	constructores, \monoFont{equals}, \monoFont{hashCode}, etc.
+	\item \boldFont{Logback}: es una biblioteca que permite la creación de logs de forma sencilla.
 	\item \boldFont{Maven}: es un gestor de dependencias de Java que facilita la descarga e integración de las
-	librerías utilizadas en la aplicación.\ El fichero \monoFont{pom.xml} tiene una etiqueta concreta donde se añaden
-	todas las dependencias a utilizar, proporcionando su nombre, versión e identificador.
+	librerías utilizadas en la aplicación.\ El fichero \monoFont{pom.xml} tiene una estructura XML donde se añaden
+	todas las dependencias a utilizar empleando etiquetas concretas, proporcionando su nombre, versión e identificador.
+	% Frontend
+	\item \boldFont{JavaScript}: es el lenguaje de programación utilizado para la implementación de la parte frontend
+	de la aplicación.
 	\item \boldFont{React}: es una biblioteca de JavaScript que permite la creación de interfaces de usuario mediante
 	componentes.
-	\item \boldFont{Vercel}: es un servicio de hosting que permite el despliegue de la parte frontend de la
-	aplicación web.
+	\item \boldFont{Redux}: es una biblioteca de JavaScript que permite la gestión del estado de la aplicación.
+	\item \boldFont{React Router}: es una biblioteca que permite la creación de rutas en aplicaciones React.
+	\item \boldFont{Axios}: es una biblioteca que permite realizar peticiones HTTP desde aplicaciones JavaScript de
+	manera sencilla.
+	\item \boldFont{Material-UI}: es una biblioteca que permite la creación de interfaces utilizando el diseño de
+	Material Design de Google.
+	\item \boldFont{Vite}: es un bundler de JavaScript que permite la creación de aplicaciones web de forma rápida.
+	% Otros
 	\item \boldFont{Git}: es un sistema de control de versiones que ha facilitado el desarrollo de la aplicación desde
 	diferentes ordenadores.
 	\item \boldFont{GitHub}: es una plataforma que permite el almacenamiento de repositorios de Git.
+	\item \boldFont{Vercel}: es un servicio de hosting que permite el despliegue de la parte frontend de la
+	aplicación web.
+	\item \boldFont{AWS S3}: es un servicio de almacenamiento de Amazon que ha permitido el guardado de los ficheros
+	asociados a la aplicación, como los archivos multimedia, historiales de chat, etc.
 	\item \boldFont{IntelliJ IDEA}: es el IDE que ha permitido la implementación de la aplicación de forma completa.
 	Se ha utilizado para la creación de los proyectos de frontend y backend, así como para la
 	elaboración de este documento mediante el uso de \LaTeX.
+	\item \boldFont{Notion}: es una aplicación que ha permitido la organización de las tareas a realizar durante el
+	proyecto.
 \end{itemize}

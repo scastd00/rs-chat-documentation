@@ -1,0 +1,153 @@
+\sect{Pruebas}{pruebas}
+
+En un proyecto software, las pruebas son una parte fundamental del desarrollo, ya que garantiza que el software funciona
+correctamente y se comporta como se espera.\ Además, se asegura que el software no se rompe al añadir nuevas
+funcionalidades o al modificar las existentes.\ Existen varios tipos de pruebas, dependiendo del nivel de abstracción
+al que se realicen.\ En este proyecto se han implementado pruebas unitarias y de integración.
+
+\subsect{Pruebas unitarias}{pruebas-unitarias}
+
+Las pruebas unitarias son aquellas que se realizan sobre la unidad más pequeña de código, que en el caso de este
+proyecto son los métodos.\ Se dividen en dos tipos:
+
+\subsubsect{Pruebas de caja blanca}{pruebas-caja-blanca}
+
+Las pruebas unitarias de caja blanca son un método de diseño de casos de prueba que se basa en la estructura interna
+del código a probar.\ Se centra en la cobertura de las rutas de ejecución del código, es decir, se comprueba que se
+ejecuta cada línea de código al menos una vez.\ Para ello, se realizan diagramas de control flujo de los métodos y se
+analiza la complejidad ciclomática, que es una medida de la complejidad de un programa de
+ordenador.\ Este tipo de grafo es dirigido, en el que los
+nodos representan grupos de instrucciones y las aristas las posibles rutas de ejecución.\ La complejidad ciclomática
+se puede calcular mediante 3 fórmulas diferentes, que son equivalentes:
+
+\begin{itemize}
+	\item $C = R$
+	\item $C = E - N + 2$
+	\item $C = D + 1$
+	\item Donde:
+	\item $C$ es la complejidad ciclomática.
+	\item $R$ es el número de regiones.
+	\item $E$ es el número de aristas.
+	\item $N$ es el número de nodos.
+	\item $D$ es el número de sentencias de decisión.
+\end{itemize}
+
+Cuanto mayor sea la complejidad, más difícil será probar el código y es más probable que contenga errores.
+Por ello, se recomienda que la complejidad ciclomática sea menor o igual que 10, para que sea más fácil de probar~\cite{Cyclomat84:online}
+A continuación, se muestran las pruebas unitarias de caja blanca realizadas para un método que tiene sentencias
+iterativas y condicionales:
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{java}
+				public double probabilityOfClass(NSFWClass nsfwClass) {
+					double probability = 0.0;
+
+					for (NSFWClass value : NSFWClass.values()) {
+						String predictionName = value.name().toLowerCase();
+						probability = this.predictions.get(predictionName).getAsDouble();
+
+						if (value.equals(nsfwClass)) {
+							break;
+						}
+					}
+
+					return probability;
+				}
+	\end{minted}
+	\caption{Método para determinar la clase NSFW asociada a una imagen}
+\end{codeBlock}
+\label{cod:codigo-pruebas-unitarias-caja-blanca}
+
+El análisis de la complejidad ciclomática quedaría de la siguiente forma:
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+		node distance = 1.5cm,
+		auto,
+		font=\scriptsize,
+		every state/.style={circle, draw, minimum size=5mm}
+	]
+		\node (q1) [state, initial] {$1 \left(for\right)$};
+		\node (q2) [state, below right = of q1] {$2$};
+		\node (q3) [state, below = of q2] {$3 \left(if\right)$};
+		\node (q4) [state, below = of q3, accepting] {$4$};
+		\node (r1) [state, below left = of q1, draw=none, text=blue] {$R_1$};
+
+		\path [-stealth]
+		(q1) edge node {} (q2)
+		(q1) edge [draw=none, bend right=15, text=blue] node {$R_2$} (q3)
+		(q2) edge node {} (q3)
+		(q3) edge node [text=green!60!black] {$true$} (q4)
+		(q3) edge [bend left] node[text=red!60!black] {$false$} (q1);
+
+	\end{tikzpicture}
+	\caption{Grafo de control de flujo del método \monoFont{probabilityOfClass}}
+	\label{fig:grafo-control-flujo-pruebas-unitarias-caja-blanca}
+\end{figure}
+
+Los resultados para cada fórmula son los siguientes:
+
+\begin{itemize}
+	\item $C = R = 2$
+	\item $C = E - N + 2 = 4 - 4 + 2 = 2$
+	\item $C = D + 1 = 1 + 1 = 2$
+\end{itemize}
+
+Como se puede observar, el método tiene una complejidad ciclomática de 2, por lo que es fácil de probar.\ Ahora se
+procede a realizar los casos de prueba para que cada línea de código se ejecute al menos una vez:
+
+\begin{enumerate}
+	\item \boldFont{Camino 1}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 4$.
+	\\
+	\underline{Condición}: \monoFont{nsfwClass.name} $=$ \monoFont{value.name}.\\
+	\underline{Caso de prueba}: \monoFont{nsfwClass} $=$ \monoFont{NSFWClass.NEUTRAL}.\\
+	\underline{Descripción}:
+	De esta manera, el valor del parámetro del método es igual al primer valor del enumerado,
+	por lo que se ejecuta la rama \monoFont{true} del condicional y se sale del bucle en la primera iteración.
+
+	\item \boldFont{Camino 2}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 1 \rightarrow 2 \rightarrow 3 \rightarrow 4$.
+	\\
+	\underline{Condición}: \monoFont{nsfwClass.name} $\neq$ \monoFont{value.name}.\\
+	\underline{Caso de prueba}: \monoFont{nsfwClass} $=$ \monoFont{NSFWClass.DRAWINGS}.\\
+	\underline{Descripción}:
+	De esta manera, el valor del parámetro del método es distinto al primer valor del
+	enumerado, por lo que se ejecuta la rama \monoFont{false} del condicional y se vuelve a ejecutar el bucle.
+\end{enumerate}
+\label{itm:casos-prueba-pruebas-unitarias-caja-blanca}
+
+\subsubsect{Pruebas de caja negra}{pruebas-caja-negra}
+
+Las pruebas de caja negra son aquellas que se enfocan en la funcionalidad del programa, sin tener en cuenta su
+implementación interna.\ Para ello, se diseñan casos de prueba que cubran todas las posibles entradas y salidas
+del programa.\ La realización de estas pruebas conlleva la creación de un conjunto de datos de prueba, que se
+organizan en clases (o particiones) de equivalencia y condiciones límite.\ En este caso, se han diseñado los casos de
+prueba usando la técnica de particiones de equivalencia, que consiste en dividir el conjunto de datos de entrada en
+subconjuntos de datos de entrada válidos e inválidos, de tal forma que se garantice que todos los casos de prueba
+se validan una vez.\ A continuación, se muestran las clases de equivalencia definidas para la funcionalidad de
+consultar los emojis en función de su nombre:
+
+\begin{table}
+	\centering
+	\begin{tabularx}{\textwidth}{X*{7}{>{\centering\arraybackslash}X}}
+		\toprule
+		\textbf{Sec.} & \textbf{Condición de entrada} & \textbf{Tipo}     & \textbf{Clases válidas} & \textbf{} & \textbf{Clases No Válidas} & \textbf{} \\
+		\midrule
+		&                               &                   & Entrada                       & Código    & Entrada
+		& Código    \\
+		1             & Nombre de emoji               & Logico            & Cadena vacía                  & CEV
+		<1>    & -                                                             &           \\
+		-             & -                             & Si está, es Valor & Cadena con caracteres válidos & CEV
+		<2>    & Cadena con caracteres válidos pero no existe en base de datos & CENV<1> \\
+		-             & -                             & -                 & -                             & -
+		& Cadena con caracteres no soportados (números, /, ?, !, etc.)  & CENV<2>   \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Definición de las clases de equivalencia}
+	\label{tab:clases-equivalencia-caja-negra}
+\end{table}
+
