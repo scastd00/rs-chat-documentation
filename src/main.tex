@@ -8,7 +8,7 @@
 % Spanish-specific commands
 \usepackage[spanish]{babel}
 % Set the font (output) encodings
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 % Set the input encoding
 \usepackage[utf8]{inputenc}
 \usepackage{extramarks} % Todo: check if this can be removed or not
@@ -31,6 +31,8 @@
 \usepackage[cache=false]{minted}
 \usepackage{pdfpages}
 \usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{array}
 
 \usemintedstyle{manni}
 \usetikzlibrary{automata, arrows.meta, positioning, calc, bending}
@@ -67,6 +69,10 @@
 
 % Change font and line spacing of UML diagrams
 \tikzumlset{font=\fontsize{10pt}{8pt}\selectfont\ttfamily}
+
+% Set the numbering of deeper levels of sections, and the depth of the table of contents
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 
 % Document
 \begin{document}

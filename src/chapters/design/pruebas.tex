@@ -76,11 +76,11 @@ El análisis de la complejidad ciclomática quedaría de la siguiente forma:
 		\node (q2) [state, below right = of q1] {$2$};
 		\node (q3) [state, below = of q2] {$3 \left(if\right)$};
 		\node (q4) [state, below = of q3, accepting] {$4$};
-		\node (r1) [state, below left = of q1, draw=none, text=blue] {$R_1$};
+		\node (r1) [state, below left = of q1, draw=none, text=blue] {$\underline{R_1}$};
 
 		\path [-stealth]
 		(q1) edge node {} (q2)
-		(q1) edge [draw=none, bend right=15, text=blue] node {$R_2$} (q3)
+		(q1) edge [draw=none, bend right=15, text=blue] node {$\underline{R_2}$} (q3)
 		(q2) edge node {} (q3)
 		(q3) edge node [text=green!60!black] {$true$} (q4)
 		(q3) edge [bend left] node[text=red!60!black] {$false$} (q1);
@@ -104,6 +104,7 @@ procede a realizar los casos de prueba para que cada línea de código se ejecut
 \begin{enumerate}
 	\item \boldFont{Camino 1}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 4$.
 	\\
+	\underline{Aristas cubiertas}: $1 \rightarrow 2$, $2 \rightarrow 3$, $3 \rightarrow 4$.\\
 	\underline{Condición}: \monoFont{nsfwClass.name} $=$ \monoFont{value.name}.\\
 	\underline{Caso de prueba}: \monoFont{nsfwClass} $=$ \monoFont{NSFWClass.NEUTRAL}.\\
 	\underline{Descripción}:
@@ -112,6 +113,7 @@ procede a realizar los casos de prueba para que cada línea de código se ejecut
 
 	\item \boldFont{Camino 2}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 1 \rightarrow 2 \rightarrow 3 \rightarrow 4$.
 	\\
+	\underline{Nueva arista cubierta}: $3 \rightarrow 1$.\\
 	\underline{Condición}: \monoFont{nsfwClass.name} $\neq$ \monoFont{value.name}.\\
 	\underline{Caso de prueba}: \monoFont{nsfwClass} $=$ \monoFont{NSFWClass.DRAWINGS}.\\
 	\underline{Descripción}:
@@ -131,23 +133,93 @@ subconjuntos de datos de entrada válidos e inválidos, de tal forma que se gara
 se validan una vez.\ A continuación, se muestran las clases de equivalencia definidas para la funcionalidad de
 consultar los emojis en función de su nombre:
 
-\begin{table}
+
+\begin{table}[H]
 	\centering
-	\begin{tabularx}{\textwidth}{X*{7}{>{\centering\arraybackslash}X}}
-		\toprule
-		\textbf{Sec.} & \textbf{Condición de entrada} & \textbf{Tipo}     & \textbf{Clases válidas} & \textbf{} & \textbf{Clases No Válidas} & \textbf{} \\
-		\midrule
-		&                               &                   & Entrada                       & Código    & Entrada
-		& Código    \\
-		1             & Nombre de emoji               & Logico            & Cadena vacía                  & CEV
-		<1>    & -                                                             &           \\
-		-             & -                             & Si está, es Valor & Cadena con caracteres válidos & CEV
-		<2>    & Cadena con caracteres válidos pero no existe en base de datos & CENV<1> \\
-		-             & -                             & -                 & -                             & -
-		& Cadena con caracteres no soportados (números, /, ?, !, etc.)  & CENV<2>   \\
-		\bottomrule
-	\end{tabularx}
-	\caption{Definición de las clases de equivalencia}
+	\begin{adjustbox}{width=\textwidth}
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multirow{2}{*}{\boldFont{Sec.}} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}
+																   \boldFont{Condición}\\ \boldFont{de entrada}
+			\end{tabular}} & \multirow{2}{*}{\boldFont{Tipo}} & \multicolumn{2}{c|}{\boldFont{Clases válidas}} & \multicolumn{2}{c|}{
+				\boldFont{Clases No Válidas}} \\ \cline{4-7}
+			& &        & \textit{Entrada} & \textit{Código}           & \textit{Entrada} & \textit{Código} \\ \hline
+			& & Lógico & Cadena vacía     & CEV\textless1\textgreater &                  &                 \\ \cline{
+				3-7}
+			\multirow{2}{*}{1} & \multirow{2}{*}{Nombre de emoji} & \multirow{3}{*}{Si está, es Valor} &
+			Cadena con caracteres válidos & CEV\textless2\textgreater & \begin{tabular}[c]{@{}c@{}}
+																			Cadena con caracteres válidos pero \\ no
+																			existe en base de datos
+			\end{tabular} & CENV\textless1\textgreater \\ \cline{4-7}
+			& & & & & \begin{tabular}[c]{@{}c@{}}
+						  Cadena con caracteres no\\ soportados (números, /, ?, !, etc.)
+			\end{tabular} & CENV\textless2\textgreater \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+	\caption{Definición de las clases de equivalencia.}
 	\label{tab:clases-equivalencia-caja-negra}
 \end{table}
 
+\begin{table}[H]
+	\centering
+	\begin{adjustbox}{width=\textwidth}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\multirow{2}{*}{\boldFont{ID CP}} & \multirow{2}{*}{\boldFont{Escenario}} & \boldFont{Condiciones de
+			entrada} & \multirow{2}{*}{\boldFont{Resultado esperado}} \\ \cline{3-3}
+			& & \textit{Nombre de emoji} & \\ \hline
+			CP1 & Escenario 1 & Válida
+			& Lista vacía \\ \hline
+			CP2 & Escenario 1 & Válida & Lista con emojis cuyo
+			nombre contiene la cadena \\ \hline
+			CP3 & Escenario 2 & No Válida
+			& Lista vacía \\ \hline
+			CP4 & Escenario 3 & No Válida & Respuesta HTTP 404 - No
+			emojis found \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+	\caption{Casos de prueba para la funcionalidad de consultar emojis por nombre.}
+	\label{tab:casos-prueba-caja-negra}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{adjustbox}{width=\textwidth}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\multirow{2}{*}{\boldFont{ID CP}} & \multirow{2}{*}{\boldFont{Clases de Equivalencia}} & \boldFont{
+				Condiciones de entrada} &
+			\multirow{2}{*}{\boldFont{Resultado esperado}} \\ \cline{3-3}
+			&                           & \textit{Nombre de emoji}              &    \\ \hline
+			CP1 & CEV\textless1\textgreater & \textquotedblright \textquotedblright & [] \\ \hline
+			CP2 & CEV\textless2\textgreater & \textquotedblright grinning\textquotedblright & [
+			\emoji{grinning-cat} ,
+			\emoji{grinning-cat-with-smiling-eyes} ,
+			\emoji{grinning-face} ,
+			\emoji{grinning-face-with-big-eyes} ,
+			\emoji{grinning-face-with-smiling-eyes} ,
+			\emoji{grinning-face-with-sweat} ,
+			\emoji{grinning-squinting-face}
+			] \\ \hline
+			CP3 & CENV\textless1\textgreater & \textquotedblright emoji\_grin\textquotedblright & 404 - No emojis
+			found \\ \hline
+			CP4 & CENV\textless2\textgreater & \textquotedblright grin2?\textquotedblright & 404 - No emojis
+			found \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+	\caption{Valores para los casos de prueba.}
+	\label{tab:casos-prueba-caja-negra-con-valores}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Código}           & \textbf{Descripción}                 \\ \hline
+		CP                          & Caso de prueba                       \\ \hline
+		CEV\textless N\textgreater  & Clase de equivalencia válida nº N    \\ \hline
+		CENV\textless N\textgreater & Clase de equivalencia no válida nº N \\ \hline
+	\end{tabular}
+	\caption{Nomenclatura utilizada en las tablas de casos de prueba.}
+	\label{tab:nomenclatura-casos-prueba-caja-negra}
+\end{table}
