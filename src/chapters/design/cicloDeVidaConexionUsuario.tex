@@ -1,34 +1,32 @@
 \sect{Ciclo de vida de la conexión de usuarios}{ciclo-de-vida-conexión-usuario}
 
-Cuando un usuario accede a un chat de la aplicación, se inicia una conexión entre el cliente y el servidor a través
-del protocolo de comunicación bidireccional \boldFont{WebSocket}~\cite{RFCWebSocket}.\ Esta conexión se mantiene
-abierta mientras el
-usuario esté en el chat, y se cierra cuando el usuario lo abandona.\ La secuencia de eventos que ocurren durante
-la conexión de un usuario al chat es la siguiente:
+Cuando un usuario accede a la aplicación, se inicia una conexión entre el cliente y el servidor a través
+del protocolo de comunicación bidireccional \boldFont{WebSocket}~\cite{RFCWebSocket}.
+Esta conexión se mantiene abierta mientras el usuario tenga la sesión iniciada en la aplicación, y se cierra cuando
+el usuario termina la sesión.
+La secuencia de eventos que ocurren durante la conexión de un usuario al chat es la siguiente:
 
 \subsect{Frontend}{frontend}
 
 \begin{enumerate}
-	\item Se realiza una solicitud de conexión WebSocket al servidor.
-	\item Se realiza una petición HTTP para comprobar que el usuario puede acceder al chat.\ Esto se realiza para
-	que, en caso de que el usuario introduzca la URL de un chat al que no tiene acceso de forma manual, se le redirija
+	\item Se realiza una solicitud de conexión WebSocket al servidor al iniciar sesión.
+	\item Se recibe la respuesta del servidor, que se acepta si el código de estado HTTP es 101 (código de estado
+	\monoFont{SWITCHING\_PROTOCOLS}) y se crea un temporizador para enviar mensajes de tipo \monoFont{PING\_MESSAGE}
+	cada 30 segundos, manteniendo la conexión activa hasta que el usuario cierre sesión.\ En caso contrario, no se
+	establece la conexión.
+	\item Cuando el usuario desea entrar a un chat, se realiza una petición HTTP para comprobar que puede acceder.
+	Esto se realiza para
+	que, en caso de que el usuario introduzca de forma manual la URL de un chat al que no tiene acceso, se le redirija
 	a la página de inicio de la aplicación.
 	\item Si se confirma que el usuario \boldFont{puede acceder} al chat:
 	\begin{enumerate}
-		\item Se establece la conexión WebSocket.
 		\item Se envía un mensaje de tipo \monoFont{USER\_JOINED} al servidor.
-		\item Se consultan los últimos mensajes del historial de mensajes del chat con el mensaje de tipo
+		\item Se consultan los últimos mensajes del historial del chat con el mensaje de tipo
 		\monoFont{GET\_HISTORY\_MESSAGE}.
 		\item Se realiza una petición de la lista de usuarios activos con un mensaje de tipo
 		\monoFont{ACTIVE\_USERS\_MESSAGE}.
-		\item Se configura un temporizador para mandar un mensaje de tipo \monoFont{PING\_MESSAGE} cada 30 segundos.
-		Esto se realiza para que el servidor no cierre la conexión por inactividad.
 	\end{enumerate}
-	\item Si el usuario \boldFont{no puede acceder} al chat:
-	\begin{enumerate}
-		\item Se cierra la conexión WebSocket, en caso de llegarse a abrir.
-		\item Se redirige al usuario a la página principal.
-	\end{enumerate}
+	\item Si el usuario \boldFont{no puede acceder} al chat, se le redirige a la página principal.
 \end{enumerate}
 \label{itm:frontend-connection-life-cycle}
 
@@ -36,17 +34,15 @@ la conexión de un usuario al chat es la siguiente:
 
 Cuando comienza la ejecución del programa, se indica a Spring Boot que el manejador de mensajes a través de WebSocket
 del servidor es una instancia de la clase \monoFont{WebSocketHandler}, en la ruta
-\quoted{/ws/rschat}.\ Al instanciar esta clase, se crea un objeto \boldFont{chatMap} de tipo
-\monoFont{WebSocketChatMap}, que contiene el atributo
-\monoFont{chats} (ver Diagrama UML~\ref{diagram-WebSocketChatMapClass}).\ Es una tabla de dispersión que contiene los
-chats activos en la aplicación.\ Cada entrada asocia a una cadena de texto (identificador del chat) la instancia de
-un objeto de tipo \monoFont{Chat}.\ El proceso de \boldFont{conexión} al servidor sigue el siguiente flujo de eventos:
+\quoted{/ws/rschat}.\ En esta clase se redefine el método \monoFont{handleTextMessage} de la clase
+\monoFont{AbstractWebSocketHandler} de Spring Boot, que es el encargado de gestionar los mensajes de texto recibidos
+por el servidor.\ El proceso de \boldFont{conexión} al servidor sigue este flujo de eventos:
 
 \begin{enumerate}
 	\item Se establece la conexión WebSocket con el usuario.\ Esto ocurre de forma transparente al programador debido a
 	que la implementación se realiza en el framework de Spring Boot.
-	\item Se recibe el mensaje \monoFont{USER\_JOINED} del cliente y se crea un objeto de tipo \monoFont{WSClient}
-	(formado por la instancia de \monoFont{WebSocketSession} y el \monoFont{WSClientID} del usuario).\ Este nuevo
+	\item Se recibe el mensaje \monoFont{USER\_JOINED} del cliente y se crea un objeto de tipo \monoFont{Client}
+	(formado por la instancia de \monoFont{WebSocketSession} y el \monoFont{ClientID} del usuario).\ Este nuevo
 	objeto se añade a la lista de usuarios conectados al chat.
 	\begin{enumerate}
 		\item Si el usuario es el primero que se ha conectado al chat, se crea uno nuevo, guardándose en la lista de
@@ -67,8 +63,8 @@ Y el proceso de \boldFont{desconexión} se realiza como sigue:
 	\item Al eliminar un usuario del chat se pueden dar 2 casos:
 	\begin{enumerate}
 		\item Si el usuario es el último que se ha desconectado del chat, se elimina el chat de la tabla de dispersión
-		\monoFont{chats}.\ Cuando esto ocurre, el historial de mensajes del chat que se haya registrado desde que se
-		inició, se envía al almacenamiento en la nube.
+		\monoFont{chats}.\ Antes de que esto ocurra, el historial de mensajes del chat que se haya registrado desde
+		que se inició se envía al almacenamiento en la nube.
 		\item Si no, se elimina el usuario de la lista de usuarios del chat.
 	\end{enumerate}
 	\item Se cierra la conexión WebSocket con el usuario, de forma transparente al programador (al igual que la
@@ -79,28 +75,31 @@ Y el proceso de \boldFont{desconexión} se realiza como sigue:
 	\centering
 
 	\begin{tikzpicture}
-		\umlclass{WebSocketChatMap}{
-			-- Map~<String, Chat>~ chats
+		\umlclass{ChatManagement}{
+			- chats: Map<String, Chat>
 		}{
-			-- createChat(String): void \\
-			-- chatExists(String): boolean \\
-			-- getClientsOf(String): List~<WSClient> \\
-			-- saveMessage(String, String): void \\
-			+ getClient(WSClientID): WSClient \\
-			+ addClientToChat(WSClient): void \\
-			+ removeClientFromChat(WSClientID): void \\
-			+ broadcastToSingleChat(String, String): void \\
-			+ broadcastToSingleChatAndExcludeClient(WSClientID, String): void \\
+			- chatExists(String): boolean \\
+			+ addClientToChat(Client): void \\
+			+ removeClientFromChat(ClientID): void \\
+			+ broadcastToSingleChatAndSave(String, String): void \\
+			+ broadcastToSingleChatWithoutSaving(String, String): void \\
+			+ broadcastToSingleChatExcludeClientAndSave(String, ClientID): void \\
+			+ broadcastToSingleChatExcludeClientWithoutSaving(String, ClientID): void \\
 			+ totalBroadcast(String): void \\
-			+ getUsernamesOfChat(String): List~<String> \\
-			-- saveAllToS3(): void \\
-			-- deleteNullUsers(): void
+			+ mentionUser(String, String, String): void \\
+			+ getActiveUsernamesOfChat(String): List<String> \\
+			+ close(): void \\
+			+ setClientAway(ClientID): void \\
+			+ setClientActive(ClientID): void \\
+			+ sendNotificationTo(String, String): void \\
+			- saveAllToS3(): void \\
+			- deleteUnwantedUsers(): void
 		}{}
-		\umlnote[y=-5.5,width=8.5cm]{WebSocketChatMap}{
+		\umlnote[y=-7,width=8.5cm]{ChatManagement}{
 			Los dos últimos métodos se ejecutan de manera periódica cada 10 y 3 minutos respectivamente.
 		}{}
 	\end{tikzpicture}
 
-	\caption{Clase \monoFont{Chat} para almacenar los usuarios activos}
-	\label{diagram-WebSocketChatMapClass}
+	\caption{Clase \monoFont{ChatManagement} para la gestión de los chats.}
+	\label{diagram-ChatManagementClass}
 \end{umlDiagram}

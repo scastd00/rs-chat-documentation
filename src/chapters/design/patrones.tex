@@ -1,7 +1,8 @@
 \sect{Patrones de diseño}{design-patterns}
 
-\textit{Un patrón de diseño es una solución que se puede aplicar a diferentes contextos y que se
-puede reutilizar en diferentes proyectos.} \\
+\textit{Un patrón de diseño es una solución que se aplica para resolver problemas comunes en el
+diseño de software}~\cite{designPatternDefinition}.
+Actúan como plantillas que se pueden personalizar para resolver un problema concreto.
 Hay varias categorías de patrones de diseño, cada una con una finalidad diferente~\cite{designPatternClassification}:
 \begin{itemize}
 	\item \textbf{Patrones de creación}: se utilizan para crear objetos de una forma flexible y reutilizando código
@@ -9,10 +10,11 @@ Hay varias categorías de patrones de diseño, cada una con una finalidad difere
 	\item \textbf{Patrones estructurales}: se utilizan para convertir clases y objetos en estructuras más complejas.
 	\item \textbf{Patrones de comportamiento}: se utilizan para definir la interacción entre objetos.
 \end{itemize}
-\label{itm:categorías-patrones}
+\label{itm:categorias-patrones}
 
-En este proyecto se han utilizado varios patrones de diseño, para permitir una mejor escalabilidad, mantenibilidad y
-reutilización del código.\ A continuación se detalla la siguiente información de los patrones utilizados:
+En este proyecto se han utilizado varios patrones de diseño, para permitir una mejor
+\boldFont{escalabilidad}, \boldFont{mantenibilidad} y \boldFont{reutilización} del código.
+A continuación, se detalla la información que se incluye de los patrones utilizados:
 \begin{itemize}
 	\item Definición / categoría.
 	\item Explicación de cómo se ha implementado en el proyecto.
@@ -23,7 +25,7 @@ reutilización del código.\ A continuación se detalla la siguiente informació
 
 \subsect{Builder}{builder}
 Es un patrón de \boldFont{creación} que permite instanciar objetos complejos de una forma sencilla.\ Se ha creado una
-interfaz (\monoFont{Builder}) genérica para su reutilización en caso de ser necesaria para cualquier otra clase.
+interfaz genérica (\monoFont{Builder}) para su reutilización en caso de ser necesaria para cualquier otra clase.
 Esta interfaz define el método \monoFont{build()} que devolverá la instancia de un objeto con los datos establecidos
 previamente.\ El diagrama UML del patrón implementado es el siguiente:
 
@@ -34,8 +36,8 @@ previamente.\ El diagrama UML del patrón implementado es el siguiente:
 			+ build(): Object
 		}{}
 		\umlclass[y=-1]{JsonMessageWrapper}{
-			-- rawPayload: String \\
-			-- parsedPayload: JsonObject
+			- rawPayload: String \\
+			- parsedPayload: JsonObject
 		}{
 			+ getRawPayload(): String \\
 			+ getParsedPayload(): JsonObject \\
@@ -48,11 +50,16 @@ previamente.\ El diagrama UML del patrón implementado es el siguiente:
 			+ date(): long \\
 			+ token(): String \\
 			+ content(): String \\
+			+ updateDateTime(): void \\
+			+ setContent(String): void \\
+			+ toString(): String \\
+			\umlstatic{+ fromString(String): JsonMessageWrapper} \\
+			+ correctStructure(): boolean \\
 			+ builder(): BuilderImpl
 		}{}
 		\umlclass[x=-8,y=-3]{BuilderImpl}{
-			-- headers: JsonObject \\
-			-- body: JsonObject
+			- headers: JsonObject \\
+			- body: JsonObject
 		}{
 			+ username(String): BuilderImpl \\
 			+ chatId(String): BuilderImpl \\
@@ -76,17 +83,14 @@ momento.\ Esta clase es la encargada de encapsular los mensajes que se envían a
 
 
 \subsect{Singleton}{singleton}
-También es un patrón de \boldFont{creación} y se emplea para garantizar que una clase concreta tenga una única
-instancia y
-proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación, se utiliza en
-ciertas clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo \monoFont{/login} con el
-método POST).\ Estas últimas son clases internas de \monoFont{Routes.java} y los nombres dependen del método HTTP que
-se debe utilizar para realizar una petición a una ruta específica.
+También es un patrón de \boldFont{creación}.\ Se emplea para garantizar que una clase concreta tenga una única
+instancia y proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación,
+se utiliza en ciertas clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo,
+\monoFont{/login} con el método POST).\ Estas últimas son clases internas de \monoFont{Routes.java} y los nombres
+dependen del método HTTP que se debe utilizar para realizar una petición a una ruta específica.
 
 \begin{table}[H]
 	\centering
-	\caption{Relación entre método HTTP y ruta.}
-	\label{tab:routes}
 	\begin{tabular}{|c|c|}
 		\hline
 		Método HTTP & Clase de la ruta       \\
@@ -97,6 +101,8 @@ se debe utilizar para realizar una petición a una ruta específica.
 		DELETE        & \monoFont{DeleteRoute} \\
 		\hline
 	\end{tabular}
+	\caption{Relación entre método HTTP y ruta.}
+	\label{tab:routes}
 \end{table}
 
 \begin{umlDiagram}
@@ -104,10 +110,11 @@ se debe utilizar para realizar una petición a una ruta específica.
 	\scalebox{0.8} {
 		\begin{tikzpicture}
 			\umlclass{Routes}{
-				\umlstatic{-- V\_1: String = \str{/api/v1}} \\
+				\umlstatic{- V\_1: String = \str{/api/v1}} \\
 				\umlstatic{+ ROOT\_URL: String = \str{/}} \\
 				\umlstatic{+ ALL\_ROUTES: String = \str{/**}} \\
-				\umlstatic{+ REFRESH\_TOKEN\_URL: String = \str{/api/v1/token/refresh}} \\
+				\umlstatic{+ ACTUATOR\_URL: String = \str{/actuator/prometheus}} \\
+				\umlstatic{+ TEST\_URL: String = \str{/api/v1/test}} \\
 				\umlstatic{+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}}
 			}{}{}
 
@@ -150,67 +157,35 @@ se debe utilizar para realizar una petición a una ruta específica.
 	\caption{Patrón Singleton empleado en la aplicación.}
 \end{umlDiagram}
 
-Se han utilizado diferentes formas de acceso a la instancia de las clases.\ En el caso de las clases que asocian rutas a
-métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método estático para
-obtener la instancia de la clase.
+Se han utilizado diferentes formas de acceso a las instancias de las clases.\ En el caso de las que asocian
+rutas a métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método
+estático para obtener la instancia de la clase.
 
 \subsect{Strategy}{strategy}
 Este patrón de \boldFont{comportamiento} se utiliza para encapsular un algoritmo dentro de una clase, de forma que
 pueda ser intercambiado por otro algoritmo en tiempo de ejecución.\ En la aplicación, se emplea para encapsular el
 proceso de manejo de los mensajes que se envían entre los usuarios.\ Existen varias clases que se encargan de
 realizarlo, por lo que todas ellas implementan la interfaz \monoFont{MessageStrategy}, que define el método
-\monoFont{handle(...)}, encargado de realizar el procesamiento del mensaje y recibe 3 parámetros:
+\monoFont{handle(MessageHandlingDTO)}, encargado de realizar el procesamiento del mensaje.\ Este método recibe un
+parámetro de tipo \monoFont{MessageHandlingDTO}, que contiene la información necesaria para realizar el procesamiento
+del mensaje:
 
 \begin{itemize}
 	\item El mensaje que se debe manejar.
-	\item La lista con todos los chats para determinar al que se debe enviar el mensaje.
-	\item Otros datos que pueden ser necesarios para el manejo del mensaje.\ Dependiendo de la clase, este parámetro
+	\item Otros datos que puedan ser necesarios para el manejo del mensaje.\ Dependiendo de la clase, este parámetro
 	puede contener más o menos datos.
 \end{itemize}
 \label{itm:parametershandlestrategy}
 
-La relación entre el tipo de mensaje y las clases encargadas de procesarlo, que implementan esta interfaz, son las
-siguientes:
-
-\begin{table}[H]
-	\centering
-	\caption{Relación Mensaje - Estrategia}
-	\label{tab:messageStrategyRelationship}
-
-	\begin{tabular}{|c|c|}
-		\hline
-		\textbf{Mensaje}              & \textbf{Clase de la estrategia} \\
-		\hline
-		\texttt{USER\_JOINED}           & \monoFont{UserJoinedStrategy}   \\
-		\hline
-		\texttt{USER\_LEFT}             & \monoFont{UserLeftStrategy}     \\
-		\hline
-		\texttt{TEXT\_MESSAGE}          & \monoFont{TextMessageStrategy}  \\
-		\hline
-		\texttt{IMAGE\_MESSAGE}         & \monoFont{ImageMessageStrategy} \\
-		\hline
-		\texttt{AUDIO\_MESSAGE}         & \monoFont{AudioMessageStrategy} \\
-		\hline
-		\texttt{VIDEO\_MESSAGE}         & \monoFont{VideoMessageStrategy} \\
-		\hline
-		\texttt{ACTIVE\_USERS\_MESSAGE} & \monoFont{ActiveUsersStrategy}  \\
-		\hline
-		\texttt{GET\_HISTORY\_MESSAGE}  & \monoFont{GetHistoryStrategy}   \\
-		\hline
-		\texttt{ERROR\_MESSAGE}         & \monoFont{ErrorMessageStrategy} \\
-		\hline
-		\texttt{PING\_MESSAGE}          & \monoFont{PingStrategy}         \\
-		\hline
-	\end{tabular}
-\end{table}
-
-A continuación se muestra el diagrama UML de la interfaz \monoFont{MessageStrategy}:
+La relación entre el tipo de mensaje y las clases encargadas de procesarlo se pueden ver en la
+tabla~\ref{tab:messageStrategyRelationship}.
+%% Iría aquí la tabla, pero queda un trozo en blanco muy grande si la pongo aquí.
 
 \begin{umlDiagram}
 	\centering
 	\begin{tikzpicture}
 		\umlinterface[x=0,y=0]{MessageStrategy}{}{
-			+ handle(JsonMessageWrapper, WebSocketChatMap, Map<String, Object>): void
+			+ handle(MessageHandlingDTO): void
 		}{}
 	\end{tikzpicture}
 
@@ -219,7 +194,37 @@ A continuación se muestra el diagrama UML de la interfaz \monoFont{MessageStrat
 
 Este patrón se ha utilizado para simplificar el manejo de los mensajes recibidos en el servidor y para que sea más
 fácil de extender.\ En el caso de que se desee agregar un nuevo tipo de mensaje, se debe crear una nueva clase que
-implemente la interfaz \monoFont{MessageStrategy} y agregarla a la lista de estrategias que se encuentran en la
-clase \monoFont{WebSocketHandler}.\ Esta clase es la encargada de determinar qué estrategia se debe utilizar para
-manejar el mensaje.\ Para esto, se utiliza el método \monoFont{decideStrategy(receivedMessageType: WSMessage)} que
-recibe como parámetro el tipo mensaje y devuelve la estrategia que se debe utilizar para manejar el mensaje.
+implemente la interfaz \monoFont{MessageStrategy} y agregarla a la lista de estrategias, que se encuentra en la
+clase \monoFont{MessageStrategyMappings}.\ Esta clase es la encargada de determinar qué estrategia se debe utilizar para
+manejar el mensaje.\ Para esto, se utiliza el método \monoFont{decideStrategy(receivedMessageType: Message)} que
+recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe utilizar para manejarlo.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Mensaje}              & \textbf{Clase de la estrategia}       \\ \hline
+		\texttt{USER\_CONNECTED}        & \monoFont{UserConnectedStrategy}      \\ \hline
+		\texttt{USER\_DISCONNECTED}     & \monoFont{UserDisconnectedStrategy}   \\ \hline
+		\texttt{USER\_TYPING}           & \monoFont{UserTypingStrategy}         \\ \hline
+		\texttt{USER\_STOPPED\_TYPING}  & \monoFont{UserStoppedTypingStrategy}  \\ \hline
+		\texttt{USER\_JOINED}           & \monoFont{UserJoinedStrategy}         \\ \hline
+		\texttt{USER\_LEFT}             & \monoFont{UserLeftStrategy}           \\ \hline
+		\texttt{TEXT\_MESSAGE}          & \monoFont{TextMessageStrategy}        \\ \hline
+		\texttt{IMAGE\_MESSAGE}         & \monoFont{ImageMessageStrategy}       \\ \hline
+		\texttt{AUDIO\_MESSAGE}         & \monoFont{AudioMessageStrategy}       \\ \hline
+		\texttt{VIDEO\_MESSAGE}         & \monoFont{VideoMessageStrategy}       \\ \hline
+		\texttt{PDF\_MESSAGE}           & \monoFont{PdfMessageStrategy}         \\ \hline
+		\texttt{TEXT\_DOC\_MESSAGE}     & \monoFont{TextDocMessageStrategy}     \\ \hline
+		\texttt{PARSEABLE\_MESSAGE}     & \monoFont{ParseableMessageStrategy}   \\ \hline
+		\texttt{ACTIVE\_USERS\_MESSAGE} & \monoFont{ActiveUsersStrategy}        \\ \hline
+		\texttt{GET\_HISTORY\_MESSAGE}  & \monoFont{GetHistoryStrategy}         \\ \hline
+		\texttt{INFO\_MESSAGE}          & \monoFont{InfoMessageStrategy}        \\ \hline
+		\texttt{PING\_MESSAGE}          & \monoFont{PingStrategy}               \\ \hline
+		\texttt{ERROR\_MESSAGE}         & \monoFont{ErrorMessageStrategy}       \\ \hline
+		\texttt{RESTART\_MESSAGE}       & \monoFont{RestartMessageStrategy}     \\ \hline
+		\texttt{MAINTENANCE\_MESSAGE}   & \monoFont{MaintenanceMessageStrategy} \\ \hline
+	\end{tabular}
+	\caption{Relación Mensaje - Estrategia}
+	\label{tab:messageStrategyRelationship}
+\end{table}
