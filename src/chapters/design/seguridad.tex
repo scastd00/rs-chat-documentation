@@ -20,11 +20,22 @@ establecido las medidas de seguridad que se detallan a continuación:
 	clave privada del cliente.
 
 	\item \textbf{Configuración del servidor web}: Se ha limitado la redirección de puertos desde el router hasta el
-	servidor web, de forma que únicamente se puede acceder al servidor desde el puerto 22 (ssh), 4040 (aplicación
-	en entorno de producción).\ Además, se ha configurado el servidor web
-	para que únicamente se pueda acceder mediante el protocolo https, y no mediante el protocolo http, haciendo que
-	los usuarios sean redirigidos automáticamente a https.
+	servidor web, de forma que únicamente se puede acceder a los siguientes puertos:
+
+	\begin{itemize}
+		\item \boldFont{22}: puerto de ssh.
+		\item \boldFont{80}: puerto de http.
+		\item \boldFont{4040}: puerto de la aplicación en entorno de producción.
+		\item \boldFont{4041}: puerto de la base de datos de la aplicación.
+		\item \boldFont{4042}: puerto del servicio NSFW\@.
+		\item \boldFont{4046}: puerto del panel de administración de Grafana.
+	\end{itemize}
+
+	Además, se ha configurado el servidor web para que únicamente se pueda acceder mediante el protocolo
+	https, y no mediante http, haciendo que los usuarios sean redirigidos automáticamente a https.
 
 	\item \textbf{Configuración de la base de datos}: La base de datos solo es accesible desde el propio servidor web,
-	por lo que el acceso está restringido a la red interna.
+	por lo que el acceso está restringido a la red interna.\ Para poder conectarse a la base de datos desde el
+	exterior, se debe utilizar la clave ssh del servidor web, de forma que se accede este y, desde ahí, se
+	puede acceder a la base de datos.
 \end{itemize}

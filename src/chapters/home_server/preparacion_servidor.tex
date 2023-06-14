@@ -1,6 +1,6 @@
 \sect{Preparación del servidor}{server_preparation}
 Cuando se ha recibido el ordenador, se han seguido una serie de pasos para configurarlo de la manera más segura posible,
-ya que se va a utilizar para alojar el backend una aplicación web.\ Estos pasos se describen a continuación.
+ya que se va a utilizar para alojar el backend de una aplicación web.
 
 \subsect{Instalación del sistema operativo}{os_installation}
 El sistema operativo que se ha instalado en el ordenador es \boldFont{Ubuntu Server 20.04 LTS}.\ Se ha escogido esta
@@ -13,7 +13,7 @@ siguientes:
 \begin{itemize}
 	% Todo: lo genera Copilot, poner bibliografía de algo y corregir
 	\item \boldFont{OpenSSH}: el protocolo \boldFont{ssh} permite establecer conexiones seguras entre dos
-	ordenadores.\ Se ha configurado esta herramienta para que se pueda acceder a él mediante un par de claves
+	ordenadores.\ Se ha configurado esta herramienta para que se pueda acceder al servidor mediante un par de claves
 	(pública/privada), eliminando la posibilidad de acceder mediante una contraseña.\ Esto último se realiza para
 	evitar que se pueda establecer una conexión con él de forma no autorizada.\ De esta manera, los únicos usuarios
 	que pueden acceder al servidor son aquellos que tienen la clave privada asociada a la clave pública registrada en
@@ -25,6 +25,9 @@ siguientes:
 %	cuando se detectan actualizaciones de seguridad.
 	\item \boldFont{certbot}: es un servicio que permite obtener certificados SSL y configurarlos automáticamente en el
 	servidor web.
+	\item \boldFont{zsh}: es un intérprete de comandos que permite personalizar la terminal~\cite{zsh-def}.
+	\item \boldFont{oh-my-zsh}: es un framework para personalizar la terminal utilizando colores, temas,
+	etc~\cite{oh-my-zsh-def}.
 \end{itemize}
 \label{itm:os_packages}
 
@@ -32,12 +35,12 @@ siguientes:
 El ordenador se ha conectado a la red mediante un cable Ethernet para una mejor comunicación entre sistemas.\
 En la configuración del router, se ha asignado una dirección IP estática (dentro de la red local) al
 ordenador para que siempre tenga la misma dirección IP.\ Se ha contactado con el proveedor de Internet para consultar
-si sería posible obtener una dirección IP estática para el ordenador, pero no se ha podido conseguir, ya que
-utilizan la tecnología CG-NAT.\ Esto no es un problema ya que existe un servicio llamado \boldFont{DuckDNS} que permite
-asociar una dirección IP de un ordenador a un dominio.\ Para configurar este servicio, se ha seguido la guía de
-instalación que se encuentra en la página web de DuckDNS~\cite{DuckDNSi96:online}.
-Este servicio requiere de una tarea CRON para que se actualice la dirección IP cada 5 minutos.\ Esto se ha realizado con
-un pequeño script en Bash, que envía al servidor de DuckDNS la dirección IP pública del ordenador.
+si sería posible obtener una dirección IP estática para el router, pero no se ha podido conseguir, ya que
+utilizan la tecnología CG-NAT.\ Esto no supone un problema ya que existe un servicio llamado \boldFont{DuckDNS}, que
+permite asociar una dirección IP de un ordenador a un dominio.\ Para configurar este servicio, se ha seguido la guía
+de instalación que se encuentra en su página web~\cite{DuckDNSi96:online}.
+Este servicio requiere de una tarea CRON para que se actualice la dirección IP cada 5 minutos.\ Esto se ha realizado
+con un pequeño script en Bash, que envía al servidor de DuckDNS la dirección IP pública del ordenador.
 
 %\subsect{Configuración del firewall}{firewall_configuration}
 
@@ -50,12 +53,9 @@ Este script se ejecuta de manera manual cada vez que se quiere actualizar la apl
 tareas:
 \begin{itemize}
 	\item Actualiza el código fuente de la aplicación.
-	\item Instala las dependencias y compila el código fuente.
-	\item Exporta las variables de entorno.
-	\item Ejecuta la aplicación: para que se ejecute la nueva versión de la aplicación, se manda la señal
-	\monoFont{TERM} a todos los procesos que estén en escucha por los puertos que se necesitan para la
-	aplicación (\boldFont{4040} - Producción), configurados en ficheros \monoFont{.env}.\ Esto provoca la terminación
-	los procesos que estén escuchando por esos puertos.
+	\item Crea la imagen de Docker, instalando las dependencias necesarias y compilando el código fuente.
+	\item Crea los contenedores Docker especificados en el fichero \monoFont{docker-compose.yaml} y los ejecuta
+	en segundo plano.
 \end{itemize}
 \label{itm:script_tasks}
 

@@ -15,7 +15,7 @@ proyecto son los métodos.\ Se dividen en dos tipos:
 Las pruebas unitarias de caja blanca son un método de diseño de casos de prueba que se basa en la estructura interna
 del código a probar.\ Se centra en la cobertura de las rutas de ejecución del código, es decir, se comprueba que se
 ejecuta cada línea de código al menos una vez.\ Para ello, se realizan diagramas de control flujo de los métodos y se
-analiza la complejidad ciclomática, que es una medida de la complejidad de un programa de
+analiza la \boldFont{complejidad ciclomática}, que es una medida de la complejidad de un programa de
 ordenador.\ Este tipo de grafo es dirigido, en el que los
 nodos representan grupos de instrucciones y las aristas las posibles rutas de ejecución.\ La complejidad ciclomática
 se puede calcular mediante 3 fórmulas diferentes, que son equivalentes:
@@ -33,9 +33,9 @@ se puede calcular mediante 3 fórmulas diferentes, que son equivalentes:
 \end{itemize}
 
 Cuanto mayor sea la complejidad, más difícil será probar el código y es más probable que contenga errores.
-Por ello, se recomienda que la complejidad ciclomática sea menor o igual que 10, para que sea más fácil de probar~\cite{Cyclomat84:online}
-A continuación, se muestran las pruebas unitarias de caja blanca realizadas para un método que tiene sentencias
-iterativas y condicionales:
+Por ello, se recomienda que la complejidad ciclomática sea menor o igual que 10, para que sea más fácil de
+probar~\cite{Cyclomat84:online}.\ A continuación, se muestran las pruebas unitarias de caja blanca
+realizadas para un método que tiene sentencias iterativas y condicionales:
 
 \begin{codeBlock}
 	\begin{minted}[
@@ -125,14 +125,15 @@ procede a realizar los casos de prueba para que cada línea de código se ejecut
 \subsubsect{Pruebas de caja negra}{pruebas-caja-negra}
 
 Las pruebas de caja negra son aquellas que se enfocan en la funcionalidad del programa, sin tener en cuenta su
-implementación interna.\ Para ello, se diseñan casos de prueba que cubran todas las posibles entradas y salidas
-del programa.\ La realización de estas pruebas conlleva la creación de un conjunto de datos de prueba, que se
-organizan en clases (o particiones) de equivalencia y condiciones límite.\ En este caso, se han diseñado los casos de
+implementación interna.\ Para ello, se diseñan casos de prueba que cubran todas las posibles
+\boldFont{entradas y salidas} del programa.
+La realización de estas pruebas conlleva la creación de un conjunto de datos de prueba, que se
+organizan en \boldFont{clases de equivalencia} (o particiones de equivalencia) y
+\boldFont{condiciones límite}.\ En este caso, se han diseñado los casos de
 prueba usando la técnica de particiones de equivalencia, que consiste en dividir el conjunto de datos de entrada en
 subconjuntos de datos de entrada válidos e inválidos, de tal forma que se garantice que todos los casos de prueba
 se validan una vez.\ A continuación, se muestran las clases de equivalencia definidas para la funcionalidad de
 consultar los emojis en función de su nombre:
-
 
 \begin{table}[H]
 	\centering
