@@ -277,3 +277,77 @@ asociada a cada traza:
 	\label{cod:promtail-regexp-container-name}
 \end{codeBlock}
 
+\subsect{NSFWPY}{nsfwpy}
+NSFWPY es un detector de contenido no seguro para el trabajo (NSFW, por sus siglas en inglés), que se ha utilizado para
+detectar imágenes inapropiadas en los mensajes de los usuarios.\ Es un programa escrito en Python, que consiste en
+un pequeño servidor HTTP (utilizando Flask) que recibe una imagen en formato \monoFont{base64} y devuelve un JSON con
+la predicción de la imagen.\ Para realizar la predicción, se utiliza el modelo de inteligencia artificial
+\href{https://github.com/GantMan/nsfw_model}{\textit{GantMan/nsfw\_model}}~\cite{nsfw-model-repo},
+que está pre-entrenado con imágenes de contenido NSFW y SFW (seguro para el trabajo).\ El modelo devuelve una
+predicción de la clase a la que pertenece la imagen, con una probabilidad entre 0 y 1, siendo 0 la probabilidad de
+que la imagen sea SFW y 1 la probabilidad de que la imagen sea NSFW\@.\ El modelo está entrenado para detectar 5
+clases de imágenes NSFW:
+\begin{itemize}
+	\item Drawings (Dibujos): Imágenes de dibujos animados o hechos a mano.
+	\item Hentai (Manga): Imágenes de manga o anime con contenido sexual.
+	\item Neutral: Imágenes neutrales.
+	\item Porn (Pornografía): Imágenes que tiene contenido pornográfico.
+	\item Sexy (Sensual): Imágenes que tienen un tono sensual.
+\end{itemize}
+
+Para que la aplicación pueda utilizar el detector NSFWPY, se ha creado un nuevo servicio en el fichero
+\monoFont{docker-compose.yaml}, que se encarga de ejecutar el programa de Python con el detector, y se ha añadido
+una nueva ruta en la API de RSChat, que se encarga de llamar al detector NSFWPY\@.
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{yaml}
+  nsfwpy:
+    image: nsfwpy:latest
+    container_name: nsfwpy
+    ports:
+      - "4042:4042"
+    networks:
+      - rschat-net
+    healthcheck:
+      test: curl -f http://localhost:4042/api/v1/health -s > /dev/null || exit 1
+      interval: 2m
+      timeout: 10s
+      retries: 3
+	\end{minted}
+	\caption{Servicio de NSFWPY para la detección de imágenes NSFW.}
+	\label{cod:nsfw-docker-compose}
+\end{codeBlock}
+
+Este modelo se ha conocido a través a la página web \href{https://nsfwjs.com/}{NSFWJS}~\cite{nsfwjs}, que lo utiliza
+para el análisis de las imágenes desde el propio navegador del usuario, sin necesidad de enviarlas a un servidor.
+La web permite probar el modelo con imágenes que se pueden arrastrar y soltar en la página, y muestra la
+predicción del modelo para cada una de ellas.\ Las figuras~\ref{fig:nsfwjs-drawing} y~\ref{fig:nsfwjs-porn} muestran
+dos ejemplos de predicción del modelo para dos imágenes diferentes.
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[c]{0.46\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{nsfwjs-drawing}
+		\caption{Predicción para una\\ imagen de fondo de pantalla.}
+		\label{fig:nsfwjs-drawing}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[c]{0.46\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{nsfwjs-porn}
+		\caption{Predicción para una\\ imagen pornográfica.}
+		\label{fig:nsfwjs-porn}
+	\end{minipage}
+%	\caption{Ejemplos de predicción en la página web NSFWJS.}
+	\label{fig:nsfwjs-example}
+\end{figure}
+
+Como se puede observar en las imágenes, la web muestra la predicción del modelo para cada una de las clases como
+un porcentaje.\ En el caso de la imagen de la izquierda, se puede ver que el modelo ha predicho que la imagen es
+un dibujo con un 55.40\% de probabilidad, mientras que en la imagen de la derecha, el modelo ha predicho que
+la imagen es pornográfica con un 99.22\% de probabilidad.
