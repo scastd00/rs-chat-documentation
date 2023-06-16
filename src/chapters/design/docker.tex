@@ -40,8 +40,15 @@ los siguientes:
 	\item \monoFont{grafana-storage}: contiene la configuración de Grafana.
 \end{itemize}
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{res/images/InfraestructuraDockerRSChat}
+	\caption{Diagrama de relación entre los contenedores Docker utilizados en RS Chat.}
+	\label{fig:docker-container-diagram}
+\end{figure}
+
 A continuación, se mencionan todos los contenedores utilizados para la aplicación junto con una breve descripción de
-cada uno de ellos:
+cada uno de ellos.
 
 	{\footnotesize Nota: los nombres marcados con el símbolo \textsuperscript{\textasteriskcentered} se describirán en
 detalle más adelante.}
@@ -107,6 +114,13 @@ aplicación.\ La lista con las métricas más usadas es la siguiente:
 	\item jvm\_threads\_peak\_threads: número máximo de hilos activos desde que se inició la JVM\@.
 \end{itemize}
 \label{itm:most-used-metrics}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{res/images/cover}
+	\caption{Flujo de datos desde la aplicación Spring Boot hasta Grafana. (Fuente~\cite{prometheus-flow})}
+	\label{fig:prometheus-flow}
+\end{figure}
 
 \subsect{Grafana (Panel de observabilidad)}{grafana}
 Grafana es una solución de código abierto para mostrar las métricas que se recogen de las aplicaciones de una
