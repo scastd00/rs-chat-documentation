@@ -24,6 +24,7 @@ A continuación, se detalla la información que se incluye de los patrones utili
 \label{itm:uso-patrones}
 
 \subsect{Builder}{builder}
+
 Es un patrón de \boldFont{creación} que permite instanciar objetos complejos de una forma sencilla.\ Se ha creado una
 interfaz genérica (\monoFont{Builder}) para su reutilización en caso de ser necesaria para cualquier otra clase.
 Esta interfaz define el método \monoFont{build()} que devolverá la instancia de un objeto con los datos establecidos
@@ -83,6 +84,7 @@ momento.\ Esta clase es la encargada de encapsular los mensajes que se envían a
 
 
 \subsect{Singleton}{singleton}
+
 También es un patrón de \boldFont{creación}.\ Se emplea para garantizar que una clase concreta tenga una única
 instancia y proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación,
 se utiliza en ciertas clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo,
@@ -162,6 +164,7 @@ rutas a métodos HTTP, el modificador de acceso a la instancia es público.\ En 
 estático para obtener la instancia de la clase.
 
 \subsect{Strategy}{strategy}
+
 Este patrón de \boldFont{comportamiento} se utiliza para encapsular un algoritmo dentro de una clase, de forma que
 pueda ser intercambiado por otro algoritmo en tiempo de ejecución.\ En la aplicación, se emplea para encapsular el
 proceso de manejo de los mensajes que se envían entre los usuarios.\ Existen varias clases que se encargan de
@@ -228,3 +231,64 @@ recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe u
 	\caption{Relación Mensaje - Estrategia}
 	\label{tab:messageStrategyRelationship}
 \end{table}
+
+\subsect{Observer}{observer}
+
+Este patrón de \boldFont{comportamiento} permite definir un mecanismo de subscripción para notificar a múltiples
+objetos sobre cualquier evento que le ocurra al objeto que están observando~\cite{Observer19:online}.
+
+En la aplicación, se utiliza para incrementar el contador de mensajes, de cada tipo, que el usuario ha enviado.
+Para esto, se ha creado una clase, \monoFont{MessageEvent}, de la cual heredan las clases que representan los
+diferentes tipos de mensajes que se pueden enviar.
+
+Para la implementación del objeto ``escuchador'', se sobreescriben todos los métodos necesarios de la interfaz
+\monoFont{ApplicationListener}.\ El método \monoFont{onApplicationEvent (event: ApplicationEvent)} es el encargado de
+manejar el evento lanzado, el cual se recibe como parámetro.
+
+\begin{umlDiagram}
+	\centering
+	\begin{tikzpicture}
+		\umlclass[x=0,y=0]{MessageEvent}{
+			- type: String \\
+			- username: String \\
+			\# callback: Function<String, Void>
+		}{
+			+ MessageEvent(source: Object, type: String, username: String) \\
+			+ getType(): String \\
+			+ setType(type: String): void \\
+			+ getUsername(): String \\
+			+ setUsername(username: String): void \\
+			+ getCallback(): Function<String, Void> \\
+			+ setCallback(callback: Function<String, Void>): void
+		}{}
+	\end{tikzpicture}
+
+	\caption{Clase que representa los eventos de envío de mensajes.}
+\end{umlDiagram}
+
+\begin{umlDiagram}
+	\centering
+	\begin{adjustbox}{width=\textwidth}
+		\begin{tikzpicture}
+			\umlclass[x=0,y=-4]{MessageEventListener}{
+				- userBadgeService: UserBadgeService \\
+				- userService: UserService
+			}{
+				+ MessageEventListener(userBadgeService: UserBadgeService, userService: UserService) \\
+				+ onApplicationEvent(event: MessageEvent): void
+			}{}
+
+			\umlinterface[x=0,y=0]{ApplicationListener}{}{
+				+ onApplicationEvent(event: E): void
+			}{}
+
+			\umlimpl{MessageEventListener}{ApplicationListener}
+		\end{tikzpicture}
+	\end{adjustbox}
+
+	\caption{Clase que representa el ``escuchador'' de los eventos de envío de mensajes.}
+\end{umlDiagram}
+
+El uso de este patrón permite que el código sea más mantenible y extensible, ya que se puede agregar un nuevo tipo de
+mensaje sin tener que modificar el código existente.\ Solamente habría que crear una nueva clase que herede de
+\monoFont{MessageEvent} y sobreescribir los métodos necesarios.
