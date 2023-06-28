@@ -2,6 +2,7 @@
 
 % placement = H means that the float environment will be placed where the \begin{} command is, strictly.
 
+\newlistof{codeBlock}{cod}{Índice de bloques de código}
 \DeclareFloatingEnvironment[
 	fileext = cod,
 	listname = {Índice de bloques de código},
@@ -9,9 +10,20 @@
 	placement = H,
 ]{codeBlock}
 
+\newlistof{umlDiagram}{dia}{Índice de diagramas UML}
 \DeclareFloatingEnvironment[
 	fileext = dia,
 	listname = {Índice de diagramas UML},
 	name = Diagrama UML,
-	placement = H % See docs -> https://www.overleaf.com/learn/latex/Positioning_images_and_tables#The_figure_environment
+	placement = H
+% See docs -> https://www.overleaf.com/learn/latex/Positioning_images_and_tables#The_figure_environment
 ]{umlDiagram}
+
+
+\renewcommand{\cftcodeBlockpresnum}{Código~}
+% leave some space for the title of the code block
+\setlength{\cftcodeBlocknumwidth}{5.5em}
+
+\renewcommand{\cftumlDiagrampresnum}{Diagrama UML~}
+% leave some space for the title of the diagram
+\setlength{\cftumlDiagramnumwidth}{9.5em}

@@ -12,7 +12,7 @@
 % Set the input encoding
 \usepackage[utf8]{inputenc}
 \usepackage{extramarks} % Todo: check if this can be removed or not
-\usepackage[hidelinks]{hyperref} % Automatic links in TOC and hides red border
+\usepackage[hidelinks]{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{csquotes}
@@ -34,6 +34,7 @@
 \usepackage{adjustbox}
 \usepackage{array}
 \usepackage{ragged2e}
+\usepackage{tocloft}
 
 \usemintedstyle{manni}
 \usetikzlibrary{automata, arrows.meta, positioning, calc, bending}
@@ -79,8 +80,11 @@
 \fancypagestyle{plain}{ % Index and chapter pages
 	\fancyhf{} % Clear header and footer
 	\fancyhead[R]{\thepage}
-	\renewcommand{\footrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt} % Remove footer line
 }
+
+\renewcommand{\cftfigfont}{Figura~}
+\renewcommand{\cfttabfont}{Tabla~}
 
 % Document
 \begin{document}
@@ -98,7 +102,7 @@
 	\addcontentsline{toc}{chapter}{\listfigurename}
 
 	\cleardoublepage
-	\renewcommand{\listtablename}{Índice de cuadros y tablas}
+	\renewcommand{\listtablename}{Índice de tablas}
 	\listoftables
 	\addcontentsline{toc}{chapter}{\listtablename}
 
@@ -121,14 +125,14 @@
 	\fancyhead[R]{Página \thepage\ de~\pageref{LastPage}} % Ignore warning
 	\fancyhead[L]{\rightmark}
 	\fancyfoot{} % Clear all footer fields
-	\fancyfoot[R]{Samuel}
+	\fancyfoot[R]{Samuel Castrillo Domínguez}
 	\fancyfoot[L]{
 		\raisebox{-0.4\height}{\includegraphics[scale=0.36]{imageULE}}
 	}
 	\fancypagestyle{plain}{ % Index and chapter pages
 		\fancyhf{} % Clear header and footer
 		\fancyhead[R]{Página \thepage\ de~\pageref{LastPage}}
-		\renewcommand{\footrulewidth}{0pt}
+		\renewcommand{\footrulewidth}{0pt} % Remove footer line
 	}
 
 	\begin{spacing}{1.5}
