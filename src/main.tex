@@ -33,6 +33,7 @@
 \usepackage{multirow}
 \usepackage{adjustbox}
 \usepackage{array}
+\usepackage{ragged2e}
 
 \usemintedstyle{manni}
 \usetikzlibrary{automata, arrows.meta, positioning, calc, bending}
@@ -71,6 +72,16 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
+\fancyhead{} % Clear all header fields
+\fancyhead[R]{\thepage} % Ignore warning
+\fancyhead[L]{\rightmark}
+\fancyfoot{} % Clear all footer fields
+\fancypagestyle{plain}{ % Index and chapter pages
+	\fancyhf{} % Clear header and footer
+	\fancyhead[R]{\thepage}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
 % Document
 \begin{document}
 	\input{cover}
@@ -105,6 +116,20 @@
 
 	\clearpage
 	\pagenumbering{arabic} % Reset to normal numbers from here
+
+	\fancyhead{} % Clear all header fields
+	\fancyhead[R]{Página \thepage\ de~\pageref{LastPage}} % Ignore warning
+	\fancyhead[L]{\rightmark}
+	\fancyfoot{} % Clear all footer fields
+	\fancyfoot[R]{Samuel}
+	\fancyfoot[L]{
+		\raisebox{-0.4\height}{\includegraphics[scale=0.36]{imageULE}}
+	}
+	\fancypagestyle{plain}{ % Index and chapter pages
+		\fancyhf{} % Clear header and footer
+		\fancyhead[R]{Página \thepage\ de~\pageref{LastPage}}
+		\renewcommand{\footrulewidth}{0pt}
+	}
 
 	\begin{spacing}{1.5}
 		\input{chapters/introduccion}
