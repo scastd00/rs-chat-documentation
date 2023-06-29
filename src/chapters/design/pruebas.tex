@@ -72,18 +72,23 @@ El análisis de la complejidad ciclomática quedaría de la siguiente forma:
 		font=\scriptsize,
 		every state/.style={circle, draw, minimum size=5mm}
 	]
-		\node (q1) [state, initial] {$1 \left(for\right)$};
-		\node (q2) [state, below right = of q1] {$2$};
-		\node (q3) [state, below = of q2] {$3 \left(if\right)$};
-		\node (q4) [state, below = of q3, accepting] {$4$};
-		\node (r1) [state, below left = of q1, draw=none, text=blue] {$\underline{R_1}$};
+		\node (q1) [state, initial] {$1 \left( hasNext \right)$};
+		\node (q2) [state, right = of q1] {$2 \left(for\right)$};
+		\node (q3) [state, below right = of q2] {$3$};
+		\node (q4) [state, below = of q3] {$4 \left(if\right)$};
+		\node (q5) [state, below = of q4, accepting] {$5$};
+
+		\node (r1) [state, right = of q3, draw=none, text=blue] {$\underline{R_1}$};
+		\node (r3) [state, left = of q4, draw=none, text=blue] {$\underline{R_3}$};
 
 		\path [-stealth]
-		(q1) edge node {} (q2)
-		(q1) edge [draw=none, bend right=15, text=blue] node {$\underline{R_2}$} (q3)
+		(q1) edge node [text=green!60!black] {$true$} (q2)
+		(q1) edge [bend right = 40] node [text=red!60!black, swap] {$false$} (q5)
 		(q2) edge node {} (q3)
-		(q3) edge node [text=green!60!black] {$true$} (q4)
-		(q3) edge [bend left] node[text=red!60!black] {$false$} (q1);
+		(q2) edge [draw=none, bend right=15, text=blue] node {$\underline{R_2}$} (q4)
+		(q3) edge node {} (q4)
+		(q4) edge node [text=green!60!black] {$true$} (q5)
+		(q4) edge [bend left] node [text=red!60!black] {$false$} (q2);
 
 	\end{tikzpicture}
 	\caption{Grafo de control de flujo del método \monoFont{probabilityOfClass}}
@@ -93,32 +98,42 @@ El análisis de la complejidad ciclomática quedaría de la siguiente forma:
 Los resultados para cada fórmula son los siguientes:
 
 \begin{itemize}
-	\item $C = R = 2$
-	\item $C = E - N + 2 = 4 - 4 + 2 = 2$
-	\item $C = D + 1 = 1 + 1 = 2$
+	\item $C = R = 3$
+	\item $C = E - N + 2 = 6 - 5 + 2 = 3$
+	\item $C = D + 1 = 2 + 1 = 3$
 \end{itemize}
 
-Como se puede observar, el método tiene una complejidad ciclomática de 2, por lo que es fácil de probar.\ Ahora se
+Como se puede observar, el método tiene una complejidad ciclomática de 3, por lo que es fácil de probar.\ Ahora se
 procede a realizar los casos de prueba para que cada línea de código se ejecute al menos una vez:
 
 \begin{enumerate}
-	\item \boldFont{Camino 1}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 4$.
+	\item \boldFont{Camino 1}: $1 \rightarrow 5$.
 	\\
-	\underline{Aristas cubiertas}: $1 \rightarrow 2$, $2 \rightarrow 3$, $3 \rightarrow 4$.\\
+	\underline{Aristas cubiertas}: $1 \rightarrow 5$.\\
+	\underline{Condición}: El enumerado \monoFont{NSFWClass} está vacío.\\
+	\underline{Caso de prueba}: \monoFont{nsfwClass} $=$ \monoFont{null}.\\
+	\underline{Descripción}:
+	Debido a que el enumerado está vacío, no se entra en el bucle y se devuelve el valor por defecto de la variable
+	\monoFont{probability}, que es $0.0$.
+
+	\item \boldFont{Camino 2}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5$.
+	\\
+	\underline{Aristas cubiertas}: $1 \rightarrow 2$, $2 \rightarrow 3$, $3 \rightarrow 4$, $4 \rightarrow 5$.\\
 	\underline{Condición}: \monoFont{nsfwClass.name} $=$ \monoFont{value.name}.\\
 	\underline{Caso de prueba}: \monoFont{nsfwClass} $=$ \monoFont{NSFWClass.NEUTRAL}.\\
 	\underline{Descripción}:
-	De esta manera, el valor del parámetro del método es igual al primer valor del enumerado,
+	El valor del parámetro del método es igual al primer valor del enumerado,
 	por lo que se ejecuta la rama \monoFont{true} del condicional y se sale del bucle en la primera iteración.
 
-	\item \boldFont{Camino 2}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 1 \rightarrow 2 \rightarrow 3 \rightarrow 4$.
+	\item \boldFont{Camino 3}: $1 \rightarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5$.
 	\\
-	\underline{Nueva arista cubierta}: $3 \rightarrow 1$.\\
+	\underline{Nueva arista cubierta}: $4 \rightarrow 2$.\\
 	\underline{Condición}: \monoFont{nsfwClass.name} $\neq$ \monoFont{value.name}.\\
 	\underline{Caso de prueba}: \monoFont{nsfwClass} $=$ \monoFont{NSFWClass.DRAWINGS}.\\
 	\underline{Descripción}:
-	De esta manera, el valor del parámetro del método es distinto al primer valor del
-	enumerado, por lo que se ejecuta la rama \monoFont{false} del condicional y se vuelve a ejecutar el bucle.
+	El valor del parámetro del método es distinto al primer valor del
+	enumerado (en este caso es el segundo), por lo que se ejecuta la rama \monoFont{false} del condicional y se
+	vuelve a ejecutar el bucle, saliendo en la segunda iteración.
 \end{enumerate}
 \label{itm:casos-prueba-pruebas-unitarias-caja-blanca}
 
