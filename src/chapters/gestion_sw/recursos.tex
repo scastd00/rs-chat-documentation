@@ -13,6 +13,7 @@ rol que se ha desempeñado en el desarrollo del proyecto:
 
 \begin{table}[H]
 	\centering
+	\caption{Especificación de recursos y salarios.}
 	\begin{tabular}{lcccc}
 		\toprule
 		\textbf{Recursos} & \textbf{Sal. Anual} & \textbf{Sal. Mensual} & \textbf{Sal. Diario} & \textbf{Sal.
@@ -25,7 +26,6 @@ rol que se ha desempeñado en el desarrollo del proyecto:
 		Técnico de sistemas    & \EUR{24,422} & \EUR{1,744.42} & \EUR{87.22}  & \EUR{10.90} \\
 		\bottomrule
 	\end{tabular}
-	\caption{Especificación de recursos y sueldos.}
 	\label{tab:especificacion_recursos}
 \end{table}
 
@@ -33,10 +33,22 @@ Se ha considerado que la jornada laboral es de 8 horas diarias, 5 días a la sem
 la columna \textit{Sal. anual} se han obtenido del buscador de sueldos de \textit{Indeed}~\cite{SueldosI69:online}
 a fecha 8 de junio de 2023\@.\ Esta web se encarga de calcular el sueldo promedio de los trabajos ofrecidos en España
 para un puesto en concreto.\ El resto de datos se han calculado con las siguientes fórmulas:
+
 \begin{center}
-	$\text{Sal. Mensual} = \frac{\text{Sal. Anual}}{14}$\\
-	$\text{Sal. Diario} = \frac{\text{Sal. Mensual}}{20}$\\
-	$\text{Sal. Hora} = \frac{\text{Sal. Diario}}{8}$
+	\begin{equation}
+		\text{Sal. Mensual} = \frac{\text{Sal. Anual}}{14}
+		\label{eq:salario_mensual}
+	\end{equation}
+
+	\begin{equation}
+		\text{Sal. Diario} = \frac{\text{Sal. Mensual}}{20}
+		\label{eq:salario_diario}
+	\end{equation}
+
+	\begin{equation}
+		\text{Sal. Hora} = \frac{\text{Sal. Diario}}{8}
+		\label{eq:salario_hora}
+	\end{equation}
 \end{center}
 
 \subsect{Asignación de recursos}{asignacion_recursos}
@@ -47,6 +59,7 @@ la pila del producto (ver anexo~\ref{anx:product-backlog-notion}).
 
 \begin{table}[H]
 	\centering
+	\caption{Coste de los recursos.}
 	\begin{tabular}{lccc}
 		\toprule
 		\textbf{Recursos}    & \textbf{Trabajo (horas)} & \textbf{Coste (\euro)} \\
@@ -59,7 +72,6 @@ la pila del producto (ver anexo~\ref{anx:product-backlog-notion}).
 		\bottomrule
 		Totales                & 5000                     & \EUR{69,797.74}        \\
 	\end{tabular}
-	\caption{Coste de los recursos.}
 	\label{tab:coste_recursos}
 \end{table}
 
@@ -72,6 +84,7 @@ software.\ En las siguientes dos tablas se puede observar el desglose de cada un
 
 \begin{table}[H]
 	\centering
+	\caption{Coste del hardware.}
 	\begin{tabular}{lccc}
 		\toprule
 		\textbf{Hardware} & \textbf{Coste (\euro)} & \textbf{Unidades} & \textbf{Total (\euro)} \\
@@ -85,12 +98,12 @@ software.\ En las siguientes dos tablas se puede observar el desglose de cada un
 		\bottomrule
 		Total hardware      & -                      & -                 & \EUR{2,160.88}         \\
 	\end{tabular}
-	\caption{Coste del hardware.}
 	\label{tab:coste_hardware}
 \end{table}
 
 \begin{table}[H]
 	\centering
+	\caption{Coste del software.}
 	\begin{tabular}{lccc}
 		\toprule
 		\textbf{Software} & \textbf{Coste (\euro)} & \textbf{Unidades} & \textbf{Total (\euro)} \\
@@ -103,7 +116,6 @@ software.\ En las siguientes dos tablas se puede observar el desglose de cada un
 		\bottomrule
 		Total software      & -                      & -                 & \EUR{0}                \\
 	\end{tabular}
-	\caption{Coste del software.}
 	\label{tab:coste_software}
 \end{table}
 

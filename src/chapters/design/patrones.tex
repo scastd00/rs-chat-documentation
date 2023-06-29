@@ -93,6 +93,7 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 
 \begin{table}[H]
 	\centering
+	\caption{Relación entre método HTTP y ruta.}
 	\begin{tabular}{|c|c|}
 		\hline
 		Método HTTP & Clase de la ruta       \\
@@ -103,7 +104,6 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 		DELETE        & \monoFont{DeleteRoute} \\
 		\hline
 	\end{tabular}
-	\caption{Relación entre método HTTP y ruta.}
 	\label{tab:routes}
 \end{table}
 
@@ -204,6 +204,7 @@ recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe u
 
 \begin{table}[H]
 	\centering
+	\caption{Relación Mensaje - Estrategia.}
 	\begin{tabular}{|c|c|}
 		\hline
 		\textbf{Mensaje}              & \textbf{Clase de la estrategia}       \\ \hline
@@ -228,7 +229,6 @@ recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe u
 		\texttt{RESTART\_MESSAGE}       & \monoFont{RestartMessageStrategy}     \\ \hline
 		\texttt{MAINTENANCE\_MESSAGE}   & \monoFont{MaintenanceMessageStrategy} \\ \hline
 	\end{tabular}
-	\caption{Relación Mensaje - Estrategia}
 	\label{tab:messageStrategyRelationship}
 \end{table}
 
@@ -247,6 +247,8 @@ manejar el evento lanzado, el cual se recibe como parámetro.
 
 \begin{umlDiagram}
 	\centering
+	\caption{Clase que representa los eventos de envío de mensajes.}
+
 	\begin{tikzpicture}
 		\umlclass[x=0,y=0]{MessageEvent}{
 			- type: String \\
@@ -262,8 +264,6 @@ manejar el evento lanzado, el cual se recibe como parámetro.
 			+ setCallback(callback: Function<String, Void>): void
 		}{}
 	\end{tikzpicture}
-
-	\caption{Clase que representa los eventos de envío de mensajes.}
 \end{umlDiagram}
 
 \begin{umlDiagram}

@@ -18,13 +18,27 @@ ejecuta cada línea de código al menos una vez.\ Para ello, se realizan diagram
 analiza la \boldFont{complejidad ciclomática}, que es una medida de la complejidad de un programa de
 ordenador.\ Este tipo de grafo es dirigido, en el que los
 nodos representan grupos de instrucciones y las aristas las posibles rutas de ejecución.\ La complejidad ciclomática
-se puede calcular mediante 3 fórmulas diferentes, que son equivalentes:
+se puede calcular mediante 3 ecuaciones diferentes, que son equivalentes:
 
+\begin{center}
+	\begin{equation}
+		C = R
+		\label{eq:complejidad-ciclomatica-1}
+	\end{equation}
+
+	\begin{equation}
+		C = E - N + 2
+		\label{eq:complejidad-ciclomatica-2}
+	\end{equation}
+
+	\begin{equation}
+		C = D + 1
+		\label{eq:complejidad-ciclomatica-3}
+	\end{equation}
+\end{center}
+
+Donde:
 \begin{itemize}
-	\item $C = R$
-	\item $C = E - N + 2$
-	\item $C = D + 1$
-	\item Donde:
 	\item $C$ es la complejidad ciclomática.
 	\item $R$ es el número de regiones.
 	\item $E$ es el número de aristas.
@@ -58,7 +72,7 @@ realizadas para un método que tiene sentencias iterativas y condicionales:
 					return probability;
 				}
 	\end{minted}
-	\caption{Método para determinar la clase NSFW asociada a una imagen}
+	\caption{Método para determinar la clase NSFW asociada a una imagen.}
 \end{codeBlock}
 \label{cod:codigo-pruebas-unitarias-caja-blanca}
 
@@ -91,16 +105,16 @@ El análisis de la complejidad ciclomática quedaría de la siguiente forma:
 		(q4) edge [bend left] node [text=red!60!black] {$false$} (q2);
 
 	\end{tikzpicture}
-	\caption{Grafo de control de flujo del método \monoFont{probabilityOfClass}}
+	\caption{Grafo de control de flujo del método \monoFont{probabilityOfClass}.}
 	\label{fig:grafo-control-flujo-pruebas-unitarias-caja-blanca}
 \end{figure}
 
-Los resultados para cada fórmula son los siguientes:
+Los resultados para cada ecuación son los siguientes:
 
 \begin{itemize}
-	\item $C = R = 3$
-	\item $C = E - N + 2 = 6 - 5 + 2 = 3$
-	\item $C = D + 1 = 2 + 1 = 3$
+	\item Ecuación~\ref{eq:complejidad-ciclomatica-1}: $= 3$
+	\item Ecuación~\ref{eq:complejidad-ciclomatica-2}: $= 6 - 5 + 2 = 3$
+	\item Ecuación~\ref{eq:complejidad-ciclomatica-3}: $= 2 + 1 = 3$
 \end{itemize}
 
 Como se puede observar, el método tiene una complejidad ciclomática de 3, por lo que es fácil de probar.\ Ahora se
@@ -152,6 +166,7 @@ consultar los emojis en función de su nombre:
 
 \begin{table}[H]
 	\centering
+	\caption{Definición de las clases de equivalencia.}
 	\begin{adjustbox}{width=\textwidth}
 		\begin{tabular}{|c|c|c|c|c|c|c|}
 			\hline
@@ -172,12 +187,12 @@ consultar los emojis en función de su nombre:
 			\end{tabular} & CENV\textless2\textgreater \\ \hline
 		\end{tabular}
 	\end{adjustbox}
-	\caption{Definición de las clases de equivalencia.}
 	\label{tab:clases-equivalencia-caja-negra}
 \end{table}
 
 \begin{table}[H]
 	\centering
+	\caption{Casos de prueba para la funcionalidad de consultar emojis por nombre.}
 	\begin{adjustbox}{width=\textwidth}
 		\begin{tabular}{|c|c|c|c|}
 			\hline
@@ -194,12 +209,12 @@ consultar los emojis en función de su nombre:
 			emojis found \\ \hline
 		\end{tabular}
 	\end{adjustbox}
-	\caption{Casos de prueba para la funcionalidad de consultar emojis por nombre.}
 	\label{tab:casos-prueba-caja-negra}
 \end{table}
 
 \begin{table}[H]
 	\centering
+	\caption{Valores para los casos de prueba.}
 	\begin{adjustbox}{width=\textwidth}
 		\begin{tabular}{|c|c|c|c|}
 			\hline
@@ -223,12 +238,12 @@ consultar los emojis en función de su nombre:
 			found \\ \hline
 		\end{tabular}
 	\end{adjustbox}
-	\caption{Valores para los casos de prueba.}
 	\label{tab:casos-prueba-caja-negra-con-valores}
 \end{table}
 
 \begin{table}[H]
 	\centering
+	\caption{Nomenclatura utilizada en las tablas de casos de prueba.}
 	\begin{tabular}{|c|c|}
 		\hline
 		\textbf{Código}           & \textbf{Descripción}                 \\ \hline
@@ -236,6 +251,5 @@ consultar los emojis en función de su nombre:
 		CEV\textless N\textgreater  & Clase de equivalencia válida nº N    \\ \hline
 		CENV\textless N\textgreater & Clase de equivalencia no válida nº N \\ \hline
 	\end{tabular}
-	\caption{Nomenclatura utilizada en las tablas de casos de prueba.}
 	\label{tab:nomenclatura-casos-prueba-caja-negra}
 \end{table}
