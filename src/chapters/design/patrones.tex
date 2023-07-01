@@ -33,15 +33,30 @@ previamente.\ El diagrama UML del patrón implementado es el siguiente:
 \begin{umlDiagram}
 	\centering
 	\begin{tikzpicture}
-		\umlinterface[x=-8,y=2]{Builder}{}{
-			+ build(): Object
+		\umlinterface[x=0,y=0]{GenericBuilder}{}{
+			+ build(): T
 		}{}
-		\umlclass[y=-1]{JsonMessageWrapper}{
+		\umlinterface[x=-3,y=-5]{Builder}{}{
+			+ username(String): Builder \\
+			+ chatId(String): Builder \\
+			+ sessionId(long): Builder \\
+			+ type(String): Builder \\
+			+ date(long): Builder \\
+			+ token(String): Builder \\
+			+ content(String): Builder \\
+		}{}
+		\umlclass[x=4,y=-5]{BuilderImpl}{
+			- headers: JsonObject \\
+			- body: JsonObject \\
+		}{}{}
+		\umlclass[x=-2,y=-14]{JsonMessageWrapper}{
 			- rawPayload: String \\
-			- parsedPayload: JsonObject
+			- parsedPayload: JsonObject \\
+			\umlstatic{- log: Logger} \\
 		}{
 			+ getRawPayload(): String \\
 			+ getParsedPayload(): JsonObject \\
+			\umlstatic{+ createMessage(String, String, String): String} \\
 			+ headers(): JsonObject \\
 			+ body(): JsonObject \\
 			+ username(): String \\
@@ -54,25 +69,15 @@ previamente.\ El diagrama UML del patrón implementado es el siguiente:
 			+ updateDateTime(): void \\
 			+ setContent(String): void \\
 			+ toString(): String \\
-			\umlstatic{+ fromString(String): JsonMessageWrapper} \\
+			+ fromString(String): JsonMessageWrapper \\
 			+ correctStructure(): boolean \\
-			+ builder(): BuilderImpl
-		}{}
-		\umlclass[x=-8,y=-3]{BuilderImpl}{
-			- headers: JsonObject \\
-			- body: JsonObject
-		}{
-			+ username(String): BuilderImpl \\
-			+ chatId(String): BuilderImpl \\
-			+ sessionId(long): BuilderImpl \\
-			+ type(String): BuilderImpl \\
-			+ date(long): BuilderImpl \\
-			+ token(String): BuilderImpl \\
-			+ content(String): BuilderImpl
+			\umlstatic{+ builder(): Builder} \\
 		}{}
 
-		\umlnest{JsonMessageWrapper}{BuilderImpl}
-		\umlimpl{BuilderImpl}{Builder}
+		\umlVHinherit{Builder}{GenericBuilder}
+		\umlVHimpl{BuilderImpl}{Builder}
+		\umlVHnest{JsonMessageWrapper}{Builder}
+		\umlHVnest{JsonMessageWrapper}{BuilderImpl}
 	\end{tikzpicture}
 
 	\caption{Patrón Builder empleado en la aplicación.}
@@ -120,28 +125,28 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 				\umlstatic{+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}}
 			}{}{}
 
-			\umlclass[x=-4,y=5]{GetRoute}{
+			\umlclass[x=-6,y=5]{GetRoute}{
 				\umlstatic{+ INSTANCE: GetRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
 				+ mediumTierRoutes(): String[] \\
 				+ topTierRoutes(): String[]
 			}{}
-			\umlclass[x=4,y=5]{PostRoute}{
+			\umlclass[x=6,y=5]{PostRoute}{
 				\umlstatic{+ INSTANCE: PostRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
 				+ mediumTierRoutes(): String[] \\
 				+ topTierRoutes(): String[]
 			}{}
-			\umlclass[x=-4,y=-5]{PutRoute}{
+			\umlclass[x=-6,y=-5]{PutRoute}{
 				\umlstatic{+ INSTANCE: PutRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
 				+ mediumTierRoutes(): String[] \\
 				+ topTierRoutes(): String[]
 			}{}
-			\umlclass[x=4,y=-5]{DeleteRoute}{
+			\umlclass[x=6,y=-5]{DeleteRoute}{
 				\umlstatic{+ INSTANCE: DeleteRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
@@ -149,10 +154,10 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 				+ topTierRoutes(): String[]
 			}{}
 
-			\umlnest{Routes}{GetRoute}
-			\umlnest{Routes}{PostRoute}
-			\umlnest{Routes}{PutRoute}
-			\umlnest{Routes}{DeleteRoute}
+			\umlVHnest{Routes}{GetRoute}
+			\umlVHnest{Routes}{PostRoute}
+			\umlVHnest{Routes}{PutRoute}
+			\umlVHnest{Routes}{DeleteRoute}
 		\end{tikzpicture}
 	}
 
