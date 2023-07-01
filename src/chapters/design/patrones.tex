@@ -1,4 +1,4 @@
-\sect{Patrones de diseño}{design-patterns}
+\subsect{Patrones de diseño}{design-patterns}
 
 \textit{Un patrón de diseño es una solución que se aplica para resolver problemas comunes en el
 diseño de software}~\cite{designPatternDefinition}.
@@ -23,7 +23,7 @@ A continuación, se detalla la información que se incluye de los patrones utili
 \end{itemize}
 \label{itm:uso-patrones}
 
-\subsect{Builder}{builder}
+\subsubsect{Builder}{builder}
 
 Es un patrón de \boldFont{creación} que permite instanciar objetos complejos de una forma sencilla.\ Se ha creado una
 interfaz genérica (\monoFont{Builder}) para su reutilización en caso de ser necesaria para cualquier otra clase.
@@ -88,7 +88,7 @@ El patrón builder se ha usado en la aplicación para simplificar la creación d
 momento.\ Esta clase es la encargada de encapsular los mensajes que se envían a través de la red en formato JSON\@.
 
 
-\subsect{Singleton}{singleton}
+\subsubsect{Singleton}{singleton}
 
 También es un patrón de \boldFont{creación}.\ Se emplea para garantizar que una clase concreta tenga una única
 instancia y proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación,
@@ -158,6 +158,7 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 			\umlVHnest{Routes}{PostRoute}
 			\umlVHnest{Routes}{PutRoute}
 			\umlVHnest{Routes}{DeleteRoute}
+			% Todo, ponerlos por separado
 		\end{tikzpicture}
 	}
 
@@ -168,7 +169,7 @@ Se han utilizado diferentes formas de acceso a las instancias de las clases.\ En
 rutas a métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método
 estático para obtener la instancia de la clase.
 
-\subsect{Strategy}{strategy}
+\subsubsect{Strategy}{strategy}
 
 Este patrón de \boldFont{comportamiento} se utiliza para encapsular un algoritmo dentro de una clase, de forma que
 pueda ser intercambiado por otro algoritmo en tiempo de ejecución.\ En la aplicación, se emplea para encapsular el
@@ -237,7 +238,7 @@ recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe u
 	\label{tab:messageStrategyRelationship}
 \end{table}
 
-\subsect{Observer}{observer}
+\subsubsect{Observer}{observer}
 
 Este patrón de \boldFont{comportamiento} permite definir un mecanismo de subscripción para notificar a múltiples
 objetos sobre cualquier evento que le ocurra al objeto que están observando~\cite{Observer19:online}.

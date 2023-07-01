@@ -1,4 +1,4 @@
-\sect{Ciclo de vida de la conexión de usuarios}{ciclo-de-vida-conexión-usuario}
+\subsect{Ciclo de vida de la conexión de usuarios}{ciclo-de-vida-conexión-usuario}
 
 Cuando un usuario accede a la aplicación, se inicia una conexión entre el cliente y el servidor a través
 del protocolo de comunicación bidireccional \boldFont{WebSocket}~\cite{RFCWebSocket}.
@@ -6,7 +6,7 @@ Esta conexión se mantiene abierta mientras el usuario tenga la sesión iniciada
 el usuario termina la sesión.
 La secuencia de eventos que ocurren durante la conexión de un usuario al chat es la siguiente:
 
-\subsect{Frontend}{frontend}
+\subsubsect{Frontend}{frontend}
 
 \begin{enumerate}
 	\item Se realiza una solicitud de conexión WebSocket al servidor al iniciar sesión.
@@ -30,7 +30,7 @@ La secuencia de eventos que ocurren durante la conexión de un usuario al chat e
 \end{enumerate}
 \label{itm:frontend-connection-life-cycle}
 
-\subsect{Backend}{backend}
+\subsubsect{Backend}{backend}
 
 Cuando comienza la ejecución del programa, se indica a Spring Boot que el manejador de mensajes a través de WebSocket
 del servidor es una instancia de la clase \monoFont{WebSocketHandler}, en la ruta

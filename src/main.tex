@@ -70,8 +70,8 @@
 \tikzumlset{font=\fontsize{10pt}{8pt}\selectfont\ttfamily}
 
 % Set the numbering of deeper levels of sections, and the depth of the table of contents
-\setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
 
 \fancyhead{} % Clear all header fields
 \fancyhead[R]{\thepage} % Ignore warning
@@ -139,13 +139,14 @@
 		\input{chapters/introduccion}
 		\input{chapters/estadoDelArte}
 		\input{chapters/contenido}
-		\input{chapters/resultados}
 		\input{chapters/conclusiones}
-		\input{chapters/anexos}
 	\end{spacing}
 
 	\cleardoublepage
 	\addcontentsline{toc}{chapter}{Bibliografía}
-
 	\printbibliography
+
+	\begin{spacing}{1.5}
+		\input{chapters/anexos}
+	\end{spacing}
 \end{document}

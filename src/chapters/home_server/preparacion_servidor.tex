@@ -1,8 +1,8 @@
-\sect{Preparación del servidor}{server_preparation}
+\subsect{Preparación del servidor}{server_preparation}
 Cuando se ha recibido el ordenador, se han seguido una serie de pasos para configurarlo de la manera más segura posible,
 ya que se va a utilizar para alojar el backend de una aplicación web.
 
-\subsect{Instalación del sistema operativo}{os_installation}
+\subsubsect{Instalación del sistema operativo}{os_installation}
 El sistema operativo que se ha instalado en el ordenador es \boldFont{Ubuntu Server 20.04 LTS}.\ Se ha escogido esta
 distribución de Linux debido a que es una de las más populares y con una gran comunidad de usuarios, lo que
 hace que sea fácil encontrar información sobre cómo configurar el sistema.\ Además, se ha elegido la versión LTS para
@@ -31,7 +31,7 @@ siguientes:
 \end{itemize}
 \label{itm:os_packages}
 
-\subsect{Configuración de la red}{network_configuration}
+\subsubsect{Configuración de la red}{network_configuration}
 El ordenador se ha conectado a la red mediante un cable Ethernet para una mejor comunicación entre sistemas.\
 En la configuración del router, se ha asignado una dirección IP estática (dentro de la red local) al
 ordenador para que siempre tenga la misma dirección IP.\ Se ha contactado con el proveedor de Internet para consultar
@@ -42,9 +42,9 @@ de instalación que se encuentra en su página web~\cite{DuckDNSi96:online}.
 Este servicio requiere de una tarea CRON para que se actualice la dirección IP cada 5 minutos.\ Esto se ha realizado
 con un pequeño script en Bash, que envía al servidor de DuckDNS la dirección IP pública del ordenador.
 
-%\subsect{Configuración del firewall}{firewall_configuration}
+%\subsubsect{Configuración del firewall}{firewall_configuration}
 
-\subsect{Instalación y ejecución de la aplicación}{app_installation_and_execution}
+\subsubsect{Instalación y ejecución de la aplicación}{app_installation_and_execution}
 La aplicación se ha instalado en el ordenador descargando el repositorio con el código fuente.\ Se ha programado un
 script
 en Bash que realiza todas las tareas necesarias antes de ejecutar la aplicación en los entornos de producción y
@@ -59,7 +59,7 @@ tareas:
 \end{itemize}
 \label{itm:script_tasks}
 
-\subsect{Configuración de la aplicación}{app_configuration}
+\subsubsect{Configuración de la aplicación}{app_configuration}
 Como se ha mencionado anteriormente, la aplicación cuenta con dos entornos: producción y desarrollo.\ Para configurar
 cada uno de ellos, se ha creado un fichero \monoFont{.env} en la raíz del proyecto.\ Estos ficheros contienen las
 variables de entorno que se necesitan para ejecutar la aplicación.\ De esta manera, se asegura que la aplicación
@@ -75,12 +75,12 @@ que se han configurado en estos ficheros son las siguientes:
 \end{itemize}
 \label{itm:env_variables}
 
-\subsect{Configuración de la base de datos}{db_configuration}
+\subsubsect{Configuración de la base de datos}{db_configuration}
 La base de datos se ha configurado por defecto con un usuario nuevo para el uso con la aplicación.\ Este usuario tiene
 permisos de lectura y escritura sobre la base de datos, por lo que no es necesario crear un usuario para cada
 aplicación.
 
-\subsect{Seguridad del servidor}{server_security}
+\subsubsect{Seguridad del servidor}{server_security}
 Con el objetivo de prevenir ataques a los dispositivos de la red local, se han configurado diferentes medidas de
 seguridad en el
 ordenador y el router.\ Estas medidas son las siguientes:

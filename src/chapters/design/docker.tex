@@ -3,7 +3,7 @@
 % https://stackoverflow.com/questions/38567355/docker-compose-global-level-logging
 % https://howchoo.com/devops/how-to-add-a-health-check-to-your-docker-container
 
-\sect{Docker}{docker}
+\subsect{Docker}{docker}
 Docker es una plataforma software que permite el desarrollo, despliegue y ejecución de aplicaciones de forma rápida y
 cómoda, separando la aplicación de la infraestructura, permitiendo ejecutar múltiples aplicaciones en un mismo servidor
 (ver figura~\ref{fig:docker-container-infrastructure}).\ Esto se realiza empaquetando la
@@ -68,7 +68,7 @@ detalle más adelante.}
 \end{itemize}
 \label{itm:docker-compose-services}
 
-\subsect{Prometheus (Métricas)}{prometheus}
+\subsubsect{Prometheus (Métricas)}{prometheus}
 Prometheus es un conjunto de herramientas de código abierto para la \boldFont{monitorización} de sistemas y
 \boldFont{alertas}, que recoge y
 almacena las métricas con la marca de tiempo cuando se producen, incluyendo etiquetas (clave-valor) de manera
@@ -122,7 +122,7 @@ aplicación.\ La lista con las métricas más usadas es la siguiente:
 	\label{fig:prometheus-flow}
 \end{figure}
 
-\subsect{Grafana (Panel de observabilidad)}{grafana}
+\subsubsect{Grafana (Panel de observabilidad)}{grafana}
 Grafana es una solución de código abierto para mostrar las métricas que se recogen de las aplicaciones de una
 manera amigable en paneles personalizables~\cite{what-is-grafana}.\ Permite estudiar, analizar y monitorizar
 aplicaciones a lo largo del tiempo gracias a las marcas de tiempo proporcionadas junto con los datos que se
@@ -189,7 +189,7 @@ el puerto interno, ya que se usa la misma red para todos los servicios):
 \end{itemize}
 \label{itm:grafana-data-sources}
 
-\subsect{Loki (Agregación de logs)}{loki}
+\subsubsect{Loki (Agregación de logs)}{loki}
 Loki es una herramienta de agregación de logs, que permite almacenar, indexar y consultar logs de manera eficiente, ya
 que se basa en el uso de etiquetas (para el agrupamiento y filtrado de logs) dejando el mensaje original sin
 modificar~\cite{loki-docs}.
@@ -224,7 +224,7 @@ fichero \monoFont{docker-compose.yaml}:
 	\label{cod:loki-docker-compose}
 \end{codeBlock}
 
-\subsect{Promtail (Agente de logs)}{promtail}
+\subsubsect{Promtail (Agente de logs)}{promtail}
 Promtail es un agente (o cliente) de logs, que los recoge y los convierte en flujos que puede enviar a Loki (ver
 imagen~\ref{fig:promtail}) a través de una API HTTP~\cite{loki-docs}.\ La configuración de Docker para Promtail es
 similar a la de
@@ -291,7 +291,7 @@ asociada a cada traza:
 	\label{cod:promtail-regexp-container-name}
 \end{codeBlock}
 
-\subsect{NSFWPY}{nsfwpy}
+\subsubsect{NSFWPY}{nsfwpy}
 NSFWPY es un detector de contenido no seguro para el trabajo (NSFW, por sus siglas en inglés), que se ha utilizado para
 detectar imágenes inapropiadas en los mensajes de los usuarios.\ Es un programa escrito en Python, que consiste en
 un pequeño servidor HTTP (utilizando Flask) que recibe una imagen en formato \monoFont{base64} y devuelve un JSON con
