@@ -252,9 +252,197 @@ consultar los emojis en función de su nombre:
 	\label{tab:nomenclatura-casos-prueba-caja-negra}
 \end{table}
 
+\subsect{Pruebas unitarias de frontend}{pruebas-unitarias-frontend}
+
+Las pruebas unitarias de frontend se han realizado con Jest, un framework de testing para JavaScript.\ Se han
+realizado pruebas para los componentes de React que se utilizan en el perfil de usuario y la alerta de errores.
+
+El componente DropDown debe tener la funcionalidad de estar oculto o visible dependiendo del valor del parámetro
+\monoFont{drop}, que se le pasa al componente como propiedad.\ Para ello, se han creado dos pruebas unitarias,
+una para cada caso, que comprueban que el componente se renderiza correctamente y que el elemento \monoFont{p} se
+muestra o no dependiendo del valor de \monoFont{drop}.
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{jsx}
+						test('Component is not shown with description', () => {
+						  const component = render(
+						    <DropDown title="Hello" drop={false}>
+						      <p>World</p>
+						    </DropDown>
+						  );
+
+						  expect(component.container).toBeInTheDocument();
+						  expect(component.container).toHaveTextContent("Hello");
+						  expect(component.container).not.toHaveTextContent("World");
+						});
+	\end{minted}
+	\caption{Prueba unitaria para el componente DropDown cuando \monoFont{drop} es \monoFont{false}.}
+	\label{code:prueba-unitaria-dropdown-false}
+\end{codeBlock}
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{jsx}
+						test('Component is shown with description', () => {
+						  const component = render(
+						    <DropDown title="Hello" drop={true}>
+						      <p>World</p>
+						    </DropDown>
+						  );
+
+						  expect(component.container).toBeInTheDocument();
+						  expect(component.container).toHaveTextContent("Hello");
+						  expect(component.container).toHaveTextContent("World");
+						});
+	\end{minted}
+	\caption{Prueba unitaria para el componente DropDown cuando \monoFont{drop} es \monoFont{true}.}
+	\label{code:prueba-unitaria-dropdown-true}
+\end{codeBlock}
+
+Cuando se ejecutan todas las pruebas de los componentes con el comando \monoFont{npm run test}, se
+obtiene la siguiente salida en consola:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{res/images/pruebas-unitarias-frontend}
+	\caption{Salida de las pruebas unitarias de frontend.}
+	\label{fig:pruebas-unitarias-frontend}
+\end{figure}
+
+\subsect{Pruebas unitarias de backend}{pruebas-unitarias-backend}
+
+Las pruebas unitarias de backend se han realizado con JUnit, un framework de testing para Java.\ Se han
+realizado pruebas para cada uno de los diferentes niveles en los que se estructura la aplicación, desde el más
+bajo, el de la capa de acceso a datos, hasta el más alto, el de la capa de controladores.\ La técnica utilizada
+para la programación de las pruebas ha sido BDD, que consiste en escribir las
+sentencias Given-When-Then para cada prueba, de forma que se pueda entender fácilmente qué es lo que se está
+probando.
+
+\begin{itemize}
+	\item \boldFont{Repositorio}: se han probado todos los repositorios de la aplicación, comprobando que se pueden
+	guardar y recuperar los datos de la base de datos.\ Para ello, se ha utilizado una base de datos en memoria
+	H2, que se crea y se destruye en cada prueba.\ Estos tests son los más simples, ya que la funcionalidad
+	que se prueba es la más básica de la aplicación (acceso a base de datos).\ Las clases de test para los
+	repositorios deben tener la anotación \monoFont{@DataJpaTest}, que permite utilizar una base de datos en
+	memoria y que se creen los repositorios de forma automática.\ En el código siguiente se puede
+	ver un ejemplo de una prueba unitaria para el repositorio de usuarios, en la que se comprueba que se puede
+	guardar un usuario en la base de datos y que se puede recuperar por su email.
+	\begin{codeBlock}
+		\begin{minted}[
+			baselinestretch=1.1,
+			fontsize=\footnotesize,
+			tabsize=2,
+		]{java}
+	@BeforeEach
+	void setUp() {
+		this.user = DefaultFactory.INSTANCE.createUser(null, Constants.STUDENT_ROLE);
+	}
+
+	@AfterEach
+	void tearDown() { this.underTest.deleteAll(); }
+
+	@Test
+	void itShouldFindByEmail() {
+		// Given
+		this.underTest.save(this.user);
+
+		// When
+		Optional<User> expected = this.underTest.findByEmail(this.user.getEmail());
+
+		// Then
+		assertThat(expected).isPresent();
+	}
+
+	@Test
+	void itShouldNofFindByEmail() {
+		// Given
+		// When
+		Optional<User> expected = this.underTest.findByEmail(this.email);
+
+		// Then
+		assertThat(expected).isEmpty();
+	}
+		\end{minted}
+		\caption{Pruebas unitarias para el método \monoFont{findByEmail} del repositorio de usuarios.}
+	\end{codeBlock}
+
+	\item \boldFont{Servicio}: se han probado los servicios de la aplicación, utilizando el framework
+	\boldFont{Mockito}, que ofrece la posibilidad de simular el comportamiento de los objetos que tengan la
+	anotación \monoFont{@Mock}.\
+	\begin{codeBlock}
+		\begin{minted}[
+			baselinestretch=1.1,
+			fontsize=\footnotesize,
+			tabsize=2,
+		]{java}
+@Mock private DegreeRepository degreeRepository;
+@Mock private ChatRepository chatRepository;
+@Mock private UserChatRepository userChatRepository;
+@Mock private SubjectRepository subjectRepository;
+@Mock private StudentSubjectRepository studentSubjectRepository;
+@Mock private TeacherSubjectRepository teacherSubjectRepository;
+private DegreeService underTest;
+private Degree degree;
+
+@BeforeEach
+void setUp() {
+	this.underTest = new DegreeService(
+			this.degreeRepository, this.chatRepository,
+			this.userChatRepository, this.subjectRepository,
+			this.studentSubjectRepository, this.teacherSubjectRepository
+	);
+	this.degree = new Degree(1L, "Test", emptySet());
+}
+
+@Test
+void testGetByName() {
+	// given
+	given(this.degreeRepository.findByName(this.degree.getName()))
+			.willReturn(Optional.of(this.degree));
+
+	// when
+	this.underTest.getByName(this.degree.getName());
+
+	// then
+	verify(this.degreeRepository).findByName(this.degree.getName());
+}
+
+@Test
+void testSaveDegreeOk() {
+	// given
+	given(this.degreeRepository.save(this.degree)).willReturn(this.degree);
+
+	// when
+	this.underTest.saveDegree(this.degree);
+
+	// then
+	ArgumentCaptor<Degree> degreeArgCaptor = ArgumentCaptor.forClass(Degree.class);
+	verify(this.degreeRepository).save(degreeArgCaptor.capture());
+	Degree capturedDegree = degreeArgCaptor.getValue();
+	assertEquals(this.degree.getName(), capturedDegree.getName());
+}
+		\end{minted}
+		\caption{Pruebas unitarias para el servicio de grados utilizando Mockito.}
+	\end{codeBlock}
+	Las clases de test para los servicios deben tener presente (antes de su definición) la anotación
+	\monoFont{@ExtendWith(MockitoExtension.class)}, que permite utilizar las anotaciones de Mockito.\ En el
+	código anterior se puede ver un ejemplo de una prueba unitaria para el servicio de grados, en la que se
+	comprueba que se puede recuperar un grado por su nombre.\ También se puede observar cómo se simula el
+	comportamiento de los repositorios, anotados con \monoFont{@Mock} (para que devuelvan los datos que se quieran)
+	y ver los parámetros con los que se llaman a los métodos.
+\end{itemize}
+\label{itm:pruebas-unitarias-backend}
+
 \subsect{Pruebas de integración}{pruebas-integracion}
 % Todo: Pruebas de integración
 % Uso mockito...
 
 \subsect{Pruebas de sistema}{pruebas-sistema}
-% Todo: Pruebas de sistema, que se han hecho, aunque sea a mano
+% Todo: Pruebas de sistema, que se han hecho, aunque sea a mano, con Postman

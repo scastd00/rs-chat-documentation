@@ -4,17 +4,17 @@ Para poder almacenar los historiales de los chats y los ficheros multimedia requ
 optado por utilizar el servicio de almacenamiento de ficheros S3 de Amazon Web Services (AWS).
 Este servicio permite almacenar ficheros de forma segura y escalable, con una alta disponibilidad
 y durabilidad~\cite{AWSAlmac67:online}.\ Además, permite configurar el acceso a los ficheros mediante políticas
-y dispone de encriptación de los ficheros almacenados.
+y dispone de encriptación del contenido almacenado.
 
 Este servicio se basa en la utilización de \boldFont{buckets}, que son contenedores de ficheros.
 Se identifican mediante un nombre único, y se pueden crear tantos como se necesiten.\ Los ficheros que se almacenan
-en los buckets se denominan \boldFont{objetos}, identificados por una clave única.
+en los buckets se denominan \boldFont{objetos}, y se identifican por una clave única.
 
 Para poder utilizar este servicio de manera programática, es necesario crear un usuario en AWS con permisos de lectura
 y escritura en el servicio S3 y obtener las credenciales de acceso.\ Estas credenciales se utilizan para configurar
-el cliente de AWS S3, que permite realizar operaciones sobre los buckets y los objetos.\ En el caso de la aplicación,
-se utiliza el cliente de AWS S3 para subir y descargar ficheros multimedia y para almacenar los historiales de los
-chats.
+el cliente de AWS, que permite realizar operaciones sobre los buckets y los objetos.\ En el caso de la aplicación,
+se utiliza el cliente de AWS para subir y descargar ficheros multimedia y para almacenar los historiales de los
+chats en un bucket de S3.
 
 El bucket utilizado para el almacenamiento se denomina \textit{rs-chat-bucket} y se ha configurado para que el acceso
 a todos los recursos que contiene sea público (ver código~\ref{public-s3-bucket-access-policy}).
@@ -26,7 +26,7 @@ que se obtiene al subirlo al bucket, que se almacena en la base de datos de la a
 	\begin{minted}[
 		baselinestretch=1.1,
 		fontsize=\footnotesize,
-		tabsize=2,
+		tabsize=4,
 		xleftmargin=2.3cm,
 	]{json}
 {
@@ -60,7 +60,7 @@ del bucket para que permita el acceso a los recursos desde cualquier origen.
 	\begin{minted}[
 		baselinestretch=1.1,
 		fontsize=\footnotesize,
-		tabsize=2,
+		tabsize=4,
 		xleftmargin=4.5cm,
 	]{json}
 [
@@ -85,8 +85,8 @@ del bucket para que permita el acceso a los recursos desde cualquier origen.
 	\caption{Política de CORS del bucket de S3.}
 \end{codeBlock}
 
-Para poder interactuar con el bucket de S3 desde la aplicación, se ha creado una clase denominada \monoFont{S3} que
-implementa métodos para subir, descargar y borrar ficheros del bucket.\ Esta clase utiliza el cliente de AWS S3
+La interacción con el bucket de S3 desde la aplicación se ha realizado desde una clase denominada \monoFont{S3}, que
+implementa métodos para subir, descargar y borrar ficheros del bucket.\ Esta clase utiliza el cliente de AWS
 para realizar las operaciones sobre el bucket.\ En el código~\ref{upload-file-to-s3} se muestra el método utilizado
 para subir un fichero.
 
