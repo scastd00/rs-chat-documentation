@@ -1,2 +1,129 @@
 \subsect{Almacenamiento de ficheros}{aws-storage}
-% Todo: completar esta sección explicando un poco lo que hago con AWS
+
+Para poder almacenar los historiales de los chats y los ficheros multimedia requeridos por la aplicación, se ha
+optado por utilizar el servicio de almacenamiento de ficheros S3 de Amazon Web Services (AWS).
+Este servicio permite almacenar ficheros de forma segura y escalable, con una alta disponibilidad
+y durabilidad~\cite{AWSAlmac67:online}.\ Además, permite configurar el acceso a los ficheros mediante políticas
+y dispone de encriptación de los ficheros almacenados.
+
+Este servicio se basa en la utilización de \boldFont{buckets}, que son contenedores de ficheros.
+Se identifican mediante un nombre único, y se pueden crear tantos como se necesiten.\ Los ficheros que se almacenan
+en los buckets se denominan \boldFont{objetos}, identificados por una clave única.
+
+Para poder utilizar este servicio de manera programática, es necesario crear un usuario en AWS con permisos de lectura
+y escritura en el servicio S3 y obtener las credenciales de acceso.\ Estas credenciales se utilizan para configurar
+el cliente de AWS S3, que permite realizar operaciones sobre los buckets y los objetos.\ En el caso de la aplicación,
+se utiliza el cliente de AWS S3 para subir y descargar ficheros multimedia y para almacenar los historiales de los
+chats.
+
+El bucket utilizado para el almacenamiento se denomina \textit{rs-chat-bucket} y se ha configurado para que el acceso
+a todos los recursos que contiene sea público (ver código~\ref{public-s3-bucket-access-policy}).
+De esta forma, cualquier usuario puede acceder a los ficheros y también
+visualizarlos desde el propio chat sin necesidad de autenticarse en AWS.\ Para ello, se utiliza la URL del fichero
+que se obtiene al subirlo al bucket, que se almacena en la base de datos de la aplicación para cada archivo.
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+		xleftmargin=2.3cm,
+	]{json}
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicAccessStatement",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": [
+                "arn:aws:s3:::rs-chat-bucket/image/*",
+                "arn:aws:s3:::rs-chat-bucket/video/*",
+                "arn:aws:s3:::rs-chat-bucket/audio/*",
+                "arn:aws:s3:::rs-chat-bucket/template/*",
+                "arn:aws:s3:::rs-chat-bucket/badges/*",
+                "arn:aws:s3:::rs-chat-bucket/application/*"
+            ]
+        }
+    ]
+}
+	\end{minted}
+	\caption{Política de acceso público al bucket de S3.}
+	\label{public-s3-bucket-access-policy}
+\end{codeBlock}
+
+Para que no existan problemas en el acceso a los ficheros desde la aplicación, se ha configurado la política de CORS
+del bucket para que permita el acceso a los recursos desde cualquier origen.
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+		xleftmargin=4.5cm,
+	]{json}
+[
+	{
+		"AllowedHeaders": [
+			"*"
+		],
+		"AllowedMethods": [
+			"GET",
+			"POST",
+			"PUT",
+			"DELETE",
+			"HEAD"
+		],
+		"AllowedOrigins": [
+			"*"
+		],
+		"ExposeHeaders": []
+	}
+]
+	\end{minted}
+	\caption{Política de CORS del bucket de S3.}
+\end{codeBlock}
+
+Para poder interactuar con el bucket de S3 desde la aplicación, se ha creado una clase denominada \monoFont{S3} que
+implementa métodos para subir, descargar y borrar ficheros del bucket.\ Esta clase utiliza el cliente de AWS S3
+para realizar las operaciones sobre el bucket.\ En el código~\ref{upload-file-to-s3} se muestra el método utilizado
+para subir un fichero.
+
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{java}
+public URI uploadFile(String mediaType, String fileName, byte[] dataBytes,
+											JsonObject metadata) {
+	String s3Key = this.s3Key(mediaType, fileName);
+
+	Map<String, String> metadataMap = new HashMap<>();
+	metadata.asMap().forEach((key, value) -> metadataMap.put(key, value.toString()));
+
+	this.s3Client.putObject(
+			PutObjectRequest.builder()
+			                .bucket(S3_BUCKET_NAME)
+			                .key(s3Key)
+			                .metadata(metadataMap)
+			                .build(),
+			RequestBody.fromBytes(dataBytes)
+	);
+
+	return uploadedFileURI(s3Key);
+}
+	\end{minted}
+	\caption{Método para subir un fichero al bucket de S3.}
+	\label{upload-file-to-s3}
+\end{codeBlock}
+
+Para ello, se utiliza el método \monoFont{putObject} del cliente de AWS S3, que recibe dos parámetros con los tipos y
+orden siguientes:
+
+\begin{itemize}
+	\item \monoFont{PutObjectRequest}: contiene la información del bucket y del objeto que se va a subir.
+	\item \monoFont{RequestBody}: contiene los datos del fichero que se va a subir.\ En este caso se obtiene
+	a partir de los datos en binario del fichero.
+\end{itemize}
