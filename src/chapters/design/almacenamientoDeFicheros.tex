@@ -49,7 +49,7 @@ que se obtiene al subirlo al bucket, que se almacena en la base de datos de la a
     ]
 }
 	\end{minted}
-	\caption{Política de acceso público al bucket de S3.}
+	\caption{Política de acceso público al bucket de S3. (Fuente: Elaboración propia).}
 	\label{public-s3-bucket-access-policy}
 \end{codeBlock}
 
@@ -82,7 +82,7 @@ del bucket para que permita el acceso a los recursos desde cualquier origen.
 	}
 ]
 	\end{minted}
-	\caption{Política de CORS del bucket de S3.}
+	\caption{Política de CORS del bucket de S3. (Fuente: Elaboración propia).}
 \end{codeBlock}
 
 La interacción con el bucket de S3 desde la aplicación se ha realizado desde una clase denominada \monoFont{S3}, que
@@ -115,7 +115,7 @@ public URI uploadFile(String mediaType, String fileName, byte[] dataBytes,
 	return uploadedFileURI(s3Key);
 }
 	\end{minted}
-	\caption{Método para subir un fichero al bucket de S3.}
+	\caption{Método para subir un fichero al bucket de S3. (Fuente: Elaboración propia).}
 	\label{upload-file-to-s3}
 \end{codeBlock}
 

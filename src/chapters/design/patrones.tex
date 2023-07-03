@@ -80,7 +80,7 @@ previamente.\ El diagrama UML del patrón implementado es el siguiente:
 		\umlHVnest{JsonMessageWrapper}{BuilderImpl}
 	\end{tikzpicture}
 
-	\caption{Patrón Builder empleado en la aplicación.}
+	\caption{Patrón Builder empleado en la aplicación. (Fuente: Elaboración propia).}
 \end{umlDiagram}
 
 El patrón builder se ha usado en la aplicación para simplificar la creación de objetos de tipo
@@ -98,7 +98,7 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 
 \begin{table}[H]
 	\centering
-	\caption{Relación entre método HTTP y ruta.}
+	\caption{Relación entre método HTTP y ruta. (Fuente: Elaboración propia).}
 	\begin{tabular}{|c|c|}
 		\hline
 		Método HTTP & Clase de la ruta       \\
@@ -158,11 +158,11 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 			\umlVHnest{Routes}{PostRoute}
 			\umlVHnest{Routes}{PutRoute}
 			\umlVHnest{Routes}{DeleteRoute}
-			% Todo, ponerlos por separado
+			% Todo: ponerlos por separado
 		\end{tikzpicture}
 	}
 
-	\caption{Patrón Singleton empleado en la aplicación.}
+	\caption{Patrón Singleton empleado en la aplicación. (Fuente: Elaboración propia).}
 \end{umlDiagram}
 
 Se han utilizado diferentes formas de acceso a las instancias de las clases.\ En el caso de las que asocian
@@ -198,7 +198,7 @@ tabla~\ref{tab:messageStrategyRelationship}.
 		}{}
 	\end{tikzpicture}
 
-	\caption{Interfaz MessageStrategy.}
+	\caption{Interfaz MessageStrategy. (Fuente: Elaboración propia).}
 \end{umlDiagram}
 
 Este patrón se ha utilizado para simplificar el manejo de los mensajes recibidos en el servidor y para que sea más
@@ -210,7 +210,7 @@ recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe u
 
 \begin{table}[H]
 	\centering
-	\caption{Relación Mensaje - Estrategia.}
+	\caption{Relación Mensaje - Estrategia. (Fuente: Elaboración propia).}
 	\begin{tabular}{|c|c|}
 		\hline
 		\textbf{Mensaje}              & \textbf{Clase de la estrategia}       \\ \hline
@@ -253,7 +253,7 @@ manejar el evento lanzado, el cual se recibe como parámetro.
 
 \begin{umlDiagram}
 	\centering
-	\caption{Clase que representa los eventos de envío de mensajes.}
+	\caption{Clase que representa los eventos de envío de mensajes. (Fuente: Elaboración propia).}
 
 	\begin{tikzpicture}
 		\umlclass[x=0,y=0]{MessageEvent}{
@@ -292,7 +292,7 @@ manejar el evento lanzado, el cual se recibe como parámetro.
 		\end{tikzpicture}
 	\end{adjustbox}
 
-	\caption{Clase que representa el ``escuchador'' de los eventos de envío de mensajes.}
+	\caption{Clase que representa el ``escuchador'' de los eventos de envío de mensajes. (Fuente: Elaboración propia).}
 \end{umlDiagram}
 
 El uso de este patrón permite que el código sea más mantenible y extensible, ya que se puede agregar un nuevo tipo de

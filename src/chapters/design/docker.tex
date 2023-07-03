@@ -15,7 +15,7 @@ en otras imágenes añadiendo o modificando configuraciones~\cite{docker-docs}.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\textwidth]{res/images/container-what-is-container}
-	\caption{Infrastructura docker. Fuente: \url{https://www.docker.com/resources/what-container}.}
+	\caption{Infrastructura docker. (Fuente:~\cite{docker-container:online}).}
 	\label{fig:docker-container-infrastructure}
 \end{figure}
 
@@ -43,7 +43,7 @@ los siguientes:
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\textwidth]{res/images/InfraestructuraDockerRSChat}
-	\caption{Diagrama de relación entre los contenedores Docker utilizados en RS Chat.}
+	\caption{Diagrama de relación entre los contenedores Docker utilizados en RS Chat. (Fuente: Elaboración propia).}
 	\label{fig:docker-container-diagram}
 \end{figure}
 
@@ -126,7 +126,7 @@ aplicación.\ La lista con las métricas más usadas es la siguiente:
 Grafana es una solución de código abierto para mostrar las métricas que se recogen de las aplicaciones de una
 manera amigable en paneles personalizables~\cite{what-is-grafana}.\ Permite estudiar, analizar y monitorizar
 aplicaciones a lo largo del tiempo gracias a las marcas de tiempo proporcionadas junto con los datos que se
-recolectan.\ Se puede conectar con muchas fuentes de datos, como Graphite, Prometheus, ElasticSearch, MySQL, etc.\
+recolectan.\ Se puede conectar con muchas fuentes de datos, como Graphite, Prometheus, ElasticSearch, MySQL, etc.
 Una ventaja de Grafana es que ofrece una solución \quoted{on-premise}, que permite desplegar una instancia propia en
 el mismo servidor donde se ejecuta la aplicación.\ De esta manera, se garantiza la seguridad y protección de los
 datos, ya que no se exponen a Internet de manera directa.
@@ -155,7 +155,7 @@ services:
     networks:
       - rschat-net  # Se asigna la red interna para comunicarse con otros servicios
 	\end{minted}
-	\caption{Configuración mínima para ejecutar un contenedor con Grafana.}
+	\caption{Configuración mínima para ejecutar un contenedor con Grafana. (Fuente: Elaboración propia).}
 	\label{cod:grafana-docker-compose}
 \end{codeBlock}
 
@@ -167,14 +167,15 @@ mapas de calor, tablas, entre otros~\cite{visualizaciones-grafana}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{res/images/GrafanaDashboard_1}
-	\caption{Visualización de métricas relacionadas con los recursos del sistema utilizados y tiempo de actividad.}
+	\caption{Visualización de métricas relacionadas con los recursos del sistema utilizados y tiempo de actividad.
+		(Fuente: Elaboración propia).}
 	\label{fig:grafana-dashboard_1}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{res/images/GrafanaDashboard_2}
-	\caption{Visualización de métricas relacionadas con los logs y peticiones HTTP.}
+	\caption{Visualización de métricas relacionadas con los logs y peticiones HTTP. (Fuente: Elaboración propia).}
 	\label{fig:grafana-dashboard_2}
 \end{figure}
 
@@ -220,7 +221,7 @@ fichero \monoFont{docker-compose.yaml}:
     networks:
       - rschat-net
 	\end{minted}
-	\caption{Servicio de Loki para el registro de logs.}
+	\caption{Servicio de Loki para el registro de logs. (Fuente: Elaboración propia).}
 	\label{cod:loki-docker-compose}
 \end{codeBlock}
 
@@ -255,14 +256,14 @@ en el fichero \monoFont{docker-compose.yaml}:
     networks:
       - rschat-net
 	\end{minted}
-	\caption{Servicio de Promtail para la recolección de logs.}
+	\caption{Servicio de Promtail para la recolección de logs. (Fuente: Elaboración propia).}
 	\label{cod:promtail-docker-compose}
 \end{codeBlock}
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\textwidth]{res/images/loki-promtail-architecture}
-	\caption{Flujo de logs entre Promtail y Loki.}
+	\caption{Flujo de logs hasta Loki. (Fuente:~\cite{log-flow}).}
 	\label{fig:promtail}
 \end{figure}
 
@@ -287,7 +288,7 @@ asociada a cada traza:
       # ...
 	\end{minted}
 	\caption{Stage para obtener el nombre del contenedor con una expresión regular a partir de la etiqueta
-	\monoFont{tag}.}
+	\monoFont{tag}. (Fuente: Elaboración propia).}
 	\label{cod:promtail-regexp-container-name}
 \end{codeBlock}
 
@@ -332,7 +333,7 @@ una nueva ruta en la API de RSChat, que se encarga de llamar al detector NSFWPY\
       timeout: 10s
       retries: 3
 	\end{minted}
-	\caption{Servicio de NSFWPY para la detección de imágenes NSFW.}
+	\caption{Servicio de NSFWPY para la detección de imágenes NSFW. (Fuente: Elaboración propia).}
 	\label{cod:nsfw-docker-compose}
 \end{codeBlock}
 
@@ -347,14 +348,14 @@ dos ejemplos de predicción del modelo para dos imágenes diferentes.
 	\begin{minipage}[c]{0.46\linewidth}
 		\centering
 		\includegraphics[width=\textwidth]{nsfwjs-drawing}
-		\caption{Predicción para una\\ imagen de fondo de pantalla.}
+		\caption{Predicción para una\\ imagen de fondo de pantalla. (Fuente:~\cite{nsfwjs}).}
 		\label{fig:nsfwjs-drawing}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[c]{0.46\linewidth}
 		\centering
 		\includegraphics[width=\textwidth]{nsfwjs-porn}
-		\caption{Predicción para una\\ imagen pornográfica.}
+		\caption{Predicción para una\\ imagen pornográfica. (Fuente:~\cite{nsfwjs}).}
 		\label{fig:nsfwjs-porn}
 	\end{minipage}
 	\label{fig:nsfwjs-example}

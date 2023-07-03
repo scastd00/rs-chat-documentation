@@ -70,7 +70,7 @@ realizadas para un método que tiene sentencias iterativas y condicionales:
 					return probability;
 				}
 	\end{minted}
-	\caption{Método para determinar la clase NSFW asociada a una imagen.}
+	\caption{Método para determinar la clase NSFW asociada a una imagen. (Fuente: Elaboración propia).}
 \end{codeBlock}
 \label{cod:codigo-pruebas-unitarias-caja-blanca}
 
@@ -103,7 +103,7 @@ El análisis de la complejidad ciclomática quedaría de la siguiente forma:
 		(q4) edge [bend left] node [text=red!60!black] {$false$} (q2);
 
 	\end{tikzpicture}
-	\caption{Grafo de control de flujo del método \monoFont{probabilityOfClass}.}
+	\caption{Grafo de control de flujo del método \monoFont{probabilityOfClass}. (Fuente: Elaboración propia).}
 	\label{fig:grafo-control-flujo-pruebas-unitarias-caja-blanca}
 \end{figure}
 
@@ -164,7 +164,7 @@ consultar los emojis en función de su nombre:
 
 \begin{table}[H]
 	\centering
-	\caption{Definición de las clases de equivalencia.}
+	\caption{Definición de las clases de equivalencia. (Fuente: Elaboración propia).}
 	\begin{adjustbox}{width=\textwidth}
 		\begin{tabular}{|c|c|c|c|c|c|c|}
 			\hline
@@ -190,7 +190,7 @@ consultar los emojis en función de su nombre:
 
 \begin{table}[H]
 	\centering
-	\caption{Casos de prueba para la funcionalidad de consultar emojis por nombre.}
+	\caption{Casos de prueba para la funcionalidad de consultar emojis por nombre. (Fuente: Elaboración propia).}
 	\begin{adjustbox}{width=\textwidth}
 		\begin{tabular}{|c|c|c|c|}
 			\hline
@@ -212,7 +212,7 @@ consultar los emojis en función de su nombre:
 
 \begin{table}[H]
 	\centering
-	\caption{Valores para los casos de prueba.}
+	\caption{Valores para los casos de prueba. (Fuente: Elaboración propia).}
 	\begin{adjustbox}{width=\textwidth}
 		\begin{tabular}{|c|c|c|c|}
 			\hline
@@ -241,7 +241,7 @@ consultar los emojis en función de su nombre:
 
 \begin{table}[H]
 	\centering
-	\caption{Nomenclatura utilizada en las tablas de casos de prueba.}
+	\caption{Nomenclatura utilizada en las tablas de casos de prueba. (Fuente: Elaboración propia).}
 	\begin{tabular}{|c|c|}
 		\hline
 		\textbf{Código}           & \textbf{Descripción}                 \\ \hline
@@ -280,7 +280,8 @@ muestra o no dependiendo del valor de \monoFont{drop}.
 						  expect(component.container).not.toHaveTextContent("World");
 						});
 	\end{minted}
-	\caption{Prueba unitaria para el componente DropDown cuando \monoFont{drop} es \monoFont{false}.}
+	\caption{Prueba unitaria para el componente DropDown cuando \monoFont{drop} es \monoFont{false}.
+		(Fuente: Elaboración propia).}
 	\label{code:prueba-unitaria-dropdown-false}
 \end{codeBlock}
 
@@ -302,7 +303,8 @@ muestra o no dependiendo del valor de \monoFont{drop}.
 						  expect(component.container).toHaveTextContent("World");
 						});
 	\end{minted}
-	\caption{Prueba unitaria para el componente DropDown cuando \monoFont{drop} es \monoFont{true}.}
+	\caption{Prueba unitaria para el componente DropDown cuando \monoFont{drop} es \monoFont{true}.
+		(Fuente: Elaboración propia).}
 	\label{code:prueba-unitaria-dropdown-true}
 \end{codeBlock}
 
@@ -359,7 +361,8 @@ el más bajo (capa de acceso a datos), hasta el más alto (capa de controladores
 		assertThat(expected).isEmpty();
 	}
 		\end{minted}
-		\caption{Pruebas unitarias para el método \monoFont{findByEmail} del repositorio de usuarios.}
+		\caption{Pruebas unitarias para el método \monoFont{findByEmail} del repositorio de usuarios.
+			(Fuente: Elaboración propia).}
 		\label{code:pruebas-unitarias-repositorio-usuarios}
 	\end{codeBlock}
 
@@ -424,7 +427,7 @@ void testSaveDegreeOk() {
 	assertEquals(this.degree.getName(), capturedDegree.getName());
 }
 		\end{minted}
-		\caption{Pruebas unitarias para el servicio de grados utilizando Mockito.}
+		\caption{Pruebas unitarias para el servicio de grados utilizando Mockito. (Fuente: Elaboración propia).}
 		\label{code:degreeServiceTest}
 	\end{codeBlock}
 
@@ -463,7 +466,7 @@ void itShouldGetBadgesOfUser() throws Exception {
 			.isEqualTo(TEST_OBJECT_MAPPER.writeValueAsString(dtoList));
 }
 		\end{minted}
-		\caption{Pruebas unitarias para el controlador de insignias utilizando Mockito.}
+		\caption{Pruebas unitarias para el controlador de insignias utilizando Mockito. (Fuente: Elaboración propia).}
 		\label{code:pruebas-unitarias-controlador}
 	\end{codeBlock}
 
@@ -532,7 +535,7 @@ class AuthIntegrationTest {
 	}
 }
 	\end{minted}
-	\caption{Prueba de integración para el login.}
+	\caption{Prueba de integración para el login. (Fuente: Elaboración propia).}
 	\label{code:pruebas-integracion-login}
 \end{codeBlock}
 
@@ -555,14 +558,14 @@ subir una imagen, que se divide en dos casos de prueba:
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.8\textwidth]{res/images/postman-system-test-upload-image-no-nsfw}
-		\caption{Prueba de sistema para subir una imagen (sin contenido NSFW).}
+		\caption{Prueba de sistema para subir una imagen (sin contenido NSFW). (Fuente: Elaboración propia).}
 		\label{fig:postman-test-1}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.8\textwidth]{res/images/postman-system-test-upload-image-no-nsfw-db}
-		\caption{Imagen sin contenido NSFW guardada en la base de datos.}
+		\caption{Imagen sin contenido NSFW guardada en la base de datos. (Fuente: Elaboración propia).}
 		\label{fig:postman-test-1-db}
 	\end{figure}
 
@@ -576,14 +579,14 @@ subir una imagen, que se divide en dos casos de prueba:
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.8\textwidth]{res/images/postman-system-test-upload-image-nsfw}
-		\caption{Prueba de sistema para subir una imagen (con contenido NSFW).}
+		\caption{Prueba de sistema para subir una imagen (con contenido NSFW). (Fuente: Elaboración propia).}
 		\label{fig:postman-test-2}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{res/images/postman-system-test-upload-image-nsfw-db}
-		\caption{Incremento del contador de imágenes NSFW del usuario.}
+		\caption{Incremento del contador de imágenes NSFW del usuario. (Fuente: Elaboración propia).}
 		\label{fig:postman-test-2-db}
 	\end{figure}
 \end{itemize}
