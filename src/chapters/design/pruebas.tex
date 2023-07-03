@@ -257,8 +257,8 @@ consultar los emojis en función de su nombre:
 Las pruebas unitarias de frontend se han realizado con Jest, un framework de testing para JavaScript.\ Se han
 realizado pruebas para los componentes de React que se utilizan en el perfil de usuario y la alerta de errores.
 
-El componente DropDown debe tener la funcionalidad de estar oculto o visible dependiendo del valor del parámetro
-\monoFont{drop}, que se le pasa al componente como propiedad.\ Para ello, se han creado dos pruebas unitarias,
+El componente \monoFont{DropDown} debe tener la funcionalidad de estar oculto o visible dependiendo del valor del
+parámetro \monoFont{drop}, que se le pasa al componente como propiedad.\ Para ello, se han creado dos pruebas unitarias,
 una para cada caso, que comprueban que el componente se renderiza correctamente y que el elemento \monoFont{p} se
 muestra o no dependiendo del valor de \monoFont{drop}.
 
@@ -306,32 +306,21 @@ muestra o no dependiendo del valor de \monoFont{drop}.
 	\label{code:prueba-unitaria-dropdown-true}
 \end{codeBlock}
 
-Cuando se ejecutan todas las pruebas de los componentes con el comando \monoFont{npm run test}, se
-obtiene la siguiente salida en consola:
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.4\textwidth]{res/images/pruebas-unitarias-frontend}
-	\caption{Salida de las pruebas unitarias de frontend.}
-	\label{fig:pruebas-unitarias-frontend}
-\end{figure}
-
 \subsect{Pruebas unitarias de backend}{pruebas-unitarias-backend}
 
-Las pruebas unitarias de backend se han realizado con JUnit, un framework de testing para Java.\ Se han
-realizado pruebas para cada uno de los diferentes niveles en los que se estructura la aplicación, desde el más
-bajo, el de la capa de acceso a datos, hasta el más alto, el de la capa de controladores.\ La técnica utilizada
-para la programación de las pruebas ha sido BDD, que consiste en escribir las
+Las pruebas unitarias de backend se han realizado con JUnit, un framework de testing para Java.\ La técnica utilizada
+para la programación de las pruebas ha sido \boldFont{BDD}, que consiste en escribir las
 sentencias Given-When-Then para cada prueba, de forma que se pueda entender fácilmente qué es lo que se está
-probando.
+probando.\ Se han hecho pruebas para cada uno de los diferentes niveles en los que se estructura la aplicación, desde
+el más bajo (capa de acceso a datos), hasta el más alto (capa de controladores).
 
 \begin{itemize}
 	\item \boldFont{Repositorio}: se han probado todos los repositorios de la aplicación, comprobando que se pueden
-	guardar y recuperar los datos de la base de datos.\ Para ello, se ha utilizado una base de datos en memoria
-	H2, que se crea y se destruye en cada prueba.\ Estos tests son los más simples, ya que la funcionalidad
+	guardar y recuperar los datos de la base de datos, que en este caso se ha utilizado una en memoria (H2).
+	Estos tests son los más simples, ya que la funcionalidad
 	que se prueba es la más básica de la aplicación (acceso a base de datos).\ Las clases de test para los
-	repositorios deben tener la anotación \monoFont{@DataJpaTest}, que permite utilizar una base de datos en
-	memoria y que se creen los repositorios de forma automática.\ En el código siguiente se puede
+	repositorios deben tener la anotación \monoFont{@DataJpaTest}, que permite la creación de los repositorios
+	de forma automática y la utilización de la base de datos H2.\ En el código siguiente se puede
 	ver un ejemplo de una prueba unitaria para el repositorio de usuarios, en la que se comprueba que se puede
 	guardar un usuario en la base de datos y que se puede recuperar por su email.
 	\begin{codeBlock}
@@ -371,11 +360,17 @@ probando.
 	}
 		\end{minted}
 		\caption{Pruebas unitarias para el método \monoFont{findByEmail} del repositorio de usuarios.}
+		\label{code:pruebas-unitarias-repositorio-usuarios}
 	\end{codeBlock}
 
 	\item \boldFont{Servicio}: se han probado los servicios de la aplicación, utilizando el framework
-	\boldFont{Mockito}, que ofrece la posibilidad de simular el comportamiento de los objetos que tengan la
-	anotación \monoFont{@Mock}.\
+	\boldFont{Mockito}.\ Permite modificar el comportamiento de ciertos objetos para que se adapten a las necesidades
+	de los tests.\ Las clases de test para los servicios deben estar anotadas con
+	\monoFont{@ExtendWith(MockitoExtension.class)}, que permite utilizar las anotaciones de Mockito.\ En el
+	siguiente código se puede ver un ejemplo de una prueba unitaria para el servicio de grados, en la que se
+	comprueba que se puede recuperar un grado a partir de su nombre.\ También se puede observar cómo se simula el
+	comportamiento de los repositorios, anotados con \monoFont{@Mock} (para que devuelvan los datos que se quieran)
+	y ver los parámetros con los que se llaman a los métodos.
 	\begin{codeBlock}
 		\begin{minted}[
 			baselinestretch=1.1,
@@ -430,19 +425,165 @@ void testSaveDegreeOk() {
 }
 		\end{minted}
 		\caption{Pruebas unitarias para el servicio de grados utilizando Mockito.}
+		\label{code:degreeServiceTest}
 	\end{codeBlock}
-	Las clases de test para los servicios deben tener presente (antes de su definición) la anotación
-	\monoFont{@ExtendWith(MockitoExtension.class)}, que permite utilizar las anotaciones de Mockito.\ En el
-	código anterior se puede ver un ejemplo de una prueba unitaria para el servicio de grados, en la que se
-	comprueba que se puede recuperar un grado por su nombre.\ También se puede observar cómo se simula el
-	comportamiento de los repositorios, anotados con \monoFont{@Mock} (para que devuelvan los datos que se quieran)
-	y ver los parámetros con los que se llaman a los métodos.
+
+	\item \boldFont{Controlador}: se han realizado tests para los controladores de la aplicación, utilizando también
+	el framework Mockito.\ Las clases de test para los controladores deben estar anotadas con \monoFont{@WebMvcTest},
+	con la clase del controlador que se quiere probar como parámetro.\ En el siguiente código se puede ver un ejemplo
+	de una prueba unitaria para el controlador de insignias, en la que se comprueba que se pueden recuperar las
+	insignias de un usuario.
+	\begin{codeBlock}
+		\begin{minted}[
+			baselinestretch=1.1,
+			fontsize=\footnotesize,
+			tabsize=2,
+		]{java}
+@Autowired private MockMvc mvc;
+@MockBean private BadgeService badgeService;
+
+@Test
+@WithMockStudent // Custom annotation to mock a student for this test
+void itShouldGetBadgesOfUser() throws Exception {
+	// Given
+	List<BadgeDto> dtoList = List.of(
+			DefaultFactory.INSTANCE.createBadgeDto(1L, "1st message", "1st message", 1),
+			DefaultFactory.INSTANCE.createBadgeDto(2L, "20th message", "20th message", 20)
+	);
+	given(badgeService.getBadgesOfUser(1L)).willReturn(dtoList);
+
+	// When
+	MockHttpServletResponse response = mvc.perform(get(USER_BADGES_URL, 1L))
+	                                      .andExpect(status().isOk())
+	                                      .andReturn()
+	                                      .getResponse();
+
+	// Then
+	assertThat(response.getContentAsString())
+			.isEqualTo(TEST_OBJECT_MAPPER.writeValueAsString(dtoList));
+}
+		\end{minted}
+		\caption{Pruebas unitarias para el controlador de insignias utilizando Mockito.}
+		\label{code:pruebas-unitarias-controlador}
+	\end{codeBlock}
+
 \end{itemize}
 \label{itm:pruebas-unitarias-backend}
 
 \subsect{Pruebas de integración}{pruebas-integracion}
-% Todo: Pruebas de integración
-% Uso mockito...
+
+Las pruebas de integración se utilizan para comprobar que los componentes de la aplicación funcionan correctamente
+de manera conjunta~\cite{integration_testing}.\ En estas pruebas se realizan peticiones HTTP a la aplicación y se
+comprueba que se obtiene la respuesta esperada.\ Para realizar estos tests, las clases deben estar
+anotadas con \monoFont{@SpringBootTest} y \monoFont{@AutoConfigureMockMvc}.\ En el siguiente código se puede ver
+una de las pruebas de integración para la funcionalidad de login, incluyendo toda la configuración para ejecutarlo
+correctamente.
+
+	{\footnotesize Nota: se han ignorado los métodos \monoFont{setUp} y \monoFont{tearDown} para acortar el código y
+que pueda verse mejor la estructura del test en una sola página.\ Su única función es crear y eliminar los objetos
+involucrados en el test.}
+\begin{codeBlock}
+	\begin{minted}[
+		baselinestretch=1.1,
+		fontsize=\footnotesize,
+		tabsize=2,
+	]{java}
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+class AuthIntegrationTest {
+	@Autowired private MockMvc mockMvc;
+
+	@Autowired private UserRepository userRepository;
+	@Autowired private SessionRepository sessionRepository;
+	@Autowired private ChatRepository chatRepository;
+	@Autowired private GroupRepository groupRepository;
+	@Autowired private UserService userService;
+	@Autowired private Clock clock;
+
+	private Session studentSession;
+
+	// Here go the setUp and tearDown methods
+
+	@Test
+	void testLogin() throws Exception {
+		// Given
+		User user = DefaultFactory.INSTANCE.createUser(null, Constants.STUDENT_ROLE);
+		userService.createUser(user); // Save the user to DB to be able to log in
+
+		// When
+		String response = mockMvc.perform(request(HttpMethod.POST, LOGIN_URL)
+												  .contentType(MediaType.APPLICATION_JSON)
+												  .content(TEST_OBJECT_MAPPER.writeValueAsString(Map.of(
+														  "username", user.getUsername(),
+														  "password", TEST_PASSWORD,
+														  "remember", Boolean.FALSE
+												  ))))
+								 .andExpect(status().isOk())
+								 .andReturn()
+								 .getResponse()
+								 .getContentAsString();
+
+		// Then
+		JsonObject jsonResponse = TestUtils.parseJson(response);
+		String responseToken = jsonResponse.get("session").getAsJsonObject()
+                                           .get("token").getAsString();
+
+		assertThat(sessionRepository.findByToken(responseToken)).isPresent();
+	}
+}
+	\end{minted}
+	\caption{Prueba de integración para el login.}
+	\label{code:pruebas-integracion-login}
+\end{codeBlock}
 
 \subsect{Pruebas de sistema}{pruebas-sistema}
-% Todo: Pruebas de sistema, que se han hecho, aunque sea a mano, con Postman
+
+Las pruebas de sistema se utilizan para comprobar que el sistema completo
+cumple con los requisitos especificados~\cite{system_testing}.\ En el caso de esta aplicación, se han realizado
+las pruebas de sistema
+utilizando la herramienta \boldFont{Postman}, que permite enviar peticiones HTTP a la aplicación y comprobar que se
+obtiene la respuesta esperada.\ Una de las pruebas de sistema realizadas es para la funcionalidad de
+subir una imagen, que se divide en dos casos de prueba:
+
+\begin{itemize}
+	\item \boldFont{Subir una imagen sin contenido NSFW}: en esta prueba se verifica que se puede subir una imagen
+	sin contenido NSFW.\ Para ello, se realiza una petición POST a la URL \monoFont{/api/v1/upload} con
+	una imagen sin contenido NSFW.\ En la figura~\ref{fig:postman-test-1} se puede ver la petición
+	realizada y la respuesta obtenida.\ Además, la imagen se ha guardado en la base de datos, como se puede apreciar
+	en la figura~\ref{fig:postman-test-1-db}.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{res/images/postman-system-test-upload-image-no-nsfw}
+		\caption{Prueba de sistema para subir una imagen (sin contenido NSFW).}
+		\label{fig:postman-test-1}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{res/images/postman-system-test-upload-image-no-nsfw-db}
+		\caption{Imagen sin contenido NSFW guardada en la base de datos.}
+		\label{fig:postman-test-1-db}
+	\end{figure}
+
+	\item \boldFont{Subir una imagen con contenido NSFW}: en esta prueba se verifica que \boldFont{no} se puede
+	subir una imagen con contenido NSFW.\ Para ello, se realiza una petición POST a la URL
+	\monoFont{/api/v1/upload} con una imagen con contenido NSFW.\ En la figura~\ref{fig:postman-test-1} se
+	puede ver la petición realizada y la respuesta obtenida.\ Además, la imagen no se ha guardado en la base de datos,
+	y el contador de imágenes NSFW del usuario se ha incrementado, como se puede ver en la
+	figura~\ref{fig:postman-test-2-db}.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{res/images/postman-system-test-upload-image-nsfw}
+		\caption{Prueba de sistema para subir una imagen (con contenido NSFW).}
+		\label{fig:postman-test-2}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{res/images/postman-system-test-upload-image-nsfw-db}
+		\caption{Incremento del contador de imágenes NSFW del usuario.}
+		\label{fig:postman-test-2-db}
+	\end{figure}
+\end{itemize}
