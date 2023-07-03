@@ -94,7 +94,61 @@ También es un patrón de \boldFont{creación}.\ Se emplea para garantizar que u
 instancia y proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación,
 se utiliza en ciertas clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo,
 \monoFont{/login} con el método POST).\ Estas últimas son clases internas de \monoFont{Routes.java} y los nombres
-dependen del método HTTP que se debe utilizar para realizar una petición a una ruta específica.
+dependen del método HTTP que se debe utilizar para realizar una petición a una ruta específica.\ Debido al gran
+número de rutas definidas, se han omitido en el diagrama UML\@.
+
+\begin{umlDiagram}
+	\centering
+	\begin{adjustbox}{width=\textwidth}
+		\begin{tikzpicture}
+			\umlclass{Routes}{
+				\umlstatic{- V\_1: String = \str{/api/v1}} \\
+				\umlstatic{+ ROOT\_URL: String = \str{/}} \\
+				\umlstatic{+ ALL\_ROUTES: String = \str{/**}} \\
+				\umlstatic{+ ACTUATOR\_URL: String = \str{/actuator/prometheus}} \\
+				\umlstatic{+ TEST\_URL: String = \str{/api/v1/test}} \\
+				\umlstatic{+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}}
+			}{}{}
+
+			\umlclass[x=0,y=4.5]{GetRoute}{
+				\umlstatic{+ INSTANCE: GetRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+			\umlclass[x=9,y=0]{PostRoute}{
+				\umlstatic{+ INSTANCE: PostRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+			\umlclass[x=-9,y=0]{PutRoute}{
+				\umlstatic{+ INSTANCE: PutRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+			\umlclass[x=0,y=-4.5]{DeleteRoute}{
+				\umlstatic{+ INSTANCE: DeleteRoute}
+			}{
+				+ lowTierRoutes(): String[] \\
+				+ mediumTierRoutes(): String[] \\
+				+ topTierRoutes(): String[]
+			}{}
+
+			\umlVHnest{Routes}{GetRoute}
+			\umlHVnest{Routes}{PostRoute}
+			\umlHVnest{Routes}{PutRoute}
+			\umlVHnest{Routes}{DeleteRoute}
+		\end{tikzpicture}
+	\end{adjustbox}
+
+	\caption{Patrón Singleton empleado en la aplicación. (Fuente: Elaboración propia).}
+	\label{fig:singleton}
+\end{umlDiagram}
 
 \begin{table}[H]
 	\centering
@@ -111,59 +165,6 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 	\end{tabular}
 	\label{tab:routes}
 \end{table}
-
-\begin{umlDiagram}
-	\centering
-	\scalebox{0.8} {
-		\begin{tikzpicture}
-			\umlclass{Routes}{
-				\umlstatic{- V\_1: String = \str{/api/v1}} \\
-				\umlstatic{+ ROOT\_URL: String = \str{/}} \\
-				\umlstatic{+ ALL\_ROUTES: String = \str{/**}} \\
-				\umlstatic{+ ACTUATOR\_URL: String = \str{/actuator/prometheus}} \\
-				\umlstatic{+ TEST\_URL: String = \str{/api/v1/test}} \\
-				\umlstatic{+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}}
-			}{}{}
-
-			\umlclass[x=-6,y=5]{GetRoute}{
-				\umlstatic{+ INSTANCE: GetRoute}
-			}{
-				+ lowTierRoutes(): String[] \\
-				+ mediumTierRoutes(): String[] \\
-				+ topTierRoutes(): String[]
-			}{}
-			\umlclass[x=6,y=5]{PostRoute}{
-				\umlstatic{+ INSTANCE: PostRoute}
-			}{
-				+ lowTierRoutes(): String[] \\
-				+ mediumTierRoutes(): String[] \\
-				+ topTierRoutes(): String[]
-			}{}
-			\umlclass[x=-6,y=-5]{PutRoute}{
-				\umlstatic{+ INSTANCE: PutRoute}
-			}{
-				+ lowTierRoutes(): String[] \\
-				+ mediumTierRoutes(): String[] \\
-				+ topTierRoutes(): String[]
-			}{}
-			\umlclass[x=6,y=-5]{DeleteRoute}{
-				\umlstatic{+ INSTANCE: DeleteRoute}
-			}{
-				+ lowTierRoutes(): String[] \\
-				+ mediumTierRoutes(): String[] \\
-				+ topTierRoutes(): String[]
-			}{}
-
-			\umlVHnest{Routes}{GetRoute}
-			\umlVHnest{Routes}{PostRoute}
-			\umlVHnest{Routes}{PutRoute}
-			\umlVHnest{Routes}{DeleteRoute}
-			% Todo: ponerlos por separado
-		\end{tikzpicture}
-	}
-
-	\caption{Patrón Singleton empleado en la aplicación. (Fuente: Elaboración propia).}
-\end{umlDiagram}
 
 Se han utilizado diferentes formas de acceso a las instancias de las clases.\ En el caso de las que asocian
 rutas a métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método
@@ -253,8 +254,6 @@ manejar el evento lanzado, el cual se recibe como parámetro.
 
 \begin{umlDiagram}
 	\centering
-	\caption{Clase que representa los eventos de envío de mensajes. (Fuente: Elaboración propia).}
-
 	\begin{tikzpicture}
 		\umlclass[x=0,y=0]{MessageEvent}{
 			- type: String \\
@@ -270,6 +269,7 @@ manejar el evento lanzado, el cual se recibe como parámetro.
 			+ setCallback(callback: Function<String, Void>): void
 		}{}
 	\end{tikzpicture}
+	\caption{Clase que representa los eventos de envío de mensajes. (Fuente: Elaboración propia).}
 \end{umlDiagram}
 
 \begin{umlDiagram}
