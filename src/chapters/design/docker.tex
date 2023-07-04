@@ -75,7 +75,7 @@ almacena las métricas con la marca de tiempo cuando se producen, incluyendo eti
 opcional~\cite{prometheus-overview}.
 Estas métricas se utilizan para determinar el funcionamiento y estado de la aplicación en tiempo real, permitiendo
 diagnosticar problemas de rendimiento o recursos de una manera rápida y sencilla.\ Para habilitar la exportación de
-las métricas (de manera automática) por parte de la aplicación, hay que realizar las siguientes cambios en los
+las métricas (de manera automática) por parte de la aplicación, hay que realizar los siguientes cambios en los
 ficheros de configuración:
 
 \begin{itemize}
@@ -191,11 +191,11 @@ el puerto interno, ya que se usa la misma red para todos los servicios):
 \label{itm:grafana-data-sources}
 
 \subsubsect{Loki (Agregación de logs)}{loki}
-Loki es una herramienta de agregación de logs, que permite almacenar, indexar y consultar logs de manera eficiente, ya
-que se basa en el uso de etiquetas (para el agrupamiento y filtrado de logs) dejando el mensaje original sin
+Loki es una herramienta de agregación de logs, que permite almacenar, indexar y consultar logs de manera eficiente,
+porque se basa en el uso de etiquetas (para el agrupamiento y filtrado de logs) dejando el mensaje original sin
 modificar~\cite{loki-docs}.
 Para el funcionamiento de Loki es necesario disponer de un agente que se encargue de enviar los logs a la instancia de
-Loki, y en este proyecto se ha utilizado Promtail, explicado en la siguiente subsección.
+Loki, y en este proyecto se ha utilizado Promtail, explicado en el siguiente apartado.
 La configuración necesaria para que Grafana pueda recoger los logs de Loki es sencilla, ya que se añade un fichero
 \monoFont{yaml} con la configuración de la fuente de datos de Loki~\cite{loki-config-file} y el servicio en el
 fichero \monoFont{docker-compose.yaml}:
@@ -281,11 +281,11 @@ asociada a cada traza:
 		tabsize=2,
 	]{yaml}
     pipeline_stages:
-      # ...
+      ...
       - regex:  # Nombre del contenedor en el valor de "tag"
           expression: (?P<container_name>(?:[^|]*[^|]))
           source: tag
-      # ...
+      ...
 	\end{minted}
 	\caption{Stage para obtener el nombre del contenedor con una expresión regular a partir de la etiqueta
 	\monoFont{tag}. (Fuente: Elaboración propia).}
@@ -293,7 +293,7 @@ asociada a cada traza:
 \end{codeBlock}
 
 \subsubsect{NSFWPY}{nsfwpy}
-NSFWPY es un detector de contenido no seguro para el trabajo (NSFW, por sus siglas en inglés), que se ha utilizado para
+NSFWPY es un detector de contenido NSFW, que se ha utilizado para
 detectar imágenes inapropiadas en los mensajes de los usuarios.\ Es un programa escrito en Python, que consiste en
 un pequeño servidor HTTP (utilizando Flask) que recibe una imagen en formato \monoFont{base64} y devuelve un JSON con
 la predicción de la imagen.\ Para realizar la predicción, se utiliza el modelo de inteligencia artificial
@@ -301,7 +301,7 @@ la predicción de la imagen.\ Para realizar la predicción, se utiliza el modelo
 que está pre-entrenado con imágenes de contenido NSFW y SFW (seguro para el trabajo).\ El modelo devuelve una
 predicción de la clase a la que pertenece la imagen, con una probabilidad entre 0 y 1, siendo 0 la probabilidad de
 que la imagen sea SFW y 1 la probabilidad de que la imagen sea NSFW\@.\ El modelo está entrenado para detectar 5
-clases de imágenes NSFW:
+clases en las imágenes:
 \begin{itemize}
 	\item Drawings (Dibujos): Imágenes de dibujos animados o hechos a mano.
 	\item Hentai (Manga): Imágenes de manga o anime con contenido sexual.
@@ -337,7 +337,7 @@ una nueva ruta en la API de RSChat, que se encarga de llamar al detector NSFWPY\
 	\label{cod:nsfw-docker-compose}
 \end{codeBlock}
 
-Este modelo se ha conocido a través a la página web \href{https://nsfwjs.com/}{NSFWJS}~\cite{nsfwjs}, que lo utiliza
+Este modelo se ha conocido a través de la página web \href{https://nsfwjs.com/}{NSFWJS}~\cite{nsfwjs}, que lo utiliza
 para el análisis de las imágenes desde el propio navegador del usuario, sin necesidad de enviarlas a un servidor.
 La web permite probar el modelo con imágenes que se pueden arrastrar y soltar en la página, y muestra la
 predicción del modelo para cada una de ellas.\ Las figuras~\ref{fig:nsfwjs-drawing} y~\ref{fig:nsfwjs-porn} muestran
