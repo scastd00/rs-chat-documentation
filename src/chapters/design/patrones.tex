@@ -1,4 +1,4 @@
-\sect{Patrones de diseño}{design-patterns}
+\subsect{Patrones de diseño}{design-patterns}
 
 \textit{Un patrón de diseño es una solución que se aplica para resolver problemas comunes en el
 diseño de software}~\cite{designPatternDefinition}.
@@ -23,24 +23,40 @@ A continuación, se detalla la información que se incluye de los patrones utili
 \end{itemize}
 \label{itm:uso-patrones}
 
-\subsect{Builder}{builder}
-Es un patrón de \boldFont{creación} que permite instanciar objetos complejos de una forma sencilla.\ Se ha creado una
-interfaz genérica (\monoFont{Builder}) para su reutilización en caso de ser necesaria para cualquier otra clase.
+\subsubsect{Builder}{builder}
+
+Es un patrón de \boldFont{creación} que permite crear objetos complejos de una forma sencilla.\ Se ha creado una
+interfaz genérica (\monoFont{GenericBuilder}) para su reutilización en caso de ser necesaria para cualquier otra clase.
 Esta interfaz define el método \monoFont{build()} que devolverá la instancia de un objeto con los datos establecidos
 previamente.\ El diagrama UML del patrón implementado es el siguiente:
 
 \begin{umlDiagram}
 	\centering
 	\begin{tikzpicture}
-		\umlinterface[x=-8,y=2]{Builder}{}{
-			+ build(): Object
+		\umlinterface[x=0,y=0]{GenericBuilder}{}{
+			+ build(): T
 		}{}
-		\umlclass[y=-1]{JsonMessageWrapper}{
+		\umlinterface[x=-3,y=-5]{Builder}{}{
+			+ username(String): Builder \\
+			+ chatId(String): Builder \\
+			+ sessionId(long): Builder \\
+			+ type(String): Builder \\
+			+ date(long): Builder \\
+			+ token(String): Builder \\
+			+ content(String): Builder \\
+		}{}
+		\umlclass[x=4,y=-5]{BuilderImpl}{
+			- headers: JsonObject \\
+			- body: JsonObject \\
+		}{}{}
+		\umlclass[x=-2,y=-14]{JsonMessageWrapper}{
 			- rawPayload: String \\
-			- parsedPayload: JsonObject
+			- parsedPayload: JsonObject \\
+			\umlstatic{- log: Logger} \\
 		}{
 			+ getRawPayload(): String \\
 			+ getParsedPayload(): JsonObject \\
+			\umlstatic{+ createMessage(String, String, String): String} \\
 			+ headers(): JsonObject \\
 			+ body(): JsonObject \\
 			+ username(): String \\
@@ -53,61 +69,36 @@ previamente.\ El diagrama UML del patrón implementado es el siguiente:
 			+ updateDateTime(): void \\
 			+ setContent(String): void \\
 			+ toString(): String \\
-			\umlstatic{+ fromString(String): JsonMessageWrapper} \\
+			+ fromString(String): JsonMessageWrapper \\
 			+ correctStructure(): boolean \\
-			+ builder(): BuilderImpl
-		}{}
-		\umlclass[x=-8,y=-3]{BuilderImpl}{
-			- headers: JsonObject \\
-			- body: JsonObject
-		}{
-			+ username(String): BuilderImpl \\
-			+ chatId(String): BuilderImpl \\
-			+ sessionId(long): BuilderImpl \\
-			+ type(String): BuilderImpl \\
-			+ date(long): BuilderImpl \\
-			+ token(String): BuilderImpl \\
-			+ content(String): BuilderImpl
+			\umlstatic{+ builder(): Builder} \\
 		}{}
 
-		\umlnest{JsonMessageWrapper}{BuilderImpl}
-		\umlimpl{BuilderImpl}{Builder}
+		\umlVHinherit{Builder}{GenericBuilder}
+		\umlVHimpl{BuilderImpl}{Builder}
+		\umlVHnest{JsonMessageWrapper}{Builder}
+		\umlHVnest{JsonMessageWrapper}{BuilderImpl}
 	\end{tikzpicture}
 
-	\caption{Patrón Builder empleado en la aplicación.}
+	\caption{Patrón Builder empleado en la aplicación. (Fuente: Elaboración propia).}
 \end{umlDiagram}
 
 El patrón builder se ha usado en la aplicación para simplificar la creación de objetos de tipo
-\monoFont{JsonMessageWrapper}, por el
-momento.\ Esta clase es la encargada de encapsular los mensajes que se envían a través de la red en formato JSON\@.
+\monoFont{JsonMessageWrapper}.\ Esta clase es la encargada de encapsular los mensajes que se envían a través de la red
+en formato JSON\@.
 
+\subsubsect{Singleton}{singleton}
 
-\subsect{Singleton}{singleton}
 También es un patrón de \boldFont{creación}.\ Se emplea para garantizar que una clase concreta tenga una única
 instancia y proporciona un punto de acceso global a ella~\cite{sarcar2018java}.\ En el contexto de esta aplicación,
 se utiliza en ciertas clases de utilidad y en las clases que asocian rutas a un método HTTP (por ejemplo,
 \monoFont{/login} con el método POST).\ Estas últimas son clases internas de \monoFont{Routes.java} y los nombres
-dependen del método HTTP que se debe utilizar para realizar una petición a una ruta específica.
-
-\begin{table}[H]
-	\centering
-	\begin{tabular}{|c|c|}
-		\hline
-		Método HTTP & Clase de la ruta       \\
-		\hline
-		GET           & \monoFont{GetRoute}    \\
-		POST          & \monoFont{PostRoute}   \\
-		PUT           & \monoFont{PutRoute}    \\
-		DELETE        & \monoFont{DeleteRoute} \\
-		\hline
-	\end{tabular}
-	\caption{Relación entre método HTTP y ruta.}
-	\label{tab:routes}
-\end{table}
+dependen del método HTTP que se debe utilizar para realizar una petición a una ruta específica.\ Debido al gran
+número de rutas definidas, se han omitido en el diagrama UML\@.
 
 \begin{umlDiagram}
 	\centering
-	\scalebox{0.8} {
+	\begin{adjustbox}{width=\textwidth}
 		\begin{tikzpicture}
 			\umlclass{Routes}{
 				\umlstatic{- V\_1: String = \str{/api/v1}} \\
@@ -118,28 +109,28 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 				\umlstatic{+ WS\_CHAT\_ENDPOINT: String = \str{/ws/rschat}}
 			}{}{}
 
-			\umlclass[x=-4,y=5]{GetRoute}{
+			\umlclass[x=0,y=4.5]{GetRoute}{
 				\umlstatic{+ INSTANCE: GetRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
 				+ mediumTierRoutes(): String[] \\
 				+ topTierRoutes(): String[]
 			}{}
-			\umlclass[x=4,y=5]{PostRoute}{
+			\umlclass[x=9,y=0]{PostRoute}{
 				\umlstatic{+ INSTANCE: PostRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
 				+ mediumTierRoutes(): String[] \\
 				+ topTierRoutes(): String[]
 			}{}
-			\umlclass[x=-4,y=-5]{PutRoute}{
+			\umlclass[x=-9,y=0]{PutRoute}{
 				\umlstatic{+ INSTANCE: PutRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
 				+ mediumTierRoutes(): String[] \\
 				+ topTierRoutes(): String[]
 			}{}
-			\umlclass[x=4,y=-5]{DeleteRoute}{
+			\umlclass[x=0,y=-4.5]{DeleteRoute}{
 				\umlstatic{+ INSTANCE: DeleteRoute}
 			}{
 				+ lowTierRoutes(): String[] \\
@@ -147,21 +138,39 @@ dependen del método HTTP que se debe utilizar para realizar una petición a una
 				+ topTierRoutes(): String[]
 			}{}
 
-			\umlnest{Routes}{GetRoute}
-			\umlnest{Routes}{PostRoute}
-			\umlnest{Routes}{PutRoute}
-			\umlnest{Routes}{DeleteRoute}
+			\umlVHnest{Routes}{GetRoute}
+			\umlHVnest{Routes}{PostRoute}
+			\umlHVnest{Routes}{PutRoute}
+			\umlVHnest{Routes}{DeleteRoute}
 		\end{tikzpicture}
-	}
+	\end{adjustbox}
 
-	\caption{Patrón Singleton empleado en la aplicación.}
+	\caption{Patrón Singleton empleado en la aplicación. (Fuente: Elaboración propia).}
+	\label{fig:singleton}
 \end{umlDiagram}
+
+\begin{table}[H]
+	\centering
+	\caption{Relación entre método HTTP y ruta. (Fuente: Elaboración propia).}
+	\begin{tabular}{|c|c|}
+		\hline
+		Método HTTP & Clase de la ruta       \\
+		\hline
+		GET           & \monoFont{GetRoute}    \\
+		POST          & \monoFont{PostRoute}   \\
+		PUT           & \monoFont{PutRoute}    \\
+		DELETE        & \monoFont{DeleteRoute} \\
+		\hline
+	\end{tabular}
+	\label{tab:routes}
+\end{table}
 
 Se han utilizado diferentes formas de acceso a las instancias de las clases.\ En el caso de las que asocian
 rutas a métodos HTTP, el modificador de acceso a la instancia es público.\ En otros casos, se provee un método
 estático para obtener la instancia de la clase.
 
-\subsect{Strategy}{strategy}
+\subsubsect{Strategy}{strategy}
+
 Este patrón de \boldFont{comportamiento} se utiliza para encapsular un algoritmo dentro de una clase, de forma que
 pueda ser intercambiado por otro algoritmo en tiempo de ejecución.\ En la aplicación, se emplea para encapsular el
 proceso de manejo de los mensajes que se envían entre los usuarios.\ Existen varias clases que se encargan de
@@ -189,7 +198,7 @@ tabla~\ref{tab:messageStrategyRelationship}.
 		}{}
 	\end{tikzpicture}
 
-	\caption{Interfaz MessageStrategy.}
+	\caption{Interfaz MessageStrategy. (Fuente: Elaboración propia).}
 \end{umlDiagram}
 
 Este patrón se ha utilizado para simplificar el manejo de los mensajes recibidos en el servidor y para que sea más
@@ -201,6 +210,7 @@ recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe u
 
 \begin{table}[H]
 	\centering
+	\caption{Relación Mensaje - Estrategia. (Fuente: Elaboración propia).}
 	\begin{tabular}{|c|c|}
 		\hline
 		\textbf{Mensaje}              & \textbf{Clase de la estrategia}       \\ \hline
@@ -225,6 +235,65 @@ recibe como parámetro el tipo de mensaje y devuelve la estrategia que se debe u
 		\texttt{RESTART\_MESSAGE}       & \monoFont{RestartMessageStrategy}     \\ \hline
 		\texttt{MAINTENANCE\_MESSAGE}   & \monoFont{MaintenanceMessageStrategy} \\ \hline
 	\end{tabular}
-	\caption{Relación Mensaje - Estrategia}
 	\label{tab:messageStrategyRelationship}
 \end{table}
+
+\subsubsect{Observer}{observer}
+
+Este patrón de \boldFont{comportamiento} permite definir un mecanismo de subscripción para notificar a múltiples
+objetos sobre cualquier evento que le ocurra al objeto que están observando~\cite{Observer19:online}.
+
+En la aplicación, se utiliza para incrementar el contador de mensajes, de cada tipo, que el usuario ha enviado.
+Para esto, se ha creado una clase, \monoFont{MessageEvent}, de la cual heredan las clases que representan los
+diferentes tipos de mensajes que se pueden enviar.
+
+Para la implementación del objeto ``escuchador'', se sobreescriben todos los métodos necesarios de la interfaz
+\monoFont{ApplicationListener}.\ El método \monoFont{onApplicationEvent (event: ApplicationEvent)} es el encargado de
+manejar el evento lanzado, el cual se recibe como parámetro.
+
+\begin{umlDiagram}
+	\centering
+	\begin{tikzpicture}
+		\umlclass[x=0,y=0]{MessageEvent}{
+			- type: String \\
+			- username: String \\
+			\# callback: Function<String, Void>
+		}{
+			+ MessageEvent(source: Object, type: String, username: String) \\
+			+ getType(): String \\
+			+ setType(type: String): void \\
+			+ getUsername(): String \\
+			+ setUsername(username: String): void \\
+			+ getCallback(): Function<String, Void> \\
+			+ setCallback(callback: Function<String, Void>): void
+		}{}
+	\end{tikzpicture}
+	\caption{Clase que representa los eventos de envío de mensajes. (Fuente: Elaboración propia).}
+\end{umlDiagram}
+
+\begin{umlDiagram}
+	\centering
+	\begin{adjustbox}{width=\textwidth}
+		\begin{tikzpicture}
+			\umlclass[x=0,y=-4]{MessageEventListener}{
+				- userBadgeService: UserBadgeService \\
+				- userService: UserService
+			}{
+				+ MessageEventListener(userBadgeService: UserBadgeService, userService: UserService) \\
+				+ onApplicationEvent(event: MessageEvent): void
+			}{}
+
+			\umlinterface[x=0,y=0]{ApplicationListener}{}{
+				+ onApplicationEvent(event: E): void
+			}{}
+
+			\umlimpl{MessageEventListener}{ApplicationListener}
+		\end{tikzpicture}
+	\end{adjustbox}
+
+	\caption{Clase que representa el ``escuchador'' de los eventos de envío de mensajes. (Fuente: Elaboración propia).}
+\end{umlDiagram}
+
+El uso de este patrón permite que el código sea más mantenible y extensible, ya que se puede agregar un nuevo tipo de
+mensaje sin tener que modificar el código existente.\ Solamente habría que crear una nueva clase que herede de
+\monoFont{MessageEvent} y sobreescribir los métodos necesarios.

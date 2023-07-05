@@ -1,37 +1,39 @@
-\sect{Problemas en el desarrollo}{development_problems}
+\subsect{Problemas}{deployment_problems}
 Uno de los problemas más significativos que han surgido en el desarrollo de la aplicación se ha dado en la parte del
 despliegue en producción de la misma.\ En un comienzo, la aplicación se había desplegado en dos clusters con el plan
 gratuito de Heroku (uno para el frontend y otro para el backend), pero en el momento en que esta plataforma publicó
 que se dejaría de dar soporte a las aplicaciones gratuitas, se empezaron a buscar alternativas para alojar la
 aplicación.
 
-\subsect{Alternativas a Heroku}{heroku_alternatives}
+\subsubsect{Alternativas a Heroku}{heroku_alternatives}
 Las opciones que se consideraron fueron las que se describen a continuación, ordenadas según la fecha de consideración.
 
 \begin{itemize}
 	\item Para la parte de \boldFont{frontend}, la elección fue muy sencilla. \boldFont{Vercel} fue la primera opción
 	a considerar, siendo una plataforma muy conocida por su facilidad para desplegar aplicaciones web.\ Cada vez que se
 	realiza un cambio en el código fuente de la aplicación, se inicia un despliegue automático en la plataforma (esto
-	ocurre si se tiene enlazado el repositorio de Git).
+	ocurre si se tiene enlazado el repositorio de GitHub).
 
 	\item Para la parte de \boldFont{backend}, se consideraron las siguientes opciones:
 	\begin{itemize}
-		\item \boldFont{Alojamiento en la nube}: se consideró la posibilidad de alojar la aplicación en la nube utilizando otros
-		servicios.\ Se llegó a concretar una reunión con un \textit{Cloud Consultant} de \boldFont{Platform.sh}, que
+		\item \boldFont{Alojamiento en la nube}: se consideró la posibilidad de alojar la aplicación en la nube
+		utilizando otros servicios.
+		Se llegó a concretar una reunión con un \textit{Cloud Consultant} de \boldFont{Platform.sh}, que
 		fue la primera opción a considerar, pero no se llegó a ningún acuerdo para conseguir un plan gratuito de
 		despliegue de la aplicación, por tanto, se descartó esta opción.
 
-		\item \boldFont{Raspberry Pi 4}: es un ordenador de tamaño muy reducido, que se puede configurar para que actúe como un
-		servidor.\ Es una buena opción en caso de se desee un consumo de energía bajo.\ Sin embargo, no es una opción
+		\item \boldFont{Raspberry Pi 4}: es un ordenador de tamaño muy reducido, que se puede configurar para que
+		actúe como un servidor.
+		Es una buena opción en caso de que se desee un consumo de energía bajo.\ Sin embargo, no es una opción
 		viable para el proyecto a largo plazo, ya que el almacenamiento se realiza en una tarjeta de memoria, cuya
 		velocidad de lectura/escritura es más baja en comparación con los discos duros sólidos de los ordenadores
 		convencionales.
 
 		\item \boldFont{Servidor propio}: es la opción más viable, ya que se puede aprovechar para realizar otras
-		\item tareas como
-		almacenamiento de gran cantidad datos o desplegar otras aplicaciones más potentes que con la Raspberry Pi.
-		Esta ha sido la \boldFont{opción elegida} finalmente, ya que se ha encontrado un pequeño ordenador que cumple con los
-		requisitos necesarios para alojar la aplicación.
+		tareas como
+		almacenamiento de gran cantidad de datos o desplegar otras aplicaciones más potentes que con la Raspberry Pi.
+		Esta ha sido la \boldFont{opción elegida} finalmente, ya que se ha encontrado un pequeño ordenador que cumple
+		con los requisitos necesarios para alojar la aplicación.
 	\end{itemize}
 \end{itemize}
 

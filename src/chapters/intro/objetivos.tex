@@ -1,6 +1,6 @@
 \sect{Objetivos}{objectives}
 En un principio, el objetivo principal de la aplicación era su integración de forma completa con la plataforma de
-\textit{Moodle} de la Universidad de León (como un complemento a los foros), para que tanto estudiantes y profesores
+\textit{Moodle} de la Universidad de León (como un complemento a los foros), para que tanto estudiantes como profesores
 pudieran emplearla e interactuar de manera más rápida.\ Sin embargo, debido a que era una idea demasiado ambiciosa,
 se ha optado por generalizarlo más a un chat de mensajes instantáneos para que cualquier persona con acceso a
 Internet pueda utilizarlo (pero manteniendo la temática de estudiantes/profesores, en caso de llegarse a utilizar en
@@ -11,12 +11,31 @@ usuarios.
 Se pueden tener varios chats abiertos a la vez, pudiendo cambiar entre ellos fácilmente (teniendo una disposición en
 pestañas, mostrando un pequeño icono con el número de mensajes que no han sido leídos todavía).
 Además, se permite a los usuarios crear grupos de chat para que varias personas puedan
-comunicarse entre sí, pudiendo compartir un código de invitación para que otros usuarios se unan al grupo en específico.
+comunicarse entre sí, pudiendo compartir un código de invitación para que otros usuarios se unan a ese grupo.
 Estos canales podrán ser \boldFont{públicos} o \boldFont{privados}.
-Los canales \boldFont{privados} solo pueden ser vistos por los usuarios que hayan sido invitados a ellos de manera
-explícita o con el código de invitación.\ Los canales \boldFont{públicos} son accesibles por cualquier persona que
+Los canales \boldFont{privados} solo pueden ser vistos por los usuarios que hayan sido invitados a ellos, de manera
+explícita o con el código de invitación.\ Los canales \boldFont{públicos} son accesibles para cualquier persona que
 tenga acceso a la aplicación, sin necesidad de invitación.\ También se pueden enviar mensajes a una sola persona,
 estableciendo una conversación privada sin notificar al resto de usuarios conectados.
 
-Una de las características que no ofrece ninguna aplicación de chat es la posibilidad de filtrar imágenes inapropiadas
-mediante un algoritmo de inteligencia artificial, por lo que este es uno de los objetivos principales de la aplicación.
+Una de las características que no ofrece ninguna aplicación de chat es la posibilidad de
+\boldFont{prevenir el envío de imágenes inapropiadas}, por lo que este es uno de los objetivos principales de la
+aplicación.\ Además de esto, el resto de los objetivos para el proyecto son los siguientes:
+
+\begin{itemize}
+	\item Desarrollar una aplicación web para la comunicación a través de chat entre los usuarios.
+	\item Se debe ofrecer un sistema de grupos y chats individuales para los usuarios.
+	\item Los usuarios deben poder intercambiar archivos entre ellos.
+	\item Garantizar el debido cumplimiento de la política de privacidad de los usuarios
+	(ver sección~\ref{sec:privacidad} para más información).
+	\item Establecer un sistema de roles, para permitir la interacción entre usuarios de manera
+	efectiva y fluida.\ Esto les ayuda a determinar a qué personas comunicar incidencias u otra
+	información.
+	\item Los administradores deben tener un panel de control para gestionar todo lo relacionado con la aplicación
+	y el uso de recursos por parte del servidor, para evitar sobrecargas o caídas.
+	\item Ofrecer un sistema de recompensa a los usuarios que más utilicen la aplicación, otorgando insignias
+	que se mostrarán en su perfil.
+	\item Permitir a los usuarios visualizar las estadísticas de mensajes enviados, archivos compartidos, etc.\ en
+	la aplicación.
+\end{itemize}
+\label{itm:alcance_objetivos}

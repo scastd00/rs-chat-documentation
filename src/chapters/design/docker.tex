@@ -3,7 +3,7 @@
 % https://stackoverflow.com/questions/38567355/docker-compose-global-level-logging
 % https://howchoo.com/devops/how-to-add-a-health-check-to-your-docker-container
 
-\sect{Docker}{docker}
+\subsect{Docker}{docker}
 Docker es una plataforma software que permite el desarrollo, despliegue y ejecución de aplicaciones de forma rápida y
 cómoda, separando la aplicación de la infraestructura, permitiendo ejecutar múltiples aplicaciones en un mismo servidor
 (ver figura~\ref{fig:docker-container-infrastructure}).\ Esto se realiza empaquetando la
@@ -15,7 +15,7 @@ en otras imágenes añadiendo o modificando configuraciones~\cite{docker-docs}.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\textwidth]{res/images/container-what-is-container}
-	\caption{Infrastructura docker. Fuente: \url{https://www.docker.com/resources/what-container}}
+	\caption{Infrastructura docker. (Fuente:~\cite{docker-container:online}).}
 	\label{fig:docker-container-infrastructure}
 \end{figure}
 
@@ -43,7 +43,7 @@ los siguientes:
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\textwidth]{res/images/InfraestructuraDockerRSChat}
-	\caption{Diagrama de relación entre los contenedores Docker utilizados en RS Chat.}
+	\caption{Diagrama de relación entre los contenedores Docker utilizados en RS Chat. (Fuente: Elaboración propia).}
 	\label{fig:docker-container-diagram}
 \end{figure}
 
@@ -68,14 +68,14 @@ detalle más adelante.}
 \end{itemize}
 \label{itm:docker-compose-services}
 
-\subsect{Prometheus (Métricas)}{prometheus}
+\subsubsect{Prometheus (Métricas)}{prometheus}
 Prometheus es un conjunto de herramientas de código abierto para la \boldFont{monitorización} de sistemas y
 \boldFont{alertas}, que recoge y
 almacena las métricas con la marca de tiempo cuando se producen, incluyendo etiquetas (clave-valor) de manera
 opcional~\cite{prometheus-overview}.
 Estas métricas se utilizan para determinar el funcionamiento y estado de la aplicación en tiempo real, permitiendo
 diagnosticar problemas de rendimiento o recursos de una manera rápida y sencilla.\ Para habilitar la exportación de
-las métricas (de manera automática) por parte de la aplicación, hay que realizar las siguientes cambios en los
+las métricas (de manera automática) por parte de la aplicación, hay que realizar los siguientes cambios en los
 ficheros de configuración:
 
 \begin{itemize}
@@ -118,15 +118,15 @@ aplicación.\ La lista con las métricas más usadas es la siguiente:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{res/images/cover}
-	\caption{Flujo de datos desde la aplicación Spring Boot hasta Grafana. (Fuente~\cite{prometheus-flow})}
+	\caption{Flujo de datos desde la aplicación Spring Boot hasta Grafana. (Fuente~\cite{prometheus-flow}).}
 	\label{fig:prometheus-flow}
 \end{figure}
 
-\subsect{Grafana (Panel de observabilidad)}{grafana}
+\subsubsect{Grafana (Panel de observabilidad)}{grafana}
 Grafana es una solución de código abierto para mostrar las métricas que se recogen de las aplicaciones de una
 manera amigable en paneles personalizables~\cite{what-is-grafana}.\ Permite estudiar, analizar y monitorizar
 aplicaciones a lo largo del tiempo gracias a las marcas de tiempo proporcionadas junto con los datos que se
-recolectan.\ Se puede conectar con muchas fuentes de datos, como Graphite, Prometheus, ElasticSearch, MySQL, etc.\
+recolectan.\ Se puede conectar con muchas fuentes de datos, como Graphite, Prometheus, ElasticSearch, MySQL, etc.
 Una ventaja de Grafana es que ofrece una solución \quoted{on-premise}, que permite desplegar una instancia propia en
 el mismo servidor donde se ejecuta la aplicación.\ De esta manera, se garantiza la seguridad y protección de los
 datos, ya que no se exponen a Internet de manera directa.
@@ -155,7 +155,7 @@ services:
     networks:
       - rschat-net  # Se asigna la red interna para comunicarse con otros servicios
 	\end{minted}
-	\caption{Configuración mínima para ejecutar un contenedor con Grafana.}
+	\caption{Configuración mínima para ejecutar un contenedor con Grafana. (Fuente: Elaboración propia).}
 	\label{cod:grafana-docker-compose}
 \end{codeBlock}
 
@@ -167,14 +167,15 @@ mapas de calor, tablas, entre otros~\cite{visualizaciones-grafana}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{res/images/GrafanaDashboard_1}
-	\caption{Visualización de métricas relacionadas con los recursos del sistema utilizados y tiempo de actividad.}
+	\caption{Visualización de métricas relacionadas con los recursos del sistema utilizados y tiempo de actividad.
+		(Fuente: Elaboración propia).}
 	\label{fig:grafana-dashboard_1}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{res/images/GrafanaDashboard_2}
-	\caption{Visualización de métricas relacionadas con los logs y peticiones HTTP.}
+	\caption{Visualización de métricas relacionadas con los logs y peticiones HTTP. (Fuente: Elaboración propia).}
 	\label{fig:grafana-dashboard_2}
 \end{figure}
 
@@ -189,12 +190,12 @@ el puerto interno, ya que se usa la misma red para todos los servicios):
 \end{itemize}
 \label{itm:grafana-data-sources}
 
-\subsect{Loki (Agregación de logs)}{loki}
-Loki es una herramienta de agregación de logs, que permite almacenar, indexar y consultar logs de manera eficiente, ya
-que se basa en el uso de etiquetas (para el agrupamiento y filtrado de logs) dejando el mensaje original sin
+\subsubsect{Loki (Agregación de logs)}{loki}
+Loki es una herramienta de agregación de logs, que permite almacenar, indexar y consultar logs de manera eficiente,
+porque se basa en el uso de etiquetas (para el agrupamiento y filtrado de logs) dejando el mensaje original sin
 modificar~\cite{loki-docs}.
 Para el funcionamiento de Loki es necesario disponer de un agente que se encargue de enviar los logs a la instancia de
-Loki, y en este proyecto se ha utilizado Promtail, explicado en la siguiente subsección.
+Loki, y en este proyecto se ha utilizado Promtail, explicado en el siguiente apartado.
 La configuración necesaria para que Grafana pueda recoger los logs de Loki es sencilla, ya que se añade un fichero
 \monoFont{yaml} con la configuración de la fuente de datos de Loki~\cite{loki-config-file} y el servicio en el
 fichero \monoFont{docker-compose.yaml}:
@@ -220,11 +221,11 @@ fichero \monoFont{docker-compose.yaml}:
     networks:
       - rschat-net
 	\end{minted}
-	\caption{Servicio de Loki para el registro de logs.}
+	\caption{Servicio de Loki para el registro de logs. (Fuente: Elaboración propia).}
 	\label{cod:loki-docker-compose}
 \end{codeBlock}
 
-\subsect{Promtail (Agente de logs)}{promtail}
+\subsubsect{Promtail (Agente de logs)}{promtail}
 Promtail es un agente (o cliente) de logs, que los recoge y los convierte en flujos que puede enviar a Loki (ver
 imagen~\ref{fig:promtail}) a través de una API HTTP~\cite{loki-docs}.\ La configuración de Docker para Promtail es
 similar a la de
@@ -255,14 +256,14 @@ en el fichero \monoFont{docker-compose.yaml}:
     networks:
       - rschat-net
 	\end{minted}
-	\caption{Servicio de Promtail para la recolección de logs.}
+	\caption{Servicio de Promtail para la recolección de logs. (Fuente: Elaboración propia).}
 	\label{cod:promtail-docker-compose}
 \end{codeBlock}
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\textwidth]{res/images/loki-promtail-architecture}
-	\caption{Flujo de logs entre Promtail y Loki.}
+	\caption{Flujo de logs hasta Loki. (Fuente:~\cite{log-flow}).}
 	\label{fig:promtail}
 \end{figure}
 
@@ -280,19 +281,19 @@ asociada a cada traza:
 		tabsize=2,
 	]{yaml}
     pipeline_stages:
-      # ...
+      ...
       - regex:  # Nombre del contenedor en el valor de "tag"
           expression: (?P<container_name>(?:[^|]*[^|]))
           source: tag
-      # ...
+      ...
 	\end{minted}
 	\caption{Stage para obtener el nombre del contenedor con una expresión regular a partir de la etiqueta
-	\monoFont{tag}.}
+	\monoFont{tag}. (Fuente: Elaboración propia).}
 	\label{cod:promtail-regexp-container-name}
 \end{codeBlock}
 
-\subsect{NSFWPY}{nsfwpy}
-NSFWPY es un detector de contenido no seguro para el trabajo (NSFW, por sus siglas en inglés), que se ha utilizado para
+\subsubsect{NSFWPY}{nsfwpy}
+NSFWPY es un detector de contenido NSFW, que se ha utilizado para
 detectar imágenes inapropiadas en los mensajes de los usuarios.\ Es un programa escrito en Python, que consiste en
 un pequeño servidor HTTP (utilizando Flask) que recibe una imagen en formato \monoFont{base64} y devuelve un JSON con
 la predicción de la imagen.\ Para realizar la predicción, se utiliza el modelo de inteligencia artificial
@@ -300,7 +301,7 @@ la predicción de la imagen.\ Para realizar la predicción, se utiliza el modelo
 que está pre-entrenado con imágenes de contenido NSFW y SFW (seguro para el trabajo).\ El modelo devuelve una
 predicción de la clase a la que pertenece la imagen, con una probabilidad entre 0 y 1, siendo 0 la probabilidad de
 que la imagen sea SFW y 1 la probabilidad de que la imagen sea NSFW\@.\ El modelo está entrenado para detectar 5
-clases de imágenes NSFW:
+clases en las imágenes:
 \begin{itemize}
 	\item Drawings (Dibujos): Imágenes de dibujos animados o hechos a mano.
 	\item Hentai (Manga): Imágenes de manga o anime con contenido sexual.
@@ -332,11 +333,11 @@ una nueva ruta en la API de RSChat, que se encarga de llamar al detector NSFWPY\
       timeout: 10s
       retries: 3
 	\end{minted}
-	\caption{Servicio de NSFWPY para la detección de imágenes NSFW.}
+	\caption{Servicio de NSFWPY para la detección de imágenes NSFW. (Fuente: Elaboración propia).}
 	\label{cod:nsfw-docker-compose}
 \end{codeBlock}
 
-Este modelo se ha conocido a través a la página web \href{https://nsfwjs.com/}{NSFWJS}~\cite{nsfwjs}, que lo utiliza
+Este modelo se ha conocido a través de la página web \href{https://nsfwjs.com/}{NSFWJS}~\cite{nsfwjs}, que lo utiliza
 para el análisis de las imágenes desde el propio navegador del usuario, sin necesidad de enviarlas a un servidor.
 La web permite probar el modelo con imágenes que se pueden arrastrar y soltar en la página, y muestra la
 predicción del modelo para cada una de ellas.\ Las figuras~\ref{fig:nsfwjs-drawing} y~\ref{fig:nsfwjs-porn} muestran
@@ -347,17 +348,16 @@ dos ejemplos de predicción del modelo para dos imágenes diferentes.
 	\begin{minipage}[c]{0.46\linewidth}
 		\centering
 		\includegraphics[width=\textwidth]{nsfwjs-drawing}
-		\caption{Predicción para una\\ imagen de fondo de pantalla.}
+		\caption{Predicción para una\\ imagen de fondo de pantalla. (Fuente:~\cite{nsfwjs}).}
 		\label{fig:nsfwjs-drawing}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[c]{0.46\linewidth}
 		\centering
 		\includegraphics[width=\textwidth]{nsfwjs-porn}
-		\caption{Predicción para una\\ imagen pornográfica.}
+		\caption{Predicción para una\\ imagen pornográfica. (Fuente:~\cite{nsfwjs}).}
 		\label{fig:nsfwjs-porn}
 	\end{minipage}
-%	\caption{Ejemplos de predicción en la página web NSFWJS.}
 	\label{fig:nsfwjs-example}
 \end{figure}
 
